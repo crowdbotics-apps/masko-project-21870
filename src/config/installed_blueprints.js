@@ -3,7 +3,6 @@ export const installed_blueprints = [
 { name: 'BlankScreen85163876', human_name: 'Blank Screen 85', access_route: 'BlankScreen85163876'},
 { name: 'Settings48163861', human_name: 'Settings 48', access_route: 'Settings48163861'},
 { name: 'SignIn474163859', human_name: 'Sign In 4 74', access_route: 'SignIn474163859'},
-{ name: 'SignIn270163858', human_name: 'Sign In 2 70', access_route: 'SignIn270163858'},
 { name: 'SignUp271163857', human_name: 'Sign Up 2 71', access_route: 'SignUp271163857'},
 { name: 'EmailAuth73163855', human_name: 'Email Auth 73', access_route: 'EmailAuth73163855', icon: 'envelope-o'},
 { name: 'Maps161560', human_name: 'Maps', access_route: 'Maps161560', icon: 'map'},

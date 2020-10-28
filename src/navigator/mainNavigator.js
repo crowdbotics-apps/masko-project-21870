@@ -8,7 +8,6 @@ import SideMenu from './sideMenu';
 import BlankScreen85163876Navigator from '../features/BlankScreen85163876/navigator';
 import Settings48163861Navigator from '../features/Settings48163861/navigator';
 import SignIn474163859Navigator from '../features/SignIn474163859/navigator';
-import SignIn270163858Navigator from '../features/SignIn270163858/navigator';
 import SignUp271163857Navigator from '../features/SignUp271163857/navigator';
 import EmailAuth73163855Navigator from '../features/EmailAuth73163855/navigator';
 import Maps161560Navigator from '../features/Maps161560/navigator';
@@ -44,7 +43,6 @@ const AppNavigator = {
 BlankScreen85163876: { screen: BlankScreen85163876Navigator },
 Settings48163861: { screen: Settings48163861Navigator },
 SignIn474163859: { screen: SignIn474163859Navigator },
-SignIn270163858: { screen: SignIn270163858Navigator },
 SignUp271163857: { screen: SignUp271163857Navigator },
 EmailAuth73163855: { screen: EmailAuth73163855Navigator },
 Maps161560: { screen: Maps161560Navigator },
