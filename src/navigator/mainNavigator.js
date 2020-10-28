@@ -9,7 +9,6 @@ import BlankScreen85163876Navigator from '../features/BlankScreen85163876/naviga
 import Settings48163861Navigator from '../features/Settings48163861/navigator';
 import SignIn474163859Navigator from '../features/SignIn474163859/navigator';
 import SignUp271163857Navigator from '../features/SignUp271163857/navigator';
-import EmailAuth73163855Navigator from '../features/EmailAuth73163855/navigator';
 import Maps161560Navigator from '../features/Maps161560/navigator';
 import Add-Item161559Navigator from '../features/Add-Item161559/navigator';
 import Maps161555Navigator from '../features/Maps161555/navigator';
@@ -44,7 +43,6 @@ BlankScreen85163876: { screen: BlankScreen85163876Navigator },
 Settings48163861: { screen: Settings48163861Navigator },
 SignIn474163859: { screen: SignIn474163859Navigator },
 SignUp271163857: { screen: SignUp271163857Navigator },
-EmailAuth73163855: { screen: EmailAuth73163855Navigator },
 Maps161560: { screen: Maps161560Navigator },
 Add-Item161559: { screen: Add-Item161559Navigator },
 Maps161555: { screen: Maps161555Navigator },
