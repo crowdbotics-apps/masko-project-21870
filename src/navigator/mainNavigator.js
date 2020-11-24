@@ -10,7 +10,6 @@ import CopyOfCopyOfBlankScreen5178289Navigator from '../features/CopyOfCopyOfBla
 import CopyOfSignIn474178288Navigator from '../features/CopyOfSignIn474178288/navigator';
 import CopyOfBlankScreen5178286Navigator from '../features/CopyOfBlankScreen5178286/navigator';
 import Tutorial172667Navigator from '../features/Tutorial172667/navigator';
-import NotificationList172639Navigator from '../features/NotificationList172639/navigator';
 import Settings172630Navigator from '../features/Settings172630/navigator';
 import UserProfile172628Navigator from '../features/UserProfile172628/navigator';
 import CopyOfCopyOfBlankScreen5164365Navigator from '../features/CopyOfCopyOfBlankScreen5164365/navigator';
@@ -90,7 +89,6 @@ CopyOfCopyOfBlankScreen5178289: { screen: CopyOfCopyOfBlankScreen5178289Navigato
 CopyOfSignIn474178288: { screen: CopyOfSignIn474178288Navigator },
 CopyOfBlankScreen5178286: { screen: CopyOfBlankScreen5178286Navigator },
 Tutorial172667: { screen: Tutorial172667Navigator },
-NotificationList172639: { screen: NotificationList172639Navigator },
 Settings172630: { screen: Settings172630Navigator },
 UserProfile172628: { screen: UserProfile172628Navigator },
 CopyOfCopyOfBlankScreen5164365: { screen: CopyOfCopyOfBlankScreen5164365Navigator },
