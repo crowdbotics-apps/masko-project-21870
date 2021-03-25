@@ -13,7 +13,7 @@ import UserProfileNavigator from '../features/UserProfile/navigator';
 import SettingsNavigator from '../features/Settings/navigator';
 import NotificationListNavigator from '../features/NotificationList/navigator';
 import MapsNavigator from '../features/Maps/navigator';
-
+import AddItemNavigator from '../features/Additem/navigator';
 /**
  * new navigators can be imported here
  */
@@ -29,6 +29,7 @@ SignUp: { screen: SignUpNavigator },
 UserProfile: { screen: UserProfileNavigator },
 Settings: { screen: SettingsNavigator },
 NotificationList: { screen: NotificationListNavigator },
+AddItem: {screen: AddItemNavigator},
 Maps: { screen: MapsNavigator },
 
     /** new navigators can be added here */
