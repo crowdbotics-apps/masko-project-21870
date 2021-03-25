@@ -1,6 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+
+import {mapping, dark} from '@eva-design/eva';
+import {ApplicationProvider, Layout,  IconRegistry} from 'react-native-ui-kitten';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import {Provider as ReduxProvider} from 'react-redux';
+import {crowdboticsTheme} from './src/config/crowdboticsTheme';
 
 import SplashScreen from './src/features/SplashScreen';
 import {store} from './src/store';
@@ -43,15 +48,21 @@ export default class App extends React.Component {
 
   renderApp = () => (
     <ReduxProvider store={store}>
-      <NavigatorProvider
-        style={styles.flex}
-        ref={(nav) => {
-          this.navigator = nav;
-        }}>
-        <View style={[styles.flex]}>
-          <SplashScreen />
-        </View>
-      </NavigatorProvider>
+       <IconRegistry icons={EvaIconsPack}/>
+        <ApplicationProvider 
+        mapping={mapping}
+        theme={crowdboticsTheme}
+        >
+              <NavigatorProvider
+                style={styles.flex}
+                ref={(nav) => {
+                  this.navigator = nav;
+                }}>
+                <View style={[styles.flex]}>
+                  <SplashScreen />
+                </View>
+              </NavigatorProvider>
+        </ApplicationProvider>
     </ReduxProvider>
   );
 
