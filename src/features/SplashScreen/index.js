@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, Text, ScrollView, TouchableOpacity, View,Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AppConfig from 'src/config/app'
+const width = Dimensions.get('screen').width
+import LargeLogo from '../../assets/images/masko-logo-large.svg';
+import LinearGradient from 'react-native-linear-gradient';
 
-import LogoIcon from "../../assets/images/backgroundLoginV1.png";
 import { installed_blueprints } from "../../config/installed_blueprints";
 import { styles } from './styles'
 
@@ -40,9 +43,10 @@ export default class App extends Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.itemsContainer}>
-        {this.renderItems()}
-      </ScrollView>
+      <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
+          <LargeLogo width={width}  />
+      </LinearGradient>
+      
     );
   }
 }

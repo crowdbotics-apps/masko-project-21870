@@ -1,8 +1,14 @@
 package com.masko_project_21870;
-
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
+
+
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+       
+       super.onCreate(savedInstanceState);
+   }
 
     /**
     * Returns the name of the main component registered from JavaScript. This is used to schedule

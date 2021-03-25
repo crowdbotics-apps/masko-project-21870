@@ -7,11 +7,14 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import {Provider as ReduxProvider} from 'react-redux';
 import {crowdboticsTheme} from './src/config/crowdboticsTheme';
 
-import SplashScreen from './src/features/SplashScreen';
+// import SplashScreen from './src/features/SplashScreen';
 import {store} from './src/store';
 import NavigatorProvider from './src/navigator/mainNavigator';
 import {setupHttpConfig} from './src/utils/http';
 import * as NavigationService from './src/navigator/NavigationService';
+import SplashScreen from 'react-native-splash-screen'
+
+
 
 export default class App extends React.Component {
   state = {
@@ -33,6 +36,7 @@ export default class App extends React.Component {
      * Read above commments above adding async requests here
      */
     NavigationService.setNavigator(this.navigator);
+    SplashScreen.hide();
   }
 
   loadAssets = async () => {
@@ -58,9 +62,9 @@ export default class App extends React.Component {
                 ref={(nav) => {
                   this.navigator = nav;
                 }}>
-                <View style={[styles.flex]}>
+                {/* <View style={[styles.flex]}>
                   <SplashScreen />
-                </View>
+                </View> */}
               </NavigatorProvider>
         </ApplicationProvider>
     </ReduxProvider>

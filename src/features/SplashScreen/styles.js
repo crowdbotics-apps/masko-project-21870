@@ -1,18 +1,20 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+
+const height = Dimensions.get('screen').height
 
 export const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         justifyContent: "space-between",
         display: 'flex',
-    },
+    }, // linear-gradient(180deg, #556897 50%, #6E87C6 100%)
     itemsContainer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         flexWrap: 'wrap',
-        justifyContent: "space-between",
+        justifyContent: 'center',
         alignItems: "center",
-        marginTop: 30,
+        height: height
     },
     item: {
         alignItems: 'center',
