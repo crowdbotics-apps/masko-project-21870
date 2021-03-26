@@ -10,6 +10,6 @@ export default SignUp02BlueprintNavigator = createStackNavigator(
     SignUp2: {screen: SignUp2Container},
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'SignUp2',
   },
 );

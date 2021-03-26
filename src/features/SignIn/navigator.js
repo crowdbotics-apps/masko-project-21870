@@ -10,6 +10,6 @@ export default SignIn04BlueprintNavigator = createStackNavigator(
     SignIn4: {screen: SignIn4Container},
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'SignIn4',
   },
 );

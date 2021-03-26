@@ -6,7 +6,7 @@ import {
   withStyles,
 } from 'react-native-ui-kitten';
 import {Button, Text} from 'react-native-ui-kitten';
-import {SignInForm2, SocialAuth} from '../../components/auth';
+import {ForgetPasswordForm, SocialAuth} from '../../components/auth';
 
 
 import {
@@ -22,7 +22,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
 
-class SignIn4Component extends React.Component {
+class ForgetPasswordComponent extends React.Component {
   state = {
     username: '',
     password: '',
@@ -41,10 +41,11 @@ class SignIn4Component extends React.Component {
   };
 
   onSignInButtonPress = () => {
-    this.props.onSignInPress({
-      email: this.state.username,
-      password: this.state.password,
-    });
+    this.props.onSignInButtonPress();
+    // this.props.onSignInPress({
+    //   email: this.state.username,
+    //   password: this.state.password,
+    // });
   };
 
   onSignUpButtonPress = () => {
@@ -77,7 +78,7 @@ class SignIn4Component extends React.Component {
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
-                LOGIN
+                Forget Password
               </Text>
             </View>
             {this.props.errorMsg && (
@@ -85,7 +86,7 @@ class SignIn4Component extends React.Component {
                 <Text style={{color: 'red'}}>{this.props.errorMsg}</Text>
               </View>
             )}
-            <SignInForm2
+            <ForgetPasswordForm
               style={[themedStyle.formContainer]}
               onForgotPasswordPress={this.onForgotPasswordButtonPress}
               //onDataChange={this.onFormDataChange}
@@ -100,17 +101,27 @@ class SignIn4Component extends React.Component {
               size="giant"
               //disabled={!this.state.formData}
               onPress={this.onSignInButtonPress}>
-              Login
+              Reset Password
             </Button>
-           
             <Button
-              style={themedStyle.signUpButton}
-              textStyle={themedStyle.signUpText}
-              appearance="ghost"
-              activeOpacity={0.75}
-              onPress={this.onSignUpButtonPress}>
-               <Text style={styles.whiteFont}>Don't have an account?</Text> <Text style={styles.yellowFont}>Sign Up</Text>
-            </Button>
+            // style={themedStyle.signInButton}
+            // textStyle={themedStyle.signInText}
+            appearance="ghost"
+            activeOpacity={0.75}
+            onPress={this.onSignUpButtonPress}>
+            <Text style={styles.whiteFont}>Don’t have an account?</Text> <Text style={styles.yellowFont}>Sign up now</Text>
+
+          </Button>
+          <Button
+            // style={themedStyle.signInButton}
+            // textStyle={themedStyle.signInText}
+            appearance="ghost"
+            activeOpacity={0.75}
+            onPress={this.onSignInButtonPress}>
+            <Text style={styles.whiteFont}>Have an account?</Text> <Text style={styles.yellowFont}> Log in</Text>
+
+          </Button>
+           
          
         </ScrollableAvoidKeyboard>
       </LinearGradient>
@@ -118,7 +129,7 @@ class SignIn4Component extends React.Component {
   }
 }
 
-export const SignIn4 = withStyles(SignIn4Component, theme => ({
+export const ForgetPassword = withStyles(ForgetPasswordComponent, theme => ({
   container: {
     flex: 1,
   },

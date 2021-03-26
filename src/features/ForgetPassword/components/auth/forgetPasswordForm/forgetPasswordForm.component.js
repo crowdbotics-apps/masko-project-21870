@@ -16,7 +16,7 @@ import {textStyle, ValidationInput} from '../../common';
 import {NameValidator, PasswordValidator} from '../../../core/validators';
 import formStyles from 'src/features/SignIn/screens/styles';
 
-class SignInForm2Component extends React.Component {
+class ForgetPasswordFormComponent extends React.Component {
   state = {
     username: undefined,
     password: undefined,
@@ -89,43 +89,13 @@ class SignInForm2Component extends React.Component {
             onChangeText={onUsernameInputTextChange}
           />
 
-          {/* <ValidationInput
-            style={themedStyle.passwordInput}
-            textStyle={textStyle.paragraph}
-            placeholder="Password"
-            //icon={this.renderEyeOffIconFill()}
-            secureTextEntry={true}
-            validator={PasswordValidator}
-            onChangeText={this.onPasswordInputTextChange}
-          /> */}
-          <Input
-           style={formStyles.inputBox}
-           textStyle={formStyles.inputBoxText}
-           placeholderTextColor={"#fff"}
-            placeholder="Enter Password"
-            // icon={this.renderEyeOffIconFill}
-            secureTextEntry={true}
-            // status={password && this.getStatus(PasswordValidator(password))}
-            value={password}
-            onChangeText={onPasswordInputTextChange}
-          />
-          <View style={themedStyle.forgotPasswordContainer}>
-            <Button
-              style={[themedStyle.forgotPasswordButton]}
-              textStyle={[themedStyle.forgotPasswordText,formStyles.yellowFontBold]}
-              appearance="ghost"
-              activeOpacity={0.75}
-              onPress={this.onForgotPasswordButtonPress}>
-              Forgot your password?
-            </Button>
-          </View>
         </View>
       </View>
     );
   }
 }
 
-export const SignInForm2 = withStyles(SignInForm2Component, theme => ({
+export const ForgetPasswordForm = withStyles(ForgetPasswordFormComponent, theme => ({
   container: {},
   forgotPasswordContainer: {
     flexDirection: 'row',

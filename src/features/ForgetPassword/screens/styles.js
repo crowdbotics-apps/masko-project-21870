@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 const height = Dimensions.get('screen').height
 const width = Dimensions.get('screen').width
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         justifyContent: "space-between",
@@ -50,6 +50,8 @@ export const styles = StyleSheet.create({
         margin: 10,
         borderWidth: 0,
         width: width*0.85,
+        alignSelf: 'center',
+        color:'white'
     },
     whiteFont: {
         fontFamily: "Montserrat",
@@ -59,8 +61,54 @@ export const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFCD3E',
     },
-    logoStyle:{
-        marginBottom:50
+    loginHeading:{
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        marginBottom:20,
+        marginTop:10,
+        fontSize:20
+    },
+    yellowFontBold: {
+        fontFamily: "Montserrat",
+        color: '#FFCD3E',
+        fontWeight:'bold'
+    },
+    inputBox:{
+        borderBottomColor:'#7384B2',
+        borderBottomWidth:1,
+        padding:10,
+        margin:10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+    },
+    inputBoxText:{
+        fontFamily: "Montserrat",
+        color: '#FFF',
+    },
+    inputIconContainer:{
+        flex: 1, 
+        flexDirection: 'row',
+        alignItems:'center',
+        borderBottomColor:'#7384B2',
+        borderBottomWidth:1,
+        padding:10,
+        margin:10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+
+    },
+    inputBoxIcon:{
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        borderWidth: 0
+    },
+    iconItem:{
+        width: 20,
     }
 
 }); 
+
+export default styles;

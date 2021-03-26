@@ -1,5 +1,5 @@
 import React from 'react';
-import {ButtonProps, ImageProps, View} from 'react-native';
+import { ButtonProps, ImageProps, View, Dimensions } from 'react-native';
 import {
   StyleType,
   ThemedComponentProps,
@@ -8,13 +8,20 @@ import {
   Icon,
   Text
 } from 'react-native-ui-kitten';
-import {Button} from 'react-native-ui-kitten';
-import {SignUpForm2} from '../../components/auth';
-import {ProfilePhoto} from '../../components/social';
-import {ScrollableAvoidKeyboard, textStyle} from '../../components/common';
+import { Button } from 'react-native-ui-kitten';
+import { SignUpForm2 } from '../../components/auth';
+import { ProfilePhoto } from '../../components/social';
+import { ScrollableAvoidKeyboard, textStyle } from '../../components/common';
 // import { PlusIconFill } from '@src/assets/icons';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {EmailValidator, PasswordValidator} from '../../core/validators';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { EmailValidator, PasswordValidator } from '../../core/validators';
+
+
+import LargeLogo from 'src/assets/images/masko-logo-large.svg';
+import AppConfig from 'src/config/app';
+const width = Dimensions.get('screen').width
+import LinearGradient from 'react-native-linear-gradient';
+import styles from '../styles'
 
 class SignUp2Component extends React.Component {
 
@@ -24,22 +31,23 @@ class SignUp2Component extends React.Component {
     email: undefined,
     password: undefined,
     termsAccepted: false,
+    termsModalStatus: false
   };
 
   onTermsValueChange = termsAccepted => {
-    this.setState({termsAccepted});
+    this.setState({ termsAccepted });
   };
 
   onUsernameInputTextChange = username => {
-    this.setState({username});
+    this.setState({ username });
   };
 
   onEmailInputTextChange = email => {
-    this.setState({email});
+    this.setState({ email });
   };
 
   onPasswordInputValidationResult = password => {
-    this.setState({password});
+    this.setState({ password });
   };
 
   onPhotoButtonPress = () => {
@@ -48,6 +56,10 @@ class SignUp2Component extends React.Component {
 
   onSignInButtonPress = () => {
     this.props.onSignInPress();
+  };
+
+  onForgetPasswordButtonPress = () => {
+    this.props.onForgetPasswordButtonPress();
   };
 
   onSignUpButtonPress = () => {
@@ -59,13 +71,13 @@ class SignUp2Component extends React.Component {
   };
 
   renderPhotoButtonIcon = style => {
-    const {themedStyle} = this.props;
+    const { themedStyle } = this.props;
 
     return <Icon {...style} name="plus" />;
   };
 
   renderPhotoButton = () => {
-    const {themedStyle} = this.props;
+    const { themedStyle } = this.props;
 
     return (
       <Button
@@ -78,66 +90,89 @@ class SignUp2Component extends React.Component {
   };
 
   validator() {
- 
-     const {username, email, password, termsAccepted} = this.state;
- 
-     return (
-       email !== undefined &&
-       EmailValidator(this.state.email) &&
-       password !== undefined &&
-       termsAccepted && PasswordValidator(password) && username !== undefined
-     );
-   }
 
-  render() {
-    const {themedStyle} = this.props;
+    const { username, email, password, termsAccepted } = this.state;
 
     return (
-      <ScrollableAvoidKeyboard style={themedStyle.container}>
-        <View style={themedStyle.headerContainer}>
-          <ProfilePhoto
-            style={themedStyle.photo}
-            resizeMode="center"
-            source={require('../../assets/icons/icon-person.png')}
-            button={this.renderPhotoButton}
-          />
-        </View>
-        {this.props.errorMsg && (
-          <View style={themedStyle.msgContainer}>
-            <Text style={{color: 'red'}}>{this.props.errorMsg}</Text>
-          </View>
-        )}
+      email !== undefined &&
+      EmailValidator(this.state.email) &&
+      password !== undefined &&
+      termsAccepted && PasswordValidator(password) && username !== undefined
+    );
+  }
 
-        <SignUpForm2
-          style={themedStyle.formContainer}
-          username={this.state.username}
-          email={this.state.email}
-          password={this.state.password}
-          termsAccepted={this.state.termsAccepted}
-          onUsernameInputTextChange={this.onUsernameInputTextChange}
-          onEmailInputTextChange={this.onEmailInputTextChange}
-          onPasswordInputValidationResult={this.onPasswordInputValidationResult}
-          onTermsValueChange={this.onTermsValueChange}
-        />
-        <Button
-          style={themedStyle.signUpButton}
-          //textStyle={textStyle.button}
-          size="giant"
-          disabled={!this.validator()}
-          onPress={this.onSignUpButtonPress}
-          
+
+  onTermsModalPress = () => {
+    this.setState({ termsModalStatus: !this.state.termsModalStatus })
+  }
+  
+  onForgetPasswordButtonPress = () => {
+    this.props.onForgetPasswordButtonPress();
+  }
+
+  render() {
+    const { themedStyle } = this.props;
+
+    return (
+      <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
+
+        <ScrollableAvoidKeyboard style={themedStyle.container}>
+          <View  >
+            <LargeLogo width={width} style={{ marginBottom: 30, marginTop: 50 }} />
+            <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
+              SIGNUP
+              </Text>
+          </View>
+          {this.props.errorMsg && (
+            <View style={themedStyle.msgContainer}>
+              <Text style={{ color: 'red' }}>{this.props.errorMsg}</Text>
+            </View>
+          )}
+
+          <SignUpForm2
+            style={themedStyle.formContainer}
+            username={this.state.username}
+            email={this.state.email}
+            password={this.state.password}
+            termsAccepted={this.state.termsAccepted}
+            termsModalStatus={this.state.termsModalStatus}
+            onUsernameInputTextChange={this.onUsernameInputTextChange}
+            onEmailInputTextChange={this.onEmailInputTextChange}
+            onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
+            onPasswordInputValidationResult={this.onPasswordInputValidationResult}
+            onTermsValueChange={this.onTermsValueChange}
+            onTermsModalPress={this.onTermsModalPress}
+          />
+          <Button
+            style={styles.yellowButton}
+            textStyle={styles.whiteFont}
+            size="giant"
+            disabled={!this.validator()}
+            onPress={this.onSignUpButtonPress}
+
           >
-          SIGN UP
+            Sign Up
         </Button>
-        <Button
-          style={themedStyle.signInButton}
-          textStyle={themedStyle.signInText}
-          appearance="ghost"
-          activeOpacity={0.75}
-          onPress={this.onSignInButtonPress}>
-          Already have an account? Sign In
-        </Button>
-      </ScrollableAvoidKeyboard>
+          <Button
+            // style={themedStyle.signInButton}
+            // textStyle={themedStyle.signInText}
+            appearance="ghost"
+            activeOpacity={0.75}
+            onPress={this.onSignInButtonPress}>
+            <Text style={styles.whiteFont}>Already have an account?</Text> <Text style={styles.yellowFont}>Login</Text>
+
+          </Button>
+          <Button
+            // style={themedStyle.signInButton}
+            // textStyle={themedStyle.signInText}
+            appearance="ghost"
+            activeOpacity={0.75}
+            onPress={this.onForgetPasswordButtonPress}>
+            <Text style={styles.whiteFont}>Forgot your password?</Text> <Text style={styles.yellowFont}>Reset Password</Text>
+
+          </Button>
+        </ScrollableAvoidKeyboard>
+      </LinearGradient>
     );
   }
 }
@@ -170,7 +205,7 @@ export const SignUp2 = withStyles(SignUp2Component, theme => ({
     width: 40,
     height: 40,
     borderRadius: 20,
-    transform: [{translateY: 80}],
+    transform: [{ translateY: 80 }],
     borderColor: theme['border-basic-color-2'],
     backgroundColor: theme['background-basic-color-2'],
   },

@@ -18,9 +18,16 @@ export class _SignUp2Container extends React.Component {
   onSignInPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'Sign In 2',
+      routeName: 'SignIn4',
     });
   };
+
+  onForgetPasswordButtonPress = () => {
+    this.props.navigation.navigate({
+      key: this.navigationKey,
+      routeName: 'ForgetPassword',
+    });
+  }
 
   onPhotoPress = () => {};
 
@@ -30,7 +37,9 @@ export class _SignUp2Container extends React.Component {
         onSignUpPress={this.props.signUp}
         onSignInPress={this.onSignInPress}
         onPhotoPress={this.onPhotoPress}
+        onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
         errorMsg={this.props.signUpErrors}
+        
       />
     );
   }

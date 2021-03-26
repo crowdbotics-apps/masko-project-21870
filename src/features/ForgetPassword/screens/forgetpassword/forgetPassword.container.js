@@ -1,10 +1,10 @@
 import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
-import {SignIn4} from './signIn4.component';
+import {ForgetPassword} from './forgetPassword.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
 
-export class _SignIn4Container extends React.Component {
+export class ForgetPasswordContainer extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -21,10 +21,17 @@ export class _SignIn4Container extends React.Component {
     });
   };
 
-  onForgotPasswordPress = () => {
+  onSignInButtonPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'ForgetPassword',
+      routeName: 'SignIn4',
+    });
+  };
+
+  onForgotPasswordPress = () => {
+    this.props.navigation.navigate({
+      // key: this.navigationKey,
+      routeName: 'Forgot Password',
     });
   };
 
@@ -36,8 +43,8 @@ export class _SignIn4Container extends React.Component {
 
   render() {
     return (
-      <SignIn4
-        onSignInPress={this.props.login}
+      <ForgetPassword
+        onSignInPress={this.onSignInButtonPress}
         onSignUpPress={this.onSignUpPress}
         onForgotPasswordPress={this.onForgotPasswordPress}
         onGooglePress={this.onGooglePress}
@@ -61,4 +68,4 @@ const mapDispatchToProps = {
 export const SignIn4Container =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(_SignIn4Container);
+)(ForgetPasswordContainer);

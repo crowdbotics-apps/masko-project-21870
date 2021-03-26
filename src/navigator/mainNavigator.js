@@ -14,6 +14,7 @@ import SettingsNavigator from '../features/Settings/navigator';
 import NotificationListNavigator from '../features/NotificationList/navigator';
 import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
+import ForgetPasswordNavigator from '../features/ForgetPassword/navigator';
 /**
  * new navigators can be imported here
  */
@@ -31,6 +32,7 @@ Settings: { screen: SettingsNavigator },
 NotificationList: { screen: NotificationListNavigator },
 AddItem: {screen: AddItemNavigator},
 Maps: { screen: MapsNavigator },
+ForgetPassword: { screen: ForgetPasswordNavigator},
 
     /** new navigators can be added here */
     SplashScreen: {
@@ -43,6 +45,7 @@ const DrawerAppNavigator = createDrawerNavigator(
     ...AppNavigator,
   },
   {
+    initialRouteName: 'SplashScreen',
     contentComponent: SideMenu
   },
 );
