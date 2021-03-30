@@ -6,8 +6,7 @@ import { combineReducers } from "redux";
 
 
 //@BlueprintReduxImportInsertion
-import SignInReducer from '../features/SignIn/redux/reducers'
-import SignUpReducer from '../features/SignUp/redux/reducers'
+import EmailAuthReducer from '../features/EmailAuth/redux/reducers'
 
 export const combinedReducers = combineReducers({
   blank: (state, action) => {
@@ -17,7 +16,6 @@ export const combinedReducers = combineReducers({
 
 
   //@BlueprintReduxCombineInsertion
-SignIn: SignInReducer,
-SignUp: SignUpReducer,
+  EmaihlAut: EmailAuthReducer,
 
 });
