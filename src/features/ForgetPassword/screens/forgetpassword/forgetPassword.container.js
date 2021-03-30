@@ -4,14 +4,16 @@ import {ForgetPassword} from './forgetPassword.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
 
-export class ForgetPasswordContainer extends React.Component {
+export class _ForgetPasswordContainer extends React.Component {
   static navigationOptions = {
     header: null,
   };
   navigationKey = 'SignIn4Container';
 
   onSignInPress = data => {
-    this.props.navigation.goBack();
+     this.props.navigation.goBack();
+    // const { actions } = this.props;
+    // actions.resetPassword(data)
   };
 
   onSignUpPress = () => {
@@ -28,11 +30,9 @@ export class ForgetPasswordContainer extends React.Component {
     });
   };
 
-  onForgotPasswordPress = () => {
-    this.props.navigation.navigate({
-      // key: this.navigationKey,
-      routeName: 'Forgot Password',
-    });
+  onForgotPasswordPress = data => {
+    const { actions } = this.props;
+    actions.resetPassword(data.email)
   };
 
   onGooglePress = () => {};
@@ -61,11 +61,15 @@ const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
 });
 
-const mapDispatchToProps = {
-  login: emailAuthActions.login
-}
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    resetPassword: (email) => {
+      dispatch(emailAuthActions.resetPassword(email));
+    },
+  },
+});
 
-export const SignIn4Container =  connect(
+export const ForgetPasswordContainer =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ForgetPasswordContainer);
+)(_ForgetPasswordContainer);

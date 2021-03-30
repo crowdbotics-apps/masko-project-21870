@@ -7,7 +7,7 @@ import {
 } from 'react-native-ui-kitten';
 import {Button, Text} from 'react-native-ui-kitten';
 import {SignInForm2, SocialAuth} from '../../components/auth';
-
+import { EmailValidator, PasswordValidator } from '../../core/validators';
 
 import {
   ScrollableAvoidKeyboard,
@@ -67,6 +67,19 @@ class SignIn4Component extends React.Component {
     this.setState({formData});
   };
 
+  validator() {
+
+    const {  username, password } = this.state;
+
+    return (
+      username !== undefined &&
+      EmailValidator(this.state.username) &&
+      password !== undefined &&
+      PasswordValidator(password)
+    );
+  }
+
+
   render() {
     const {themedStyle} = this.props;
 
@@ -97,7 +110,9 @@ class SignIn4Component extends React.Component {
             <Button
               style={styles.yellowButton}
               textStyle={styles.whiteFont}
+              status='warning'
               size="giant"
+              disabled={!this.validator()}
               //disabled={!this.state.formData}
               onPress={this.onSignInButtonPress}>
               Login

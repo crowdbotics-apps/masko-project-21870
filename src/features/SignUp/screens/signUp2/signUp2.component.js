@@ -67,6 +67,7 @@ class SignUp2Component extends React.Component {
     this.props.onSignUpPress({
       email: this.state.email,
       password: this.state.password,
+      name: this.state.username,
     });
   };
 
@@ -147,6 +148,7 @@ class SignUp2Component extends React.Component {
             style={styles.yellowButton}
             textStyle={styles.whiteFont}
             size="giant"
+            status='warning'
             disabled={!this.validator()}
             onPress={this.onSignUpButtonPress}
 

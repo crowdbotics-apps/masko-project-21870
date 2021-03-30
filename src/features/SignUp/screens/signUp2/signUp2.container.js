@@ -12,7 +12,9 @@ export class _SignUp2Container extends React.Component {
   navigationKey = 'SignIn2';
 
   onSignUpPress = data => {
-    this.props.navigation.goBack();
+    const { actions } = this.props;
+    actions.signUp(data);
+    // this.props.navigation.goBack();
   };
 
   onSignInPress = () => {
@@ -34,7 +36,7 @@ export class _SignUp2Container extends React.Component {
   render() {
     return (
       <SignUp2
-        onSignUpPress={this.props.signUp}
+        onSignUpPress={this.onSignUpPress}
         onSignInPress={this.onSignInPress}
         onPhotoPress={this.onPhotoPress}
         onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
@@ -49,9 +51,14 @@ const mapStateToProps = state => ({
   // signUpErrors: state.SignUp02Blueprint.errors.SignUp,
 });
 
-const mapDispatchToProps = {
-  signUp: emailAuthActions.signUp,
-};
+
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    signUp: ({email, password, name}) => {
+      dispatch(emailAuthActions.signUp({email, password, name}));
+    },
+  },
+});
 
 export const SignUp2Container = connect(
   mapStateToProps,

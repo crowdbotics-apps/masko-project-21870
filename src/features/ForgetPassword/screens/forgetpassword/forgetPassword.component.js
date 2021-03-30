@@ -8,6 +8,8 @@ import {
 import {Button, Text} from 'react-native-ui-kitten';
 import {ForgetPasswordForm, SocialAuth} from '../../components/auth';
 
+import { EmailValidator, PasswordValidator } from '../../core/validators';
+
 
 import {
   ScrollableAvoidKeyboard,
@@ -37,7 +39,9 @@ class ForgetPasswordComponent extends React.Component {
   };
 
   onForgotPasswordButtonPress = () => {
-    this.props.onForgotPasswordPress();
+    this.props.onForgotPasswordPress({
+      email: this.state.username
+    });
   };
 
   onSignInButtonPress = () => {
@@ -68,6 +72,16 @@ class ForgetPasswordComponent extends React.Component {
     this.setState({formData});
   };
 
+  validator = () => {
+
+    const {  username } = this.state;
+
+    return (
+      username !== undefined &&
+      EmailValidator(this.state.username) 
+    );
+  }
+
   render() {
     const {themedStyle} = this.props;
 
@@ -89,18 +103,16 @@ class ForgetPasswordComponent extends React.Component {
             <ForgetPasswordForm
               style={[themedStyle.formContainer]}
               onForgotPasswordPress={this.onForgotPasswordButtonPress}
-              //onDataChange={this.onFormDataChange}
               onUsernameInputTextChange={this.onUsernameInputTextChange}
-              onPasswordInputTextChange={this.onPasswordInputTextChange}
               email={this.state.username}
-              password={this.state.password}
             />
             <Button
               style={styles.yellowButton}
               textStyle={styles.whiteFont}
+              status='warning'
               size="giant"
-              //disabled={!this.state.formData}
-              onPress={this.onSignInButtonPress}>
+              disabled={!this.validator()}
+              onPress={this.onForgotPasswordButtonPress}>
               Reset Password
             </Button>
             <Button

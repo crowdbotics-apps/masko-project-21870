@@ -18,26 +18,23 @@ import formStyles from 'src/features/SignIn/screens/styles';
 
 class ForgetPasswordFormComponent extends React.Component {
   state = {
-    username: undefined,
-    password: undefined,
+    username: undefined
   };
 
   onForgotPasswordButtonPress = () => {
     this.props.onForgotPasswordPress();
   };
 
-  onUsernameInputTextChange = username => {
-    this.setState({username});
-  };
+  
 
   onPasswordInputTextChange = password => {
     this.setState({password});
   };
 
   isValid = value => {
-    const {username, password} = value;
+    const {password} = value;
 
-    return username !== undefined && password !== undefined;
+    return password !== undefined;
   };
 
   renderEyeOffIconFill = style => {
@@ -63,20 +60,13 @@ class ForgetPasswordFormComponent extends React.Component {
       onPasswordInputTextChange,
       onUsernameInputTextChange,
       username,
-      password,
       ...restProps
     } = this.props;
 
     return (
       <View style={[themedStyle.container, style]} {...restProps}>
         <View style={themedStyle.formContainer}>
-          {/* <ValidationInput
-            textStyle={textStyle.paragraph}
-            placeholder="User Name"
-            //icon={this.renderPersonIconFill()}
-            validator={NameValidator}
-            onChangeText={this.onUsernameInputTextChange}
-          /> */}
+          
           <Input
            style={formStyles.inputBox}
            textStyle={formStyles.inputBoxText}

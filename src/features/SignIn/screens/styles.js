@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
     yellowButton:{
         fontFamily: "Montserrat",
-        backgroundColor: "#FFCD3E",
+        // backgroundColor: "#FFCD3E",
         borderRadius: 30,
         margin: 10,
         borderWidth: 0,

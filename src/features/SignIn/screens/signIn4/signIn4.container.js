@@ -11,7 +11,8 @@ export class _SignIn4Container extends React.Component {
   navigationKey = 'SignIn4Container';
 
   onSignInPress = data => {
-    this.props.navigation.goBack();
+    const { actions } = this.props;
+    actions.login(data)
   };
 
   onSignUpPress = () => {
@@ -37,7 +38,7 @@ export class _SignIn4Container extends React.Component {
   render() {
     return (
       <SignIn4
-        onSignInPress={this.props.login}
+        onSignInPress={this.onSignInPress}
         onSignUpPress={this.onSignUpPress}
         onForgotPasswordPress={this.onForgotPasswordPress}
         onGooglePress={this.onGooglePress}
@@ -54,9 +55,13 @@ const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
 });
 
-const mapDispatchToProps = {
-  login: emailAuthActions.login
-}
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    login: ({email, password}) => {
+      dispatch(emailAuthActions.login({email, password}));
+    },
+  },
+});
 
 export const SignIn4Container =  connect(
   mapStateToProps,
