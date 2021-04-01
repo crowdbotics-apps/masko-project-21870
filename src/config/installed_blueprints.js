@@ -1,13 +1,10 @@
 export const installed_blueprints = [
   //@BlueprintInsertion
-{ name: 'SignIn', human_name: 'Sign In 4 74', access_route: 'SignIn'},
-{ name: 'SignUp', human_name: 'Sign Up 2 71', access_route: 'SignUp'},
-{ name: 'EmailAuth73163855', human_name: 'Email Auth 73', access_route: 'EmailAuth73163855', icon: 'envelope-o'},
-{ name: 'AddItem', human_name: 'Add Item', access_route: 'AddItem'}, 
-{ name: 'UserProfile', human_name: 'User Profile', access_route: 'UserProfile'},
-{ name: 'Settings', human_name: 'Settings', access_route: 'Settings'},
-{ name: 'NotificationList', human_name: 'Notification List', access_route: 'NotificationList'},
-{ name: 'Maps', human_name: 'Maps', access_route: 'Maps', icon: 'map'},
+{ name: 'Home', human_name: 'Home', access_route: 'SignIn22'},
+{ name: 'SignIn', human_name: 'My account', access_route: 'SignIn22'},
+{ name: 'SignUp', human_name: 'My orders', access_route: 'SignUp222'},
+{ name: 'EmailAuth73163855', human_name: 'Recurring Orders', access_route: 'EmailAuth73163855', icon: 'envelope-o'},
+// { name: 'AddItem', human_name: 'Sign out', access_route: 'AddItem222'}, 
 
   // you can add more installed blueprints here
   // access route is the route nate given to navigator

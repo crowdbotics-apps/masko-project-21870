@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
 
 const height = Dimensions.get('screen').height
+const width = Dimensions.get('screen').width
 
 export const styles = StyleSheet.create({
     container: {
@@ -42,4 +43,24 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         color: "#130D3C"
     },
+    yellowButton:{
+        fontFamily: "Montserrat",
+        backgroundColor: "#FFCD3E",
+        borderRadius: 30,
+        margin: 10,
+        borderWidth: 0,
+        width: width*0.85,
+    },
+    whiteFont: {
+        fontFamily: "Montserrat",
+        color: 'white',
+    },
+    yellowFont: {
+        fontFamily: "Montserrat",
+        color: '#FFCD3E',
+    },
+    logoStyle:{
+        marginBottom:50
+    }
+
 }); 

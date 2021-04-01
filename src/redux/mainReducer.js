@@ -1,13 +1,20 @@
 import { combineReducers } from "redux";
+import { persistCombineReducers, persistReducer } from "redux-persist";
 
+import AsyncStorage from '@react-native-community/async-storage';
 /**
  * You can import more reducers here
  */
 
 
 //@BlueprintReduxImportInsertion
-import SignInReducer from '../features/SignIn/redux/reducers'
-import SignUpReducer from '../features/SignUp/redux/reducers'
+import EmailAuthReducer from '../features/EmailAuth/redux/reducers'
+
+const emailAuthPersistConfig = {
+  key: "emailAuth",
+  storage : AsyncStorage,
+  blacklist: ["errors","loaders"],
+};
 
 export const combinedReducers = combineReducers({
   blank: (state, action) => {
@@ -17,7 +24,7 @@ export const combinedReducers = combineReducers({
 
 
   //@BlueprintReduxCombineInsertion
-SignIn: SignInReducer,
-SignUp: SignUpReducer,
+
+  EmailAuth: persistReducer( emailAuthPersistConfig, EmailAuthReducer),
 
 });
