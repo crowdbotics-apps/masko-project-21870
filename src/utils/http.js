@@ -1,5 +1,5 @@
 import axios from "axios";
-import { appConfig } from "../config/app";
+import appConfig from "../config/app";
 
 const APP_PLATFORM = "Mobile";
 

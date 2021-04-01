@@ -1,7 +1,8 @@
 import apiReducer from "./reducers";
-import customReducer from "./custom/reducers"
+// import customReducer from "./custom/reducers"
 // import rootSaga from "./sagas";
 import { mainSaga } from "../redux/mainSaga";
+import { combinedReducers } from "../redux/mainReducer";
 
 // import customRootSaga from "./custom/sagas"
 
@@ -18,10 +19,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middlewares = [sagaMiddleware /** more middlewares if any goes here */];
 
 const store = createStore(
-  combineReducers({
-      apiReducer: apiReducer,
-      customReducer: customReducer
-  }),
+  combinedReducers,
   composeEnhancers(applyMiddleware(...middlewares))
 );
 

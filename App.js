@@ -14,6 +14,7 @@ import {setupHttpConfig} from './src/utils/http';
 import * as NavigationService from './src/navigator/NavigationService';
 import SplashScreen from 'react-native-splash-screen'
 
+console.disableYellowBox = true;
 
 
 export default class App extends React.Component {

@@ -164,7 +164,7 @@ function* handleLogin(action) {
         showSuccessAlert("Account successfully logged in!")
     },500);
       // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('UserAccount');
+      NavigationService.navigate('Home');
     } else {
       yield put({
         type: EMAIL_AUTH_LOGIN_ERROR,

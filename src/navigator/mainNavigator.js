@@ -8,6 +8,8 @@ import SideMenu from './sideMenu';
 
 import BlankScreenNavigator from '../features/BlankScreen/navigator';
 import EmailAuthNavigator from '../features/EmailAuth/navigator';
+
+import UserAccountNavigator from '../features/UserAccount/navigator';
 import UserProfileNavigator from '../features/UserProfile/navigator';
 import SettingsNavigator from '../features/Settings/navigator';
 import NotificationListNavigator from '../features/NotificationList/navigator';
@@ -25,21 +27,22 @@ const AppNavigator = {
 // Settings172630: { screen: Settings172630Navigator },
 // SignIn: { screen: SignInNavigator },
 EmailAuth:  { screen: EmailAuthNavigator ,  navigationOptions: ({ navigation }) => ({
-  swipeEnabled: true,
-  gesturesEnabled: true,
-  drawerLockMode: 'locked-closed',
+  // swipeEnabled: true,
+  // gesturesEnabled: true,
+  // drawerLockMode: 'locked-closed',
 })},
 UserProfile: { screen: UserProfileNavigator },
 Settings: { screen: SettingsNavigator },
 NotificationList: { screen: NotificationListNavigator },
 AddItem: {screen: AddItemNavigator},
 Maps: { screen: MapsNavigator },
+UserAccount: { screen: UserAccountNavigator},
 
     /** new navigators can be added here */
     SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
-      swipeEnabled: true,
-      gesturesEnabled: true,
-      drawerLockMode: 'locked-closed',
+      // swipeEnabled: true,
+      // gesturesEnabled: true,
+      // drawerLockMode: 'locked-closed',
     })},
 };
 
