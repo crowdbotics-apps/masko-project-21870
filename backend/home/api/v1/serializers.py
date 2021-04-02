@@ -10,6 +10,8 @@ from rest_framework import serializers
 from rest_auth.serializers import PasswordResetSerializer
 from home.models import HomePage, CustomText
 
+from pet.models import Pet, PetType
+
 User = get_user_model()
 
 
@@ -85,3 +87,20 @@ class PasswordSerializer(PasswordResetSerializer):
     """Custom serializer for rest_auth to solve reset password error"""
 
     password_reset_form_class = ResetPasswordForm
+
+
+class PetTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PetType
+        fields = ["id", "name", "sort"]
+
+class PetSerializer(serializers.ModelSerializer):
+
+    typeInfo = PetTypeSerializer(source="pet_type", read_only=True)
+    breedInfo = PetTypeSerializer(source="breed", read_only=True)
+    ownerInfo = UserSerializer(source="owner", read_only=True)
+
+    class Meta:
+        model = Pet
+        fields = ["id", "name", "age","pet_type","typeInfo","breed","breedInfo","owner","ownerInfo"]

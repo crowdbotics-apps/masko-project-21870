@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone X'",
+    "android": "ENVFILE=.env react-native run-android",
+    "ios": "ENVFILE=.env react-native run-ios --simulator='iPhone X'",
     "postinstall": "npx jetify && rndebugger-open",
     "lint": "eslint .",
-    "start": "react-native start",
+    "start": "ENVFILE=.env react-native start",
     "test": "jest"
   },
   "jest": {
