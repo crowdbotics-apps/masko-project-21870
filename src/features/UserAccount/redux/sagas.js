@@ -1,77 +1,67 @@
 import {all, takeLatest, put, call} from 'redux-saga/effects';
 import * as NavigationService from '../../../navigator/NavigationService';
+import * as utils from '../utils/general';
 
 import {
-  EMAIL_AUTH_LOGIN_REQUEST,
-  EMAIL_AUTH_LOGIN_ERROR,
-  EMAIL_AUTH_SIGNUP_REQUEST,
-  EMAIL_AUTH_PASSWORD_RECOVER_REQUEST,
-  EMAIL_AUTH_LOGIN_SUCCESS,
-  EMAIL_AUTH_SIGNUP_ERROR,
-  EMAIL_AUTH_SIGNUP_SUCCESS,
-  EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
-  EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
+  USER_PET_ADD_REQUEST,
+  USER_PET_ADD_SUCCESS,
+  USER_PET_ADD_ERROR,
+  USER_PET_GET_REQUEST,
+  USER_PET_GET_SUCCESS,
+  USER_PET_GET_ERROR,
+  USER_PET_TYPE_GET_REQUEST,
+  USER_PET_BREED_GET_REQUEST,
+  USER_PET_TYPE_GET_SUCCESS,
+  USER_PET_TYPE_GET_ERROR,
+  USER_PET_BREED_GET_SUCCESS,
+  USER_PET_BREED_GET_ERROR,
+  USER_PET_SELECT_SUCCESS,
+  USER_PET_SELECT_REQUEST
 } from './constants';
-import { request } from '../../../utils/http';
+import { request, setHeaderToken } from '../../../utils/http';
 
 import appConfig from "../../../config/app";
+
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
 
-function sendLogin({email, password}) {
+
+function sendAddPet( accessToken, pet ) {
+
+  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/';
   
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/login/';
   let body = {
-      username: email, 
-      email,
-      password,
+      name: pet.name,
+      age: pet.age,
+      pet_type: pet.pet_type,
+      breed: pet.breed,
     };
+
+  if(pet.image && pet.image.content!=null){
+      body.file = pet.image.content.data
+      body.file_mime = pet.image.content.mime
+  }    
+  let header = {
+                'Content-Type': appConfig.contentType.json
+               };
+
+  if(accessToken){
+    header = Object.assign(setHeaderToken(accessToken), header);
+  }
+
   return fetch(url, { 
     method: 'post', 
     body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
-    const statusCode = response.status;
-    const data =  statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
+    headers: header
+    }, ).then((response) => {
 
-
-
-function sendSignUp({email, password, name}) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/signup/';
-  let body = {
-      name,
-      email,
-      username: email,
-      password,
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
     const statusCode = response.status;
     const data =
       statusCode != 204
         ? response.json()
         : {};
     return Promise.all([statusCode, data]);
+
   })
   .then((response) => {
     return { status: response[0], data: response[1], error: response[1] };
@@ -82,25 +72,31 @@ function sendSignUp({email, password, name}) {
   });
 }
 
-function sendPasswordRecovery(email) {
- 
-  let url = appConfig.emailAuthAPIEndPoint+'/rest-auth/password/reset/';
-  let body = {
-      email
-    };
+function sendGetPet( accessToken ) {
+
+  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/';
+   
+  let header = {
+                'Content-Type': appConfig.contentType.json
+               };
+
+  if(accessToken){
+    header = Object.assign(setHeaderToken(accessToken), header);
+  }
+
   return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }).then((response) => {
+    method: 'get', 
+    body: null,
+    headers: header
+    }, ).then((response) => {
+
     const statusCode = response.status;
     const data =
       statusCode != 204
         ? response.json()
         : {};
     return Promise.all([statusCode, data]);
+
   })
   .then((response) => {
     return { status: response[0], data: response[1], error: response[1] };
@@ -111,28 +107,98 @@ function sendPasswordRecovery(email) {
   });
 }
 
+function sendGetPetType( accessToken ) {
 
-function* handleSignUp(action) {
+  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet-type/';
+   
+  let header = {
+                'Content-Type': appConfig.contentType.json
+               };
+
+  if(accessToken){
+    header = Object.assign(setHeaderToken(accessToken), header);
+  }
+
+  return fetch(url, { 
+    method: 'get', 
+    body: null,
+    headers: header
+    }, ).then((response) => {
+
+    const statusCode = response.status;
+    const data =
+      statusCode != 204
+        ? response.json()
+        : {};
+    return Promise.all([statusCode, data]);
+
+  })
+  .then((response) => {
+    return { status: response[0], data: response[1], error: response[1] };
+    
+  })
+  .catch(error => {
+    return {status: 400, data: error, error: error};
+  });
+}
+
+function sendGetBreedType( accessToken ) {
+
+  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/breed-type/';
+   
+  let header = {
+                'Content-Type': appConfig.contentType.json
+               };
+
+  if(accessToken){
+    header = Object.assign(setHeaderToken(accessToken), header);
+  }
+
+  return fetch(url, { 
+    method: 'get', 
+    body: null,
+    headers: header
+    }, ).then((response) => {
+
+    const statusCode = response.status;
+    const data =
+      statusCode != 204
+        ? response.json()
+        : {};
+    return Promise.all([statusCode, data]);
+
+  })
+  .then((response) => {
+    return { status: response[0], data: response[1], error: response[1] };
+    
+  })
+  .catch(error => {
+    return {status: 400, data: error, error: error};
+  });
+}
+
+function* handleAddPet(action) {
   const {
-    user: {email, password, name},
+    accessToken,
+    pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendSignUp, {email, password, name});
+    const {status, data, error} = yield call(sendAddPet, accessToken, pet );
 
       if (status === 201) {
         yield put({
-          type: EMAIL_AUTH_SIGNUP_SUCCESS,
-          user: data,
+          type: USER_PET_ADD_SUCCESS,
+          pet: data,
         });
         setTimeout(()=>{
-            showSuccessAlert("Your account has been created successfully!")
+            showSuccessAlert("Pet has been successfully created!")
         },500);
-        NavigationService.navigate('SignIn4');
+        NavigationService.navigate('Home');
 
       } else {
         let msg = compileErrorMessage(error,data)
         yield put({
-          type: EMAIL_AUTH_SIGNUP_ERROR,
+          type: USER_PET_ADD_ERROR,
           error: msg,
         });
         setTimeout(()=>{
@@ -142,86 +208,119 @@ function* handleSignUp(action) {
   } catch (error) {
     // todo add errors with similar structure in backend
     yield put({
-      type: EMAIL_AUTH_SIGNUP_ERROR,
+      type: USER_PET_ADD_ERROR,
       error: "Can't sign up with provided credentials",
     });
   }
 }
 
-function* handleLogin(action) {
+function* handleGetPet(action) {
   const {
-    user: {email, password},
+    accessToken
   } = action;
   try {
-    const {status, data, error} = yield call(sendLogin, {email, password});
+    const {status, data, error} = yield call(sendGetPet, accessToken );
 
-    if (status === 200) {
-      yield put({
-        type: EMAIL_AUTH_LOGIN_SUCCESS,
-        accessToken: data.token,
-      });
-      setTimeout(()=>{
-        showSuccessAlert("Account successfully logged in!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('Home');
-    } else {
-      yield put({
-        type: EMAIL_AUTH_LOGIN_ERROR,
-        error: compileErrorMessage(error,data),
-      });
-      setTimeout(()=>{
-        showErrorAlert(compileErrorMessage(error,data))
-    },500);
-
-    }
+      if (status === 200) {
+        yield put({
+          type: USER_PET_GET_SUCCESS,
+          pets: utils.formatPets(data.results),
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_GET_ERROR,
+          error: msg,
+        });
+      
+      }
   } catch (error) {
     // todo add errors with similar structure in backend
     yield put({
-      type: EMAIL_AUTH_LOGIN_ERROR,
-      error: "Can't sign in with provided credentials",
+      type: USER_PET_GET_ERROR,
+      error: "Can't get pets list.",
     });
   }
 }
 
-function* handlePasswordRecovery(action) {
-  const {email} = action;
-
+function* handleGetPetType(action) {
+  const {
+    accessToken
+  } = action;
   try {
-    const {status, data, error} = yield call(sendPasswordRecovery, email);
+    const {status, data, error} = yield call(sendGetPetType, accessToken );
 
-    if (status === 200) {
-      yield put({
-        type: EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
-        email,
-      });
-      setTimeout(()=>{
-        showSuccessAlert("Password Reset Request has been sent!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('SignIn4');
-
-    } else {
-      yield put({
-        type: EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
-        error: compileErrorMessage(error,data),
-      });
-        setTimeout(()=>{
-          showErrorAlert(compileErrorMessage(error,data))
-      },500);
-    }
+      if (status === 200) {
+        yield put({
+          type: USER_PET_TYPE_GET_SUCCESS,
+          petTypes: data.results,
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_TYPE_GET_ERROR,
+          error: msg,
+        });
+      
+      }
   } catch (error) {
+    // todo add errors with similar structure in backend
     yield put({
-      type: EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
-      error: "Can't recover password with provided email",
+      type: USER_PET_TYPE_GET_ERROR,
+      error: "Cannot extract Pet Types",
     });
   }
 }
+
+function* handleGetBreedType(action) {
+  const {
+    accessToken
+  } = action;
+  try {
+    const {status, data, error} = yield call(sendGetBreedType, accessToken );
+
+      if (status === 200) {
+        yield put({
+          type: USER_PET_BREED_GET_SUCCESS,
+          breedTypes: data.results,
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_BREED_GET_ERROR,
+          error: msg,
+        });
+      
+      }
+  } catch (error) {
+    // todo add errors with similar structure in backend
+    yield put({
+      type: USER_PET_BREED_GET_ERROR,
+      error: "Cannot extract breed type.",
+    });
+  }
+}
+
+function* handlePetSelect(action) {
+  
+    yield put({
+          type: USER_PET_SELECT_SUCCESS,
+          pet: action.pet,
+        });
+  
+}
+
 
 export default all([
-  takeLatest(EMAIL_AUTH_LOGIN_REQUEST, handleLogin),
-  takeLatest(EMAIL_AUTH_SIGNUP_REQUEST, handleSignUp),
-  takeLatest(EMAIL_AUTH_PASSWORD_RECOVER_REQUEST, handlePasswordRecovery),
+
+  takeLatest(USER_PET_ADD_REQUEST, handleAddPet),
+  takeLatest(USER_PET_GET_REQUEST, handleGetPet),
+  takeLatest(USER_PET_TYPE_GET_REQUEST, handleGetPetType),
+  takeLatest(USER_PET_BREED_GET_REQUEST, handleGetBreedType),
+  takeLatest(USER_PET_SELECT_REQUEST, handlePetSelect),
   
   
 ]);

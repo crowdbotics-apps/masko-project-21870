@@ -14,6 +14,8 @@ import {
 } from './constants';
 import { request } from '../../../utils/http';
 
+
+import * as UserActions from '../../../features/UserAccount/redux/actions'
 import appConfig from "../../../config/app";
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
@@ -156,10 +158,24 @@ function* handleLogin(action) {
     const {status, data, error} = yield call(sendLogin, {email, password});
 
     if (status === 200) {
+
+      // Take User Pets Data   
+      yield put(UserActions.getPets(data.token));
+
+      // Take Pet Type Data   
+      yield put(UserActions.getPetType(data.token));
+
+      // Take Breed Type Data   
+      yield put(UserActions.getBreedType(data.token));
+
+
       yield put({
         type: EMAIL_AUTH_LOGIN_SUCCESS,
         accessToken: data.token,
+        user: data.user
       });
+
+
       setTimeout(()=>{
         showSuccessAlert("Account successfully logged in!")
     },500);

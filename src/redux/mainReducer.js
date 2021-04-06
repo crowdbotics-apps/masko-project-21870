@@ -10,8 +10,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 //@BlueprintReduxImportInsertion
 import EmailAuthReducer from '../features/EmailAuth/redux/reducers'
 
+import UserAccountReducer from '../features/UserAccount/redux/reducers'
+
 const emailAuthPersistConfig = {
   key: "emailAuth",
+  storage : AsyncStorage,
+  blacklist: ["errors","loaders"],
+};
+
+const userAccountPersistConfig = {
+  key: "userAccount",
   storage : AsyncStorage,
   blacklist: ["errors","loaders"],
 };
@@ -26,5 +34,7 @@ export const combinedReducers = combineReducers({
   //@BlueprintReduxCombineInsertion
 
   EmailAuth: persistReducer( emailAuthPersistConfig, EmailAuthReducer),
+  UserAccount: persistReducer( userAccountPersistConfig, UserAccountReducer),
+  
 
 });

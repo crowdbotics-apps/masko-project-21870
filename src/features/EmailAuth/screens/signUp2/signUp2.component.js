@@ -16,6 +16,7 @@ import { ScrollableAvoidKeyboard, textStyle } from '../../components/common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { EmailValidator, PasswordValidator } from '../../core/validators';
 
+import { Spinner } from 'src/components/Spinner';
 
 import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import AppConfig from 'src/config/app';
@@ -111,12 +112,21 @@ class SignUp2Component extends React.Component {
     this.props.onForgetPasswordButtonPress();
   }
 
+  renderSpinner = () => {
+    const { signUpLoading } = this.props;
+    if (signUpLoading) {
+      return <Spinner />;
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { themedStyle } = this.props;
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
-
+        {this.renderSpinner()}
         <ScrollableAvoidKeyboard style={themedStyle.container}>
           <View  >
             <LargeLogo width={width} style={{ marginBottom: 30, marginTop: 50 }} />

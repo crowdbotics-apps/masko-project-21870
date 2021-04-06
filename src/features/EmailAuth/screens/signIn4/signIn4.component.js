@@ -9,6 +9,8 @@ import {Button, Text} from 'react-native-ui-kitten';
 import {SignInForm2, SocialAuth} from '../../components/auth';
 import { EmailValidator, PasswordValidator } from '../../core/validators';
 
+import { Spinner } from 'src/components/Spinner';
+
 import {
   ScrollableAvoidKeyboard,
   ImageOverlay,
@@ -24,8 +26,8 @@ import styles from '../styles'
 
 class SignIn4Component extends React.Component {
   state = {
-    username: '',
-    password: '',
+    username: 'usama149+b4@gmail.com',
+    password: 'test123456',
   };
 
   onUsernameInputTextChange = username => {
@@ -79,6 +81,15 @@ class SignIn4Component extends React.Component {
     );
   }
 
+  renderSpinner = () => {
+    const { signInLoading } = this.props;
+    if (signInLoading) {
+      return <Spinner />;
+    } else {
+      return null;
+    }
+  };
+
 
   render() {
     const {themedStyle} = this.props;
@@ -86,7 +97,7 @@ class SignIn4Component extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         <ScrollableAvoidKeyboard >
-          
+            {this.renderSpinner()}
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
@@ -104,7 +115,7 @@ class SignIn4Component extends React.Component {
               //onDataChange={this.onFormDataChange}
               onUsernameInputTextChange={this.onUsernameInputTextChange}
               onPasswordInputTextChange={this.onPasswordInputTextChange}
-              email={this.state.username}
+              username={this.state.username}
               password={this.state.password}
             />
             <Button

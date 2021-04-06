@@ -33,6 +33,8 @@ export class _SignUp2Container extends React.Component {
 
   onPhotoPress = () => {};
 
+  
+
   render() {
     return (
       <SignUp2
@@ -41,6 +43,7 @@ export class _SignUp2Container extends React.Component {
         onPhotoPress={this.onPhotoPress}
         onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
         errorMsg={this.props.signUpErrors}
+        signUpLoading={this.props.signUpLoading}
         
       />
     );
@@ -49,6 +52,7 @@ export class _SignUp2Container extends React.Component {
 
 const mapStateToProps = state => ({
   // signUpErrors: state.SignUp02Blueprint.errors.SignUp,
+  signUpLoading: state.EmailAuth.loaders.SignUp
 });
 
 

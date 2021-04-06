@@ -45,6 +45,7 @@ export class _SignIn4Container extends React.Component {
         onFacebookPress={this.onFacebookPress}
         onTwitterPress={this.onTwitterPress}
         errorMsg={this.props.signInErrors}
+        signInLoading={this.props.signInLoading}
 
       />
     );
@@ -52,7 +53,7 @@ export class _SignIn4Container extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  // signInErrors: state.SignIn04Blueprint.errors.SignIn,
+  signInLoading: state.EmailAuth.loaders.SignIn
 });
 
 const mapDispatchToProps = dispatch => ({

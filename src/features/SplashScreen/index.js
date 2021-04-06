@@ -7,7 +7,7 @@ import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import {Button, Text} from 'react-native-ui-kitten';
 import { installed_blueprints } from "../../config/installed_blueprints";
-import { styles } from './styles'
+import { styles } from './styles';
 
 export default class App extends Component {
 

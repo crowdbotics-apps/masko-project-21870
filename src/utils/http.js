@@ -18,3 +18,10 @@ export function setupHttpConfig() {
 
   // you can add more default values for http requests here
 }
+
+export const setHeaderToken = (accessToken) =>{
+  return {
+    'Authorization': 'Token '+accessToken
+  };
+}
+

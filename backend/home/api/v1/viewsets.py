@@ -15,10 +15,12 @@ from home.api.v1.serializers import (
     CustomTextSerializer,
     HomePageSerializer,
     UserSerializer,
-    PetSerializer
+    PetSerializer,
+    PetTypeSerializer,
+    BreedTypeSerializer
 )
 from home.models import HomePage, CustomText
-from pet.models import Pet
+from pet.models import Pet, PetType, BreedType
 
 
 class SignupViewSet(ModelViewSet):
@@ -73,3 +75,24 @@ class PetViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     http_method_names = ["get", "post", "put", "patch", "delete"]
     
+class PetTypeViewSet(ModelViewSet):
+    serializer_class = PetTypeSerializer
+    queryset = PetType.objects.all()
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get"]
+    
+class BreedTypeViewSet(ModelViewSet):
+    serializer_class = BreedTypeSerializer
+    queryset = BreedType.objects.all()
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get"]
+    
+
+
+

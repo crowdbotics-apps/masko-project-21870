@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
 import { Home } from './home.component';
 import {connect} from 'react-redux';
-import * as emailAuthActions from '../../redux/actions';
+import * as userAccountActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
 import { LogoIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
@@ -28,41 +28,21 @@ export class _HomeContainer extends React.Component {
   };
   navigationKey = 'HomeContainer';
 
-  onSignInPress = data => {
+  onSelectPetPress = ( item ) => {
     const { actions } = this.props;
-    actions.login(data)
-  };
-
-  onSignUpPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: 'SignUp2',
-    });
-  };
-
-  onForgotPasswordPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: 'ForgetPassword',
-    });
-  };
-
-  onGooglePress = () => {};
-
-  onFacebookPress = () => {};
-
-  onTwitterPress = () => {};
-
+    actions.SelectPet(item);
+  }
+ 
   render() {
+    const { navigation } = this.props;
     return (
       <Home
-        onSignInPress={this.onSignInPress}
-        onSignUpPress={this.onSignUpPress}
-        onForgotPasswordPress={this.onForgotPasswordPress}
-        onGooglePress={this.onGooglePress}
-        onFacebookPress={this.onFacebookPress}
-        onTwitterPress={this.onTwitterPress}
+       
         errorMsg={this.props.signInErrors}
+        navigation={navigation}
+        userPets={this.props.userPets}
+        selectedPet={this.props.selectedPet}
+        onSelectPetPress={this.onSelectPetPress}
 
       />
     );
@@ -71,12 +51,14 @@ export class _HomeContainer extends React.Component {
 
 const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
+  userPets: state.UserAccount.pets,
+  selectedPet: state.UserAccount.selectedPet
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    login: ({email, password}) => {
-      dispatch(emailAuthActions.login({email, password}));
+    SelectPet: (pet) => {
+      dispatch(userAccountActions.setPet(pet));
     },
   },
 });

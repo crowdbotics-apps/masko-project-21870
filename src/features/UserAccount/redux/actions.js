@@ -1,16 +1,39 @@
 import * as actions from "./constants";
 
-export const signUp = user => ({
-  type: actions.EMAIL_AUTH_SIGNUP_REQUEST,
-  user
+export const getPets = accessToken => ({
+  type: actions.USER_PET_GET_REQUEST,
+  accessToken
 });
 
-export const login = user => ({
-  type: actions.EMAIL_AUTH_LOGIN_REQUEST,
-  user
+export const getPetType = accessToken => ({
+  type: actions.USER_PET_TYPE_GET_REQUEST,
+  accessToken
 });
 
-export const resetPassword = email => ({
-  type: actions.EMAIL_AUTH_PASSWORD_RECOVER_REQUEST,
-  email
+export const getBreedType = accessToken => ({
+  type: actions.USER_PET_BREED_GET_REQUEST,
+  accessToken
+});
+
+export const addPet = (accessToken , pet ) => ({
+  type: actions.USER_PET_ADD_REQUEST,
+  accessToken,
+  pet
+});
+
+export const updatePet = (accessToken , pet )  => ({
+  type: actions.USER_PET_UPDATE_REQUEST,
+  accessToken,
+  pet
+});
+
+export const setPet = ( pet )  => ({
+  type: actions.USER_PET_SELECT_REQUEST,
+  pet
+});
+
+export const deletePet = (accessToken , pet )  => ({
+  type: actions.USER_PET_DELETE_REQUEST,
+  accessToken,
+  pet
 });
