@@ -11,4 +11,10 @@ export {
   ServicesComponent
 } from './services.component';
 
-export {textStyle} from './style';
+
+export {
+  MoreActionPetComponent
+} from './moreAction.component';
+
+
+export { textStyle } from './style';

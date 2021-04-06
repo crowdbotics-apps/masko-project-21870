@@ -55,6 +55,93 @@ export default UserAccountReducer = (state = initialState, action) => {
         }
       };
 
+
+    case actions.USER_PET_UPDATE_REQUEST:
+        return {
+          ...state,
+          errors: {
+            ...state.errors,
+            UpdatePet: null
+          },
+          loaders: {
+            ...state.loaders,
+            UpdatePet: true
+  
+          }
+  
+        };
+    case actions.USER_PET_UPDATE_SUCCESS:
+        return {
+          ...state,
+          pets: utils.updatePet(state.pets, action.pet),
+          errors: {
+            ...state.errors,
+            UpdatePet: null
+          },
+          loaders: {
+            ...state.loaders,
+            UpdatePet: null
+  
+          }
+        };
+    case actions.USER_PET_UPDATE_ERROR:
+        return {
+          ...state,
+          errors: {
+            ...state.errors,
+            UpdatePet: action.error
+          },
+          loaders: {
+            ...state.loaders,
+            UpdatePet: null
+  
+          }
+        };
+    
+    
+    case actions.USER_PET_DELETE_REQUEST:
+          return {
+            ...state,
+            errors: {
+              ...state.errors,
+              DeletePet: null
+            },
+            loaders: {
+              ...state.loaders,
+              DeletePet: true
+    
+            }
+    
+          };
+      case actions.USER_PET_DELETE_SUCCESS:
+          return {
+            ...state,
+            pets: utils.deletePet(state.pets, action.pet),
+            errors: {
+              ...state.errors,
+              DeletePet: null
+            },
+            loaders: {
+              ...state.loaders,
+              DeletePet: null
+    
+            }
+          };
+      case actions.USER_PET_DELETE_ERROR:
+          return {
+            ...state,
+            errors: {
+              ...state.errors,
+              DeletePet: action.error
+            },
+            loaders: {
+              ...state.loaders,
+              DeletePet: null
+    
+            }
+          };
+          
+
     case actions.USER_PET_GET_REQUEST:
       return {
         ...state,

@@ -10,8 +10,7 @@ import { LogoIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 export class _HomeContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    console.log("Navigation Option")
-    console.log(navigation)
+   
     return {
                 headerTitle: (<LogoIcon navigation={navigation} />),
                 headerBackTitle: null,
@@ -30,7 +29,10 @@ export class _HomeContainer extends React.Component {
 
   onSelectPetPress = ( item ) => {
     const { actions } = this.props;
-    actions.SelectPet(item);
+    this.props.navigation.navigate("UpdatePet",{
+      pet: item,
+    })
+    // actions.SelectPet(item);
   }
  
   render() {

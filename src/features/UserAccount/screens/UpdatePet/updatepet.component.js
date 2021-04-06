@@ -21,18 +21,52 @@ import styles from '../styles'
 import { AddPetForm } from '../../components/forms/AddPetForm';
 import { Spinner } from 'src/components/Spinner';
 
-class _AddPetComponent extends React.Component {
+const initialState = {
+  name: undefined,
+  pet: undefined,
+  breed: undefined,
+  age: undefined,
+  image: {
+    content: null,
+    path: ''
+  },
+};
+
+class _UpdatePetComponent extends React.Component {
  
-  state = {
-    name: undefined,
-    pet: undefined,
-    breed: undefined,
-    age: undefined,
-    image: {
-      content: null,
-      path: ''
-    },
-  };
+  constructor(props){
+    super(props)
+    const { pet } = props.navigation.state.params;
+    this.state = {
+      id: pet.id,
+      name: pet.name,
+      pet: pet.typeInfo.id,
+      breed: pet.breed,
+      age: pet.age,
+      image: {
+        content: null,
+        path: pet.photo
+      },
+    };
+    // this.setPetData();
+  }
+
+  // setPetData(){
+  //   const { navigation } = this.props;
+  //   const { pet } = navigation.state.params;
+  //   console.log("Set Pet Data");
+  //   console.log(pet) 
+  //   this.setState({
+  //     name: pet.name,
+  //     pet: pet.type,
+  //     breed: pet.breed,
+  //     age: pet.age,
+  //     image: {
+  //       content: null,
+  //       path: pet.photo
+  //     },
+  //   });
+  // }
 
   onTermsValueChange = termsAccepted => {
     this.setState({ termsAccepted });
@@ -74,8 +108,9 @@ class _AddPetComponent extends React.Component {
     this.props.onForgetPasswordButtonPress();
   };
 
-  onAddButtonPress = () => {
-    this.props.onAddButtonPress({
+  onNextButtonPress = () => {
+    this.props.onNextButtonPress({
+      id: this.state.id,
       name: this.state.name,
       pet_type: this.state.pet,
       breed: this.state.breed,
@@ -116,13 +151,13 @@ class _AddPetComponent extends React.Component {
       pet !== undefined && pet !== 0 &&
       breed !== undefined && breed !== 0 &&
       age !== undefined && 
-      image.content !== null 
+      ( image.content !== null || image.path !== '' )
     );
   }
 
   renderSpinner = () => {
-    const { addLoading } = this.props;
-    if (addLoading) {
+    const { updateLoading } = this.props;
+    if (updateLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -141,18 +176,21 @@ class _AddPetComponent extends React.Component {
 
   render() {
     const { themedStyle } = this.props;
+    const { name, pet, breed, age, image } = this.state;
 
-    return (
+    
+       return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         {this.renderSpinner()}
         <ScrollableAvoidKeyboard style={themedStyle.container}>
 
         <AddPetForm
             // style={themedStyle.formContainer}
-            name={this.state.name}
-            pet={this.state.pet}
-            breed={this.state.breed}
-            age={this.state.age}
+            name={name}
+            pet={pet}
+            breed={breed}
+            age={age.toString()}
+            petImage={image}
             breedTypes={this.props.breedTypes}
             petTypes={this.props.petTypes}
             onNameInputTextChange={this.onNameInputTextChange}
@@ -160,7 +198,7 @@ class _AddPetComponent extends React.Component {
             onBreedInputTextChange={this.onBreedInputTextChange}
             onAgeInputTextChange={this.onAgeInputTextChange}
             onPetImageChange={this.onPetImageChange}
-            changePhotoLabel={'Add Photo'}
+            changePhotoLabel={'Change Photo'}
           />
          <Button
             style={styles.yellowButton}
@@ -168,7 +206,7 @@ class _AddPetComponent extends React.Component {
             size="giant"
             status='warning'
             disabled={!this.validator()}
-            onPress={this.onAddButtonPress}
+            onPress={this.onNextButtonPress}
 
           >
             Next
@@ -192,7 +230,7 @@ class _AddPetComponent extends React.Component {
   }
 }
 
-export const AddPet = withStyles(_AddPetComponent, theme => ({
+export const UpdatePet = withStyles(_UpdatePetComponent, theme => ({
   container: {
     flex: 1,
     padding: 10,

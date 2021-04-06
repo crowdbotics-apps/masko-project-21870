@@ -39,3 +39,41 @@ export function appendPet( storePets, userPet ){
      return list;
 
 }
+
+export function updatePet( storePets, userPet ){
+
+  let updatePet = formatPet(userPet);
+  let list = []
+  
+  
+  _.forEach(storePets,(i)=>{
+    if(i.id === updatePet.id){
+      list.push(updatePet);
+      
+    }else{
+      list.push(i);
+    }
+    
+   });
+
+   return list;
+
+}
+
+
+export function deletePet( storePets, userPet ){
+
+  let list = []
+  
+  
+  _.forEach(storePets,(i)=>{
+    if(i.id !== userPet.id){
+      list.push(i);
+      
+    }
+    
+   });
+
+   return list;
+
+}

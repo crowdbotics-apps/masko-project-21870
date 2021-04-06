@@ -1,18 +1,32 @@
 import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
 import { View } from 'react-native';
-import { AddPet } from './addpet.component';
+import { UpdatePet } from './updatepet.component';
 import {connect} from 'react-redux';
 import * as userAccountActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
+import { MoreActionPetComponent } from '../../components/common/moreAction.component';
+
 import { RightIcon } from 'src/components/HeaderBar';
 
-export class _AddPetContainer extends React.Component {
+export class _UpdatePetContainer extends React.Component {
+
+  constructor(props){
+    super(props);
+    // this.state.pet = navigation.state.params.pet;
+  }
+
 
   static navigationOptions = ({ navigation }) => {
+  
+    const { pet } = navigation.state.params;
+    titleText = "Update Pet";
+    if (pet){
+      titleText = pet.name;
+    }
     return {
-                title: "Add Pet",
+                title: titleText,
                 headerBackTitle: null,
                 headerTintColor: '#fff',
                 headerTitleStyle: { 
@@ -24,15 +38,20 @@ export class _AddPetContainer extends React.Component {
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<View />)
+                headerRight: (<MoreActionPetComponent
+                                pet={pet}
+                                navigation={navigation}
+                            />)
           }
   };
-  navigationKey = 'AddPetContainer';
+  navigationKey = 'UpdatePetContainer';
 
-  onAddButtonPress = data => {
+  onNextButtonPress = data => {
     const { actions, accessToken } = this.props;
-    actions.AddPet(accessToken, data)
+    actions.UpdatePet(accessToken, data)
   };
+
+ 
 
   onCancelButtonPress = data => {
     const { actions } = this.props;
@@ -40,14 +59,16 @@ export class _AddPetContainer extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     return (
-      <AddPet
-        onAddButtonPress={this.onAddButtonPress}
+      <UpdatePet
+        onNextButtonPress={this.onNextButtonPress}
         onCancelButtonPress={this.onCancelButtonPress}
         errorMsg={this.props.signInErrors}
-        addLoading={this.props.addLoading}
+        updateLoading={this.props.updateLoading}
         petTypes={this.props.petTypes}
         breedTypes={this.props.breedTypes}
+        navigation={navigation}
 
       />
     );
@@ -57,20 +78,20 @@ export class _AddPetContainer extends React.Component {
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
   user: state.EmailAuth.user,
-  addLoading: state.UserAccount.loaders.AddPet,
+  updateLoading: state.UserAccount.loaders.UpdatePet,
   petTypes: state.UserAccount.petTypes,
   breedTypes: state.UserAccount.breedTypes
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    AddPet: (accessToken, pet) => {
-      dispatch(userAccountActions.addPet(accessToken, pet));
+    UpdatePet: (accessToken, pet) => {
+      dispatch(userAccountActions.updatePet(accessToken, pet));
     },
   },
 });
 
-export const AddPetContainer =  connect(
+export const UpdatePetContainer =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(_AddPetContainer);
+)(_UpdatePetContainer);

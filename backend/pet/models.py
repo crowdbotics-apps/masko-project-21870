@@ -50,7 +50,7 @@ class Pet(models.Model):
         blank=True,
         max_length=255,
     )
-    age = models.IntegerField()
+    age = models.DecimalField(max_digits=5,decimal_places=2, default=0.00)
     
     pet_type = models.ForeignKey(PetType, on_delete=models.CASCADE)
 

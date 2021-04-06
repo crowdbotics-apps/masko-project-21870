@@ -29,5 +29,20 @@ function showErrorAlert(message){
     
   }
 
+  function showConfirmDialog(message,onConfirmPress, onCancelPress){
+    setTimeout(() => {
+      Alert.alert(
+        "Confirmation",
+        message,
+        [
+          { text: "Cancel", onPress: () => onCancelPress() },
+          { text: "Confirm", onPress: () => onConfirmPress() }
+        ],
+        { cancelable: false }
+      );
+    }, 100);
+    
+  }
 
-export { showErrorAlert, showSuccessAlert }
+
+export { showErrorAlert, showSuccessAlert, showConfirmDialog }

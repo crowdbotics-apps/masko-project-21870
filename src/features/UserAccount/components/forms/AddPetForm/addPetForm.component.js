@@ -41,12 +41,28 @@ const data = [
 
 class AddPetFormComponent extends React.Component {
 
-  state = {
-    petImage: {
-      content: null,
-      path: ''
-    },
+  
+
+  constructor(props){
+    super(props);
+
+    if(props.petImage){
+      this.state = {
+        petImage: props.petImage,
+      };
+    }else{
+      this.state = {
+        petImage: {
+          content: null,
+          path: ''
+        },
+      };
+
+    }
+    
+
   }
+
   selectImage = () => {
     this.showActionSheet();
 
@@ -159,6 +175,28 @@ class AddPetFormComponent extends React.Component {
 
   }
 
+  renderImage = () =>{
+
+    const { petImage } = this.state;
+    const { themedStyle } = this.props;
+    if(petImage.content == null && petImage.path == ''){
+      return (
+        <View style={themedStyle.addContainer} >
+              <PhotoIcon width={40} style={{ alignSelf: "center" }} />
+        </View>);
+    }else{
+      return (<Image
+                style={themedStyle.addContainer}
+                source={{
+                  uri: (petImage.content != null) ? petImage.content.path : petImage.path
+                }
+                } />
+              );
+
+    }
+
+  }
+
 
   render() {
     const {
@@ -168,10 +206,12 @@ class AddPetFormComponent extends React.Component {
       pet,
       breed,
       age,
+      image,
       onNameInputTextChange,
       onPetInputTextChange,
       onBreedInputTextChange,
       onAgeInputTextChange,
+      changePhotoLabel,
 
       ...restProps
     } = this.props;
@@ -182,7 +222,6 @@ class AddPetFormComponent extends React.Component {
 
     const petTypes = this.formatTypeDd();
     const breedTypes = this.formatBreedTypeDd();
-
 
     return (
       <View style={[themedStyle.container, style]} {...restProps}>
@@ -206,29 +245,14 @@ class AddPetFormComponent extends React.Component {
               onPress={this.selectImage}
               style={themedStyle.imgNode}
             >
-              {(petImage.content == null) && (
-                <View style={themedStyle.addContainer} >
-                  <PhotoIcon width={40} style={{ alignSelf: "center" }} />
-
-                </View>
-              )}
-              {(petImage.content != null) && (<Image
-                style={themedStyle.addContainer}
-                source={{
-                  uri: (petImage.content != null) ? petImage.content.path : petImage.path
-                }
-                } />
-              )}
-
-
-
+              {this.renderImage()}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={this.selectImage}
             >
               <Text style={themedStyle.txtNode}
 
-              >Add Photo</Text>
+              >{changePhotoLabel}</Text>
             </TouchableOpacity>
 
           </View>
@@ -268,6 +292,7 @@ class AddPetFormComponent extends React.Component {
 
               onValueChange={(value) => onPetInputTextChange(value)}
               items={petTypes}
+              value={pet}
             />
 
           </View>
@@ -285,6 +310,7 @@ class AddPetFormComponent extends React.Component {
               onValueChange={(value) => onBreedInputTextChange(value)}
               placeholder={{ label: 'e.g Shiba Inu', value: '0' }}
               items={breedTypes}
+              value={breed}
             />
 
           </View>
