@@ -96,6 +96,21 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFF',
     },
+    inputBoxLabel:{
+        // borderBottomColor:'#7384B2',
+        // borderBottomWidth:1,
+        // padding:10,
+        // margin:10,
+        marginBottom: 10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+    },
+    inputBoxLabelTxt:{
+        fontFamily: "Montserrat",
+        color: '#9BB2EF',
+        fontSize: 12,
+    },
     inputBoxText:{
         fontFamily: "Montserrat",
         color: '#FFF',
@@ -115,12 +130,25 @@ const styles = StyleSheet.create({
         alignItems:'flex-start'
     },
 
+    inputLabelContainer:{
+        flex: 1, 
+        flexDirection: 'column',
+        alignItems:'flex-start',
+        borderBottomColor:'#A0B0DC',
+        borderBottomWidth:1,
+        // padding:10,
+        margin:15,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+
+    },
     
     inputIconContainer:{
         flex: 1, 
         flexDirection: 'row',
         alignItems:'center',
-        borderBottomColor:'#7384B2',
+        borderBottomColor:'#A0B0DC',
         borderBottomWidth:1,
         padding:10,
         margin:10,

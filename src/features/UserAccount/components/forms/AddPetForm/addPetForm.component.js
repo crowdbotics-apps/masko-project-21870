@@ -1,5 +1,14 @@
 import React from 'react';
-import {StyleSheet,View, Dimensions, TextInput as Input, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  TextInput as Input,
+  Text,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback
+} from 'react-native';
 import {
   withStyles,
   Icon,
@@ -10,11 +19,11 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 
 
-import {textStyle, ValidationInput} from '../../common';
+import { textStyle, ValidationInput } from '../../common';
 
 import * as ImagePicker from 'react-native-image-picker';
 import ActionSheet from 'react-native-actionsheet';
-  
+
 
 import formStyles from 'src/features/UserAccount/screens/styles';
 
@@ -35,12 +44,12 @@ class AddPetFormComponent extends React.Component {
   state = {
     petImage: {
       content: null,
-      path:  ''
+      path: ''
     },
   }
   selectImage = () => {
     this.showActionSheet();
-   
+
   }
 
   showActionSheet = () => {
@@ -50,7 +59,7 @@ class AddPetFormComponent extends React.Component {
   updateFormImage = (image) => {
     this.props.onPetImageChange(image)
     // this.setState({petImage: {...petImage,content:content}})
-    this.setState({petImage: image})
+    this.setState({ petImage: image })
   }
 
   selectAlbum = () => {
@@ -81,32 +90,32 @@ class AddPetFormComponent extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        if(response!=null && response.base64!=null){
-          let content = {data:response.base64, path: response.uri, mime: response.type};
-          this.updateFormImage({...petImage,content:content})
+        if (response != null && response.base64 != null) {
+          let content = { data: response.base64, path: response.uri, mime: response.type };
+          this.updateFormImage({ ...petImage, content: content })
         }
       }
     });
-   
- }
 
- selectCamera = () => {
-  let { petImage } = this.state
-  // More info on all the options is below in the API Reference... just some common use cases shown here
-  const options = {
-    title: 'Select Camera',
-    maxWidth: 500,
-    maxHeight: 500,
-    quality: 1,
-    mediaType: 'photo',
-    includeBase64: true,
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
-  };
-  ImagePicker.launchCamera(options, (response) => {
-       console.log('Response = ', response);
+  }
+
+  selectCamera = () => {
+    let { petImage } = this.state
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      title: 'Select Camera',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 1,
+      mediaType: 'photo',
+      includeBase64: true,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchCamera(options, (response) => {
+      console.log('Response = ', response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -115,24 +124,24 @@ class AddPetFormComponent extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        if(response!=null && response.base64!=null){
-          let content = {data:response.base64, path: response.uri, mime: response.type};
-          this.updateFormImage({...petImage,content:content})
+        if (response != null && response.base64 != null) {
+          let content = { data: response.base64, path: response.uri, mime: response.type };
+          this.updateFormImage({ ...petImage, content: content })
         }
       }
-  });
-  
- }
+    });
+
+  }
 
   getStatus = valid => {
     return valid ? 'success' : 'danger';
   };
-  
+
   formatTypeDd = () => {
     const { petTypes } = this.props;
     let list = [];
-    _.forEach(petTypes,(i)=>{
-      list.push({value:i.id, label: i.name});
+    _.forEach(petTypes, (i) => {
+      list.push({ value: i.id, label: i.name });
     });
 
     return list;
@@ -142,8 +151,8 @@ class AddPetFormComponent extends React.Component {
   formatBreedTypeDd = () => {
     const { breedTypes } = this.props;
     let list = [];
-    _.forEach(breedTypes,(i)=>{
-      list.push({value:i.id, label: i.name});
+    _.forEach(breedTypes, (i) => {
+      list.push({ value: i.id, label: i.name });
     });
 
     return list;
@@ -163,7 +172,7 @@ class AddPetFormComponent extends React.Component {
       onPetInputTextChange,
       onBreedInputTextChange,
       onAgeInputTextChange,
-      
+
       ...restProps
     } = this.props;
 
@@ -173,7 +182,7 @@ class AddPetFormComponent extends React.Component {
 
     const petTypes = this.formatTypeDd();
     const breedTypes = this.formatBreedTypeDd();
-    
+
 
     return (
       <View style={[themedStyle.container, style]} {...restProps}>
@@ -183,83 +192,135 @@ class AddPetFormComponent extends React.Component {
           options={['Open Camera', 'Select From Album', 'Cancel']}
           cancelButtonIndex={2}
           destructiveButtonIndex={1}
-          onPress={(index) => { 
-            switch(index){
+          onPress={(index) => {
+            switch (index) {
               case 0: this.selectCamera(); break;
               case 1: this.selectAlbum(); break;
 
             }
-           }}
-        />  
-        <View style={themedStyle.formContainer}>
-          <View style={{flex:1,flexDirection:'row'}}>
-              <TouchableOpacity 
-                      onPress={this.selectImage}
-                      style={{width:150}}
-                    >
-                      { (petImage.content==null ) && (
-                        <View style={themedStyle.addContainer} >
-                          <PhotoIcon width={40} style={{alignSelf: "center"}} />
-                        
-                      </View>
-                      )}
-                      { (petImage.content!=null ) && ( <Image
-                          style={themedStyle.addContainer}  
-                          source={{
-                                  uri: (petImage.content!=null)?petImage.content.path:petImage.path
-                              }
-                            } />
-                      )}
-                      
-
-                        
-              </TouchableOpacity>
-              <TouchableOpacity 
-                      onPress={this.selectImage}
-              >
-                  <Text style={{marginTop: 50,fontSize: 15,color:'#FFCD3E', fontWeight:'bold'}}
-                      textStyle={{}}
-                  >Add Photo</Text>
-              </TouchableOpacity>
-                        
-          </View>
-          <Input
-            style={formStyles.inputBox}
-            textStyle={formStyles.inputBoxText}
-            autoCapitalize="none"
-            placeholder="Pet Name"
-            placeholderTextColor={"#fff"}
-            // status={username && this.getStatus(NameValidator(username))}
-            value={name}
-            onChangeText={onNameInputTextChange}
-          />
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            placeholder={{label: 'Select Pet', value: '0' }}
-            
-            onValueChange={(value) => onPetInputTextChange(value) }
-            items={petTypes}
+          }}
         />
+        <View style={themedStyle.formContainer}>
+          <View style={themedStyle.imgContainer}>
+            <TouchableOpacity
+              onPress={this.selectImage}
+              style={themedStyle.imgNode}
+            >
+              {(petImage.content == null) && (
+                <View style={themedStyle.addContainer} >
+                  <PhotoIcon width={40} style={{ alignSelf: "center" }} />
 
-          <RNPickerSelect
-                      style={pickerSelectStyles}
-                      onValueChange={(value) => onBreedInputTextChange(value)}
-                      placeholder={{label: 'Select Breed', value: '0' }}
-                      items={breedTypes}
-                  />
-          
-         
-           <Input
-           style={formStyles.inputBox}
-           textStyle={formStyles.inputBoxText}
-            autoCapitalize="none"
-            placeholder="Age"
-            placeholderTextColor={"#fff"}
-            keyboardType={'number-pad'}
-            value={age}
-            onChangeText={onAgeInputTextChange}
-          />
-          
+                </View>
+              )}
+              {(petImage.content != null) && (<Image
+                style={themedStyle.addContainer}
+                source={{
+                  uri: (petImage.content != null) ? petImage.content.path : petImage.path
+                }
+                } />
+              )}
+
+
+
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.selectImage}
+            >
+              <Text style={themedStyle.txtNode}
+
+              >Add Photo</Text>
+            </TouchableOpacity>
+
+          </View>
+          <TouchableWithoutFeedback
+
+            onPress={() => {
+              this.petTextBox.focus()
+            }}
+          >
+            <View
+              style={formStyles.inputLabelContainer}
+            >
+
+              <Text style={formStyles.inputBoxLabelTxt}>Pet Name</Text>
+              <Input
+                ref={(i) => this.petTextBox = i}
+                style={formStyles.inputBoxLabel}
+                textStyle={formStyles.inputBoxText}
+                autoCapitalize="none"
+                placeholder="e.g Luna"
+                placeholderTextColor={"#fff"}
+                value={name}
+                onChangeText={onNameInputTextChange}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+
+
+          <View
+            style={formStyles.inputLabelContainer}
+          >
+
+            <Text style={formStyles.inputBoxLabelTxt}>Pet Type</Text>
+            <RNPickerSelect
+              style={pickerSelectStyles}
+              placeholder={{ label: 'e.g Dog', value: '0' }}
+
+              onValueChange={(value) => onPetInputTextChange(value)}
+              items={petTypes}
+            />
+
+          </View>
+
+
+
+
+          <View
+            style={formStyles.inputLabelContainer}
+          >
+
+            <Text style={formStyles.inputBoxLabelTxt}>Breed</Text>
+            <RNPickerSelect
+              style={pickerSelectStyles}
+              onValueChange={(value) => onBreedInputTextChange(value)}
+              placeholder={{ label: 'e.g Shiba Inu', value: '0' }}
+              items={breedTypes}
+            />
+
+          </View>
+
+
+
+
+
+
+
+          <TouchableWithoutFeedback
+
+            onPress={() => {
+              this.ageTextBox.focus()
+            }}
+          >
+            <View
+              style={formStyles.inputLabelContainer}
+            >
+
+              <Text style={formStyles.inputBoxLabelTxt}>Age</Text>
+              <Input
+                ref={(i) => this.ageTextBox = i}
+                style={formStyles.inputBoxLabel}
+                textStyle={formStyles.inputBoxText}
+                autoCapitalize="none"
+                placeholder="e.g: 1.5"
+                placeholderTextColor={"#fff"}
+                keyboardType={'number-pad'}
+                value={age}
+                onChangeText={onAgeInputTextChange}
+              />
+
+            </View>
+          </TouchableWithoutFeedback>
+
         </View>
       </View>
     );
@@ -269,41 +330,43 @@ class AddPetFormComponent extends React.Component {
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 14,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderBottomColor:'#7384B2',
-    borderBottomWidth:1,
+    // paddingVertical: 12,
+    marginBottom: 12,
+    // paddingHorizontal: 10,
+    // borderBottomColor: '#7384B2',
+    // borderBottomWidth: 1,
     color: '#FFF',
     fontFamily: "Montserrat",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    padding:10,
-    margin:10,
+    // paddingRight: 30, // to ensure the text is never behind the icon
+    // padding: 10,
+    // margin: 10,
   },
   inputAndroid: {
     fontSize: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderBottomColor:'#7384B2',
-    borderBottomWidth:1,
+    // paddingHorizontal: 10,
+    // paddingVertical: 8,
+    marginBottom: 12,
+    // borderBottomColor: '#7384B2',
+    // borderBottomWidth: 1,
     color: '#FFF',
     fontFamily: "Montserrat",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    padding:10,
-    margin:10,
+    // paddingRight: 30, // to ensure the text is never behind the icon
+    // padding: 10,
+    // margin: 10,
   },
 });
 
 export const AddPetForm = withStyles(AddPetFormComponent, theme => ({
   container: {},
-  formContainer:{
-    flex:1, 
-    flexDirection:'column',
-    width:width*0.9,
-    padding:10,
+  formContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    width: width * 0.9,
+    padding: 10,
   },
-  addContainer:{
+  addContainer: {
     padding: 5,
-    backgroundColor:"#A0B0DC",
+    backgroundColor: "#A0B0DC",
     borderWidth: 2,
     borderColor: "#FFF",
     width: 100,
@@ -311,14 +374,27 @@ export const AddPetForm = withStyles(AddPetFormComponent, theme => ({
     borderRadius: 50,
     justifyContent: 'center',
     margin: 10,
-  } ,
-  addContainerText:{
+  },
+  addContainerText: {
     fontFamily: "Montserrat",
     alignSelf: "center",
     color: "#FFF",
-    fontWeight:"bold",
+    fontWeight: "bold",
     fontSize: 14
 
+  },
+  imgContainer: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  imgNode: {
+    width: 150
+  },
+  txtNode: {
+    marginTop: 50,
+    fontSize: 15,
+    color: '#FFCD3E',
+    fontWeight: 'bold'
   },
   forgotPasswordContainer: {
     flexDirection: 'row',
@@ -341,15 +417,15 @@ export const AddPetForm = withStyles(AddPetFormComponent, theme => ({
     ...textStyle.subtitle,
   },
   termsText: {
-    flex:4,
+    flex: 4,
     marginTop: 20
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  petImage:{
-    width:100,
-    height:100,
+  petImage: {
+    width: 100,
+    height: 100,
     borderColor: '#E5E5E5',
     borderRadius: 50,
     borderWidth: 1,

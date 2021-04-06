@@ -121,7 +121,7 @@ class SignIn4Component extends React.Component {
             <Button
               style={styles.yellowButton}
               textStyle={styles.whiteFont}
-              status='warning'
+              status='primary'
               size="giant"
               disabled={!this.validator()}
               //disabled={!this.state.formData}

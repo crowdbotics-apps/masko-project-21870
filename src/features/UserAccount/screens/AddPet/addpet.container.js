@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
+import { View } from 'react-native';
 import { AddPet } from './addpet.component';
 import {connect} from 'react-redux';
 import * as userAccountActions from '../../redux/actions';
@@ -25,7 +26,7 @@ export class _AddPetContainer extends React.Component {
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<View />)
           }
   };
   navigationKey = 'AddPetContainer';

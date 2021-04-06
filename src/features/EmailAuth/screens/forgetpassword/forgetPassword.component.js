@@ -106,15 +106,13 @@ class ForgetPasswordComponent extends React.Component {
             <Button
               style={styles.yellowButton}
               textStyle={styles.whiteFont}
-              status='warning'
+              status='primary'
               size="giant"
               disabled={!this.validator()}
               onPress={this.onForgotPasswordButtonPress}>
               Reset Password
             </Button>
             <Button
-            // style={themedStyle.signInButton}
-            // textStyle={themedStyle.signInText}
             appearance="ghost"
             activeOpacity={0.75}
             onPress={this.onSignUpButtonPress}>
@@ -122,8 +120,6 @@ class ForgetPasswordComponent extends React.Component {
 
           </Button>
           <Button
-            // style={themedStyle.signInButton}
-            // textStyle={themedStyle.signInText}
             appearance="ghost"
             activeOpacity={0.75}
             onPress={this.onSignInButtonPress}>
