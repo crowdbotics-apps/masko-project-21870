@@ -16,6 +16,8 @@ import {textStyle, ValidationInput} from '../../common';
 import {NameValidator, PasswordValidator} from '../../../core/validators';
 import formStyles from 'src/features/EmailAuth/screens/styles';
 
+import { translate }  from 'src/utils/translation';
+
 class SignInForm2Component extends React.Component {
   state = {
     username: undefined,
@@ -70,42 +72,22 @@ class SignInForm2Component extends React.Component {
     return (
       <View style={[themedStyle.container, style]} {...restProps}>
         <View style={themedStyle.formContainer}>
-          {/* <ValidationInput
-            textStyle={textStyle.paragraph}
-            placeholder="User Name"
-            //icon={this.renderPersonIconFill()}
-            validator={NameValidator}
-            onChangeText={this.onUsernameInputTextChange}
-          /> */}
+     
           <Input
            style={formStyles.inputBox}
            textStyle={formStyles.inputBoxText}
            placeholderTextColor={"#fff"}
-            placeholder="Email"
-            // autoCapitalize="none"
-            // status={username && this.getStatus(NameValidator(username))}
-            // icon={this.renderPersonIconFill}
+           placeholder={translate('placeholdersEmail')}
             value={username}
             onChangeText={onUsernameInputTextChange}
           />
 
-          {/* <ValidationInput
-            style={themedStyle.passwordInput}
-            textStyle={textStyle.paragraph}
-            placeholder="Password"
-            //icon={this.renderEyeOffIconFill()}
-            secureTextEntry={true}
-            validator={PasswordValidator}
-            onChangeText={this.onPasswordInputTextChange}
-          /> */}
           <Input
            style={formStyles.inputBox}
            textStyle={formStyles.inputBoxText}
            placeholderTextColor={"#fff"}
-            placeholder="Enter Password"
-            // icon={this.renderEyeOffIconFill}
+            placeholder={translate('placeholdersPassword')}
             secureTextEntry={true}
-            // status={password && this.getStatus(PasswordValidator(password))}
             value={password}
             onChangeText={onPasswordInputTextChange}
           />
@@ -116,7 +98,7 @@ class SignInForm2Component extends React.Component {
               appearance="ghost"
               activeOpacity={0.75}
               onPress={this.onForgotPasswordButtonPress}>
-              Forgot your password?
+              {translate('Forgot your password?')}
             </Button>
           </View>
         </View>

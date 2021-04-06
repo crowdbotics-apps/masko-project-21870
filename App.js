@@ -12,15 +12,31 @@ import {store} from './src/store';
 import NavigatorProvider from './src/navigator/mainNavigator';
 import {setupHttpConfig} from './src/utils/http';
 import * as NavigationService from './src/navigator/NavigationService';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
+
+
+import i18n from "i18n-js";
+import memoize from "lodash.memoize";
+import * as RNLocalize from "react-native-localize";
+import { translate, setI18nConfig }  from 'src/utils/translation';
 
 console.disableYellowBox = true;
+
+
+
+
+
 
 
 export default class App extends React.Component {
   state = {
     isLoaded: false,
   };
+  constructor(props) {
+    super(props);
+    setI18nConfig(); // set initial config
+  }
+
 
   async componentWillMount() {
     /**
@@ -30,6 +46,7 @@ export default class App extends React.Component {
      */
     await this.loadAssets();
     setupHttpConfig();
+    // setI18nConfig(); // set initial config
   }
 
   componentDidMount() {
@@ -37,7 +54,17 @@ export default class App extends React.Component {
      * Read above commments above adding async requests here
      */
     NavigationService.setNavigator(this.navigator);
+    RNLocalize.addEventListener("change", this.handleLocalizationChange);
     SplashScreen.hide();
+  }
+
+  handleLocalizationChange = () => {
+    setI18nConfig();
+    this.forceUpdate();
+  };
+
+  componentWillUnmount() {
+    RNLocalize.removeEventListener("change", this.handleLocalizationChange);
   }
 
   loadAssets = async () => {

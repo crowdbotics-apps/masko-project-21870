@@ -8,6 +8,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Button, Text} from 'react-native-ui-kitten';
 import { installed_blueprints } from "../../config/installed_blueprints";
 import { styles } from './styles';
+import { translate }  from 'src/utils/translation';
+
+
+
 
 export default class App extends Component {
 
@@ -15,6 +19,7 @@ export default class App extends Component {
     title: 'Installed blueprints',
     
   };
+  
 
   renderItems() {
     const {
@@ -60,19 +65,16 @@ export default class App extends Component {
           <LargeLogo width={width} style={styles.logoStyle}  />
           <Button
             style={styles.yellowButton}
-            //textStyle={textStyle.button}
             size="giant"
             onPress={this.onSignInButtonPress}>
-            Login
+            {translate('LoginButton')}
           </Button>
 
           <Button
             style={styles.yellowButton}
-            //textStyle={textStyle.button}
             size="giant"
-           
             onPress={this.onSignUpButtonPress}>
-            Sign up using email
+            {translate('SignUpButton')}
           </Button>
            <Button
               appearance="ghost"
@@ -80,7 +82,7 @@ export default class App extends Component {
               onPress={this.onForgetPasswordButtonPress}
               >
               
-               <Text style={styles.whiteFont}>Forgot your password?</Text> <Text style={styles.yellowFont}>Reset password</Text>
+               <Text style={styles.whiteFont}>{translate('ForgetPasswordText')}</Text><Text style={styles.yellowFont}>{translate('ResetPasswordText')}</Text>
             </Button>
           
          

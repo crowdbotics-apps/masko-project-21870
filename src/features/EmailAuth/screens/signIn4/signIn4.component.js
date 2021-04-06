@@ -21,7 +21,8 @@ import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
-import styles from '../styles'
+import styles from '../styles';
+import { translate }  from 'src/utils/translation';
 
 
 class SignIn4Component extends React.Component {
@@ -101,7 +102,7 @@ class SignIn4Component extends React.Component {
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
-                LOGIN
+              {translate('LoginText')}
               </Text>
             </View>
             {this.props.errorMsg && (
@@ -126,7 +127,7 @@ class SignIn4Component extends React.Component {
               disabled={!this.validator()}
               //disabled={!this.state.formData}
               onPress={this.onSignInButtonPress}>
-              Login
+              {translate('LoginButton')}
             </Button>
            
             <Button
@@ -135,7 +136,7 @@ class SignIn4Component extends React.Component {
               appearance="ghost"
               activeOpacity={0.75}
               onPress={this.onSignUpButtonPress}>
-               <Text style={styles.whiteFont}>Don't have an account?</Text> <Text style={styles.yellowFont}>Sign Up</Text>
+               <Text style={styles.whiteFont}> {translate('Donot have account?')}</Text> <Text style={styles.yellowFont}>{translate('SignUpText')}</Text>
             </Button>
          
         </ScrollableAvoidKeyboard>
