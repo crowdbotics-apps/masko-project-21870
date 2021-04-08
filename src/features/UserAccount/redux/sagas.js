@@ -24,246 +24,20 @@ import {
   USER_PET_DELETE_SUCCESS,
   USER_PET_DELETE_ERROR
 } from './constants';
-import { request, setHeaderToken } from '../../../utils/http';
+import {  setHeaderToken } from '../../../utils/http';
 
-import appConfig from "../../../config/app";
+import appConfig from "src/config/app";
 
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
 
+import { translate }  from 'src/utils/translation';
+import ApiConstants from 'src/api/ApiConstants';
+import getBreedType from 'src/api/methods/breedType';
+import getPetType from 'src/api/methods/petType';
+import * as PetMethods from 'src/api/methods/pet';
 
-function sendAddPet( accessToken, pet ) {
 
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/';
-  
-  let body = {
-      name: pet.name,
-      age: pet.age,
-      pet_type: pet.pet_type,
-      breed: pet.breed,
-    };
-
-  if(pet.image && pet.image.content!=null){
-      body.file = pet.image.content.data
-      body.file_mime = pet.image.content.mime
-  }    
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendUpdatePet( accessToken, pet ) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/'+pet.id+'/';
-  
-  let body = {
-      name: pet.name,
-      age: pet.age,
-      pet_type: pet.pet_type,
-      breed: pet.breed,
-    };
-
-  if(pet.image && pet.image.content!=null){
-      body.file = pet.image.content.data
-      body.file_mime = pet.image.content.mime
-  }    
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'put', 
-    body: JSON.stringify(body),
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendDeletePet( accessToken, pet ) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/'+pet.id+'/';
-  
-      
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'delete', 
-    body: null,
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendGetPet( accessToken ) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet/';
-   
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'get', 
-    body: null,
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendGetPetType( accessToken ) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/pet-type/';
-   
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'get', 
-    body: null,
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendGetBreedType( accessToken ) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/breed-type/';
-   
-  let header = {
-                'Content-Type': appConfig.contentType.json
-               };
-
-  if(accessToken){
-    header = Object.assign(setHeaderToken(accessToken), header);
-  }
-
-  return fetch(url, { 
-    method: 'get', 
-    body: null,
-    headers: header
-    }, ).then((response) => {
-
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
 
 function* handleAddPet(action) {
   const {
@@ -271,17 +45,17 @@ function* handleAddPet(action) {
     pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendAddPet, accessToken, pet );
+    const {status, data, error} = yield call( PetMethods.addPet, accessToken, pet );
 
-      if (status === 201) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_CREATED ) {
         yield put({
           type: USER_PET_ADD_SUCCESS,
           pet: data,
         });
         setTimeout(()=>{
-            showSuccessAlert("Pet has been successfully created!")
+            showSuccessAlert( translate('PetCreateSuccess') )
         },500);
-        NavigationService.navigate('Home');
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
 
       } else {
         let msg = compileErrorMessage(error,data)
@@ -297,7 +71,7 @@ function* handleAddPet(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: USER_PET_ADD_ERROR,
-      error: "Can't sign up with provided credentials",
+      error: translate('AddPetsError'),
     });
   }
 }
@@ -308,17 +82,17 @@ function* handleUpdatePet(action) {
     pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendUpdatePet, accessToken, pet );
+    const {status, data, error} = yield call( PetMethods.addPet, accessToken, pet );
 
-      if (status === 200) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({
           type: USER_PET_UPDATE_SUCCESS,
           pet: data,
         });
         setTimeout(()=>{
-            showSuccessAlert("Pet has been successfully updated!")
+            showSuccessAlert(translate("PetUpdateSuccess"))
         },500);
-        NavigationService.navigate('Home');
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
 
       } else {
         let msg = compileErrorMessage(error,data)
@@ -334,7 +108,7 @@ function* handleUpdatePet(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: USER_PET_UPDATE_ERROR,
-      error: "Can't Update Pet",
+      error: translate('UpdatePetsError'),
     });
   }
 }
@@ -345,17 +119,17 @@ function* handleDeletePet(action) {
     pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendDeletePet, accessToken, pet );
+    const {status, data, error} = yield call( PetMethods.deletePet, accessToken, pet );
 
-      if (status === 204) {
+      if ( status === ApiConstants.STATUS_CODES.NO_CONTENT ) {
         yield put({
           type: USER_PET_DELETE_SUCCESS,
           pet: pet,
         });
         setTimeout(()=>{
-            showSuccessAlert("Pet has been successfully delete!")
+            showSuccessAlert( translate('PetDeleteSuccess') )
         },500);
-        NavigationService.navigate('Home');
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
 
       } else {
         let msg = compileErrorMessage(error,data)
@@ -368,10 +142,10 @@ function* handleDeletePet(action) {
       },500);
       }
   } catch (error) {
-    // todo add errors with similar structure in backend
+    
     yield put({
       type: USER_PET_DELETE_ERROR,
-      error: "Can't Delete Pet",
+      error: translate('DeletePetsError'),
     });
   }
 }
@@ -381,9 +155,9 @@ function* handleGetPet(action) {
     accessToken
   } = action;
   try {
-    const {status, data, error} = yield call(sendGetPet, accessToken );
+    const {status, data, error} = yield call( PetMethods.getPets, accessToken );
 
-      if (status === 200) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({
           type: USER_PET_GET_SUCCESS,
           pets: utils.formatPets(data.results),
@@ -401,7 +175,7 @@ function* handleGetPet(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: USER_PET_GET_ERROR,
-      error: "Can't get pets list.",
+      error: translate('GetPetsError'),
     });
   }
 }
@@ -411,9 +185,9 @@ function* handleGetPetType(action) {
     accessToken
   } = action;
   try {
-    const {status, data, error} = yield call(sendGetPetType, accessToken );
+    const {status, data, error} = yield call( getPetType, accessToken );
 
-      if (status === 200) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({
           type: USER_PET_TYPE_GET_SUCCESS,
           petTypes: data.results,
@@ -431,7 +205,7 @@ function* handleGetPetType(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: USER_PET_TYPE_GET_ERROR,
-      error: "Cannot extract Pet Types",
+      error: translate('GetPetTypeError'),
     });
   }
 }
@@ -441,9 +215,9 @@ function* handleGetBreedType(action) {
     accessToken
   } = action;
   try {
-    const {status, data, error} = yield call(sendGetBreedType, accessToken );
+    const {status, data, error} = yield call( getBreedType, accessToken );
 
-      if (status === 200) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({
           type: USER_PET_BREED_GET_SUCCESS,
           breedTypes: data.results,
@@ -458,10 +232,10 @@ function* handleGetBreedType(action) {
       
       }
   } catch (error) {
-    // todo add errors with similar structure in backend
+    
     yield put({
       type: USER_PET_BREED_GET_ERROR,
-      error: "Cannot extract breed type.",
+      error: translate('GetBreedTypeError'),
     });
   }
 }

@@ -1,4 +1,10 @@
 {
+    "SuccessPopUpHead":"Success",
+    "ErrorPopUpHead":"Error",
+    "ConfirmPopUpHead":"Confirmation",
+    "PopUpOkButton":"Ok",
+    "PopUpCancelButton":"Cancel",
+    "PopUpConfirmButton":"Confirm",
     "LoginText": "Login",
     "LoginButton": "Login",
     "SignUpText": "Sign Up",
@@ -20,5 +26,20 @@
     "ForgetPasswordHead":"Forget Password",
     "ResetPasswordButton":"Reset Password",
     "Sign up now":"Sign up now",
+    "LoginSuccessMsg":"Account successfully logged in!",
+    "LoginErrorDefault": "Can't sign in with provided credentials",
+    "SignUpSuccessMsg": "Your account has been created successfully!",
+    "SignUpErrorMsg": "Can't sign up with provided credentials",
+    "PwdResetSuccessMsg":"Password Reset Request has been sent!",
+    "PwdResetErrorMsg":"Can't recover password with provided email",
+    "GetBreedTypeError":"Cannot extract breed type.",
+    "GetPetTypeError": "Cannot extract Pet Types",
+    "GetPetsError" : "Can't get pets list.",
+    "DeletePetsError": "Can't Delete Pet",
+    "AddPetsError":"Can't create pet",
+    "UpdatePetsError":"Can't Update Pet",
+    "PetDeleteSuccess":"Pet has been successfully delete!",
+    "PetUpdateSuccess":"Pet has been successfully updated!",
+    "PetCreateSuccess":"Pet has been successfully created!"
 
 }

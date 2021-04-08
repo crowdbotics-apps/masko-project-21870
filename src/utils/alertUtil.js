@@ -1,13 +1,14 @@
 
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
+import { translate }  from 'src/utils/translation';
 
 function showErrorAlert(message){
     setTimeout(() => {
       Alert.alert(
-        "Error",
+        translate("ErrorPopUpHead") ,
         message,
         [
-          { text: "OK", onPress: () => console.log("OK Pressed") }
+          { text: translate('PopUpOkButton') , onPress: () => console.log("OK Pressed") }
         ],
         { cancelable: false }
       );
@@ -18,10 +19,10 @@ function showErrorAlert(message){
   function showSuccessAlert(message){
     setTimeout(() => {
       Alert.alert(
-        "Success",
+        translate("SuccessPopUpHead") ,
         message,
         [
-          { text: "OK", onPress: () => console.log("OK Pressed") }
+          { text: translate('PopUpOkButton'), onPress: () => console.log("OK Pressed") }
         ],
         { cancelable: false }
       );
@@ -32,11 +33,11 @@ function showErrorAlert(message){
   function showConfirmDialog(message,onConfirmPress, onCancelPress){
     setTimeout(() => {
       Alert.alert(
-        "Confirmation",
+        translate('ConfirmPopUpHead'),
         message,
         [
-          { text: "Cancel", onPress: () => onCancelPress() },
-          { text: "Confirm", onPress: () => onConfirmPress() }
+          { text: translate('PopUpCancelButton') , onPress: () => onCancelPress() },
+          { text: translate('PopUpConfirmButton'), onPress: () => onConfirmPress() }
         ],
         { cancelable: false }
       );
