@@ -8,5 +8,17 @@
     "Donot have account?":"Don't have account?",
     "Forgot your password?":"Forgot your password?",
     "placeholdersEmail":"Email",
-    "placeholdersPassword":"Enter Password"
+    "placeholdersPassword":"Enter Password",
+    "SignUp2Button": "Sign Up",
+    "Already have an account?": "Already have an account?",
+    "placeholdersFullName":"Full Name",
+    "placeholdersCreatePassword":"Create Password",
+    "TermsConditionLabel1":"By using Masko you agree with our",
+    "TermsConditionLabel2":"terms and condition",
+    "TermsConditionHead":"Terms and Condition",
+    "TermsConditionText":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nec gravida massa, quis eleifend odio. Nulla eget sem vitae lorem auctor luctus vel sed ipsum. Nam metus sem, blandit sed feugiat mattis, accumsan a libero. Aliquam blandit eu ex a mattis. Vestibulum in nunc commodo, posuere felis id, tempus magna. Etiam pharetra tempus enim quis scelerisque. Donec ullamcorper lectus quis eros cursus congue.  Aenean pulvinar mauris aliquam, consequat ligula in, placerat turpis. In non felis lobortis, pharetra leo eget, hendrerit felis. Curabitur lobortis, ipsum id aliquet tincidunt, augue sapien aliquam dui, a volutpat nisl justo sed neque. Duis in diam posuere, tempor velit in, luctus augue. In mauris mauris, viverra eu posuere vel, accumsan quis velit. Curabitur rutrum mi dolor. In posuere",
+    "ForgetPasswordHead":"Forget Password",
+    "ResetPasswordButton":"Reset Password",
+    "Sign up now":"Sign up now",
+
 }

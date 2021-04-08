@@ -1,19 +1,16 @@
 import React from 'react';
 import {View, Dimensions} from 'react-native';
 import {
-  ThemedComponentProps,
-  ThemeType,
   withStyles,
 } from 'react-native-ui-kitten';
 import {Button, Text} from 'react-native-ui-kitten';
-import {ForgetPasswordForm, SocialAuth} from '../../components/auth';
+import {ForgetPasswordForm } from '../../components/auth';
 
-import { EmailValidator, PasswordValidator } from '../../core/validators';
+import { EmailValidator } from '../../core/validators';
 
 
 import {
   ScrollableAvoidKeyboard,
-  ImageOverlay,
   textStyle,
 } from '../../components/common';
 
@@ -22,6 +19,8 @@ import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
+
+import { translate }  from 'src/utils/translation';
 
 
 class ForgetPasswordComponent extends React.Component {
@@ -89,7 +88,7 @@ class ForgetPasswordComponent extends React.Component {
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
-                Forget Password
+                {translate('ForgetPasswordHead')}
               </Text>
             </View>
             {this.props.errorMsg && (
@@ -110,13 +109,13 @@ class ForgetPasswordComponent extends React.Component {
               size="giant"
               disabled={!this.validator()}
               onPress={this.onForgotPasswordButtonPress}>
-              Reset Password
+              {translate('ResetPasswordButton')}
             </Button>
             <Button
             appearance="ghost"
             activeOpacity={0.75}
             onPress={this.onSignUpButtonPress}>
-            <Text style={styles.whiteFont}>Don’t have an account?</Text> <Text style={styles.yellowFont}>Sign up now</Text>
+            <Text style={styles.whiteFont}>{translate('Donot have account?')}</Text> <Text style={styles.yellowFont}>{translate('Sign up now')}</Text>
 
           </Button>
           <Button
@@ -144,7 +143,7 @@ export const ForgetPassword = withStyles(ForgetPasswordComponent, theme => ({
     alignItems: 'center',
   },
   formContainer: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 16,
   },
   socialAuthContainer: {

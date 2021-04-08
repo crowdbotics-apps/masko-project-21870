@@ -1,28 +1,17 @@
 import React from 'react';
-import {View, ViewProps, TextInput as Input, Text, TouchableOpacity} from 'react-native';
+import {View, TextInput as Input, Text, TouchableOpacity} from 'react-native';
 import {
-  ThemedComponentProps,
-  ThemeType,
   withStyles,
   Icon,
   Modal
 } from 'react-native-ui-kitten';
 import {CheckBox} from 'react-native-ui-kitten';
-import {textStyle, ValidationInput} from '../../common';
-// import {
-//   EmailIconFill,
-//   EyeOffIconFill,
-//   PersonIconFill,
-// } from '@src/assets/icons';
-import {
-  EmailValidator,
-  NameValidator,
-  PasswordValidator,
-} from '../../../core/validators';
+import {textStyle } from '../../common';
 
 
 
 import formStyles from 'src/features/EmailAuth/screens/styles';
+import { translate }  from 'src/utils/translation';
 
 
 class SignUpForm2Component extends React.Component {
@@ -76,10 +65,8 @@ class SignUpForm2Component extends React.Component {
             style={formStyles.inputBox}
             textStyle={formStyles.inputBoxText} textStyle={textStyle.paragraph}
             autoCapitalize="none"
-            placeholder="Full Name *"
+            placeholder={translate('placeholdersFullName')}
             placeholderTextColor={"#fff"}
-            // icon={this.renderPersonIconFill}
-            // status={username && this.getStatus(NameValidator(username))}
             value={username}
             onChangeText={onUsernameInputTextChange}
           />
@@ -87,10 +74,8 @@ class SignUpForm2Component extends React.Component {
           style={formStyles.inputBox}
           textStyle={formStyles.inputBoxText} 
           autoCapitalize="none"
-            placeholder="Email *"
+            placeholder={translate('placeholdersEmail')}
             placeholderTextColor={"#fff"}
-            // icon={this.renderEmailIconFill}
-            // status={email && this.getStatus(EmailValidator(email))}
             value={email}
             onChangeText={onEmailInputTextChange}
             autoCapitalize="none"
@@ -100,10 +85,8 @@ class SignUpForm2Component extends React.Component {
            textStyle={formStyles.inputBoxText}
             autoCapitalize="none"
             secureTextEntry={true}
-            placeholder="Create Password"
+            placeholder={translate('placeholdersCreatePassword')}
             placeholderTextColor={"#fff"}
-            // icon={this.renderEyeOffIconFill}
-            // status={password && this.getStatus(PasswordValidator(password))}
             value={password}
             onChangeText={onPasswordInputValidationResult}
           />
@@ -118,7 +101,7 @@ class SignUpForm2Component extends React.Component {
           />
 
           <TouchableOpacity style={themedStyle.termsText} onPress={onTermsModalPress} >
-              <Text style={[formStyles.whiteFont ]}>By using Masko you agree with our <Text style={[formStyles.yellowFont]}>terms and condition</Text></Text>
+              <Text style={[formStyles.whiteFont ]}>{translate('TermsConditionLabel1')} <Text style={[formStyles.yellowFont]}>{translate('TermsConditionLabel2')}</Text></Text>
           </TouchableOpacity>
           </View>
           <Modal
@@ -130,14 +113,10 @@ class SignUpForm2Component extends React.Component {
              <TouchableOpacity   onPress={onTermsModalPress} >
                   <Icon width={25} height={25} fill='#FFF' name="arrow-ios-back-outline" />
              </TouchableOpacity>
-             <Text style={[formStyles.termsHeading,{marginTop:0} ]}> Terms and Conditions</Text>
+             <Text style={[formStyles.termsHeading,{marginTop:0} ]}> {translate('TermsConditionHead')} </Text>
           
              </View>
-
-            <Text style={[formStyles.termsConditionText]}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nec gravida massa, quis eleifend odio. Nulla eget sem vitae lorem auctor luctus vel sed ipsum. Nam metus sem, blandit sed feugiat mattis, accumsan a libero. Aliquam blandit eu ex a mattis. Vestibulum in nunc commodo, posuere felis id, tempus magna. Etiam pharetra tempus enim quis scelerisque. Donec ullamcorper lectus quis eros cursus congue.  Aenean pulvinar mauris aliquam, consequat ligula in, placerat turpis. In non felis lobortis, pharetra leo eget, hendrerit felis. Curabitur lobortis, ipsum id aliquet tincidunt, augue sapien aliquam dui, a volutpat nisl justo sed neque. Duis in diam posuere, tempor velit in, luctus augue. In mauris mauris, viverra eu posuere vel, accumsan quis velit. Curabitur rutrum mi dolor. In posuere
-                
-              </Text>
+             <Text style={[formStyles.termsConditionText]}>{translate('TermsConditionText')}</Text>
             </View>
           </Modal>
         </View>

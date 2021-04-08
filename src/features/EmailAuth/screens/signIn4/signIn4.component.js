@@ -138,7 +138,8 @@ class SignIn4Component extends React.Component {
               onPress={this.onSignUpButtonPress}>
                <Text style={styles.whiteFont}> {translate('Donot have account?')}</Text> <Text style={styles.yellowFont}>{translate('SignUpText')}</Text>
             </Button>
-         
+              
+
         </ScrollableAvoidKeyboard>
       </LinearGradient>
     );
@@ -155,7 +156,7 @@ export const SignIn4 = withStyles(SignIn4Component, theme => ({
     alignItems: 'center',
   },
   formContainer: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 16,
   },
   socialAuthContainer: {
