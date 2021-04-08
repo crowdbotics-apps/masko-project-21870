@@ -24,7 +24,6 @@ import {
   USER_PET_DELETE_SUCCESS,
   USER_PET_DELETE_ERROR
 } from './constants';
-import {  setHeaderToken } from '../../../utils/http';
 
 import appConfig from "src/config/app";
 
@@ -36,8 +35,6 @@ import ApiConstants from 'src/api/ApiConstants';
 import getBreedType from 'src/api/methods/breedType';
 import getPetType from 'src/api/methods/petType';
 import * as PetMethods from 'src/api/methods/pet';
-
-
 
 function* handleAddPet(action) {
   const {
@@ -82,7 +79,7 @@ function* handleUpdatePet(action) {
     pet,
   } = action;
   try {
-    const {status, data, error} = yield call( PetMethods.addPet, accessToken, pet );
+    const {status, data, error} = yield call( PetMethods.updatePet, accessToken, pet );
 
       if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({

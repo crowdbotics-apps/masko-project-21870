@@ -19,7 +19,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 
 
-import { textStyle, ValidationInput } from '../../common';
+import { textStyle } from '../../common';
 
 import * as ImagePicker from 'react-native-image-picker';
 import ActionSheet from 'react-native-actionsheet';
@@ -27,17 +27,12 @@ import ActionSheet from 'react-native-actionsheet';
 
 import formStyles from 'src/features/UserAccount/screens/styles';
 
-import SmallPawIcon from 'src/assets/icons/paw-icon.svg';
 import PhotoIcon from 'src/assets/icons/photo-icon.svg';
 
 const width = Dimensions.get('screen').width
-import * as _ from 'lodash';
 
-const data = [
-  { text: 'Option 1' },
-  { text: 'Option 2' },
-  { text: 'Option 3' },
-];
+import { translate }  from 'src/utils/translation';
+import * as _ from 'lodash';
 
 class AddPetFormComponent extends React.Component {
 
@@ -83,7 +78,7 @@ class AddPetFormComponent extends React.Component {
 
     // More info on all the options is below in the API Reference... just some common use cases shown here
     const options = {
-      title: 'Select Album',
+      title: translate('SelectAlbumLabel'),
       maxWidth: 500,
       maxHeight: 500,
       quality: 1,
@@ -119,7 +114,7 @@ class AddPetFormComponent extends React.Component {
     let { petImage } = this.state
     // More info on all the options is below in the API Reference... just some common use cases shown here
     const options = {
-      title: 'Select Camera',
+      title: translate('SelectCameraLabel'),
       maxWidth: 500,
       maxHeight: 500,
       quality: 1,
@@ -229,8 +224,8 @@ class AddPetFormComponent extends React.Component {
       <View style={[themedStyle.container, style]} {...restProps}>
         <ActionSheet
           ref={o => this.ActionSheet = o}
-          title={'Please select from following options'}
-          options={['Open Camera', 'Select From Album', 'Cancel']}
+          title={translate('PhotoActionSheetDesc')}
+          options={[ translate('OpenCameraButton'), translate('SelectAlbumButton'), translate('CancelButtonLabel') ]}
           cancelButtonIndex={2}
           destructiveButtonIndex={1}
           onPress={(index) => {
@@ -268,13 +263,13 @@ class AddPetFormComponent extends React.Component {
               style={formStyles.inputLabelContainer}
             >
 
-              <Text style={formStyles.inputBoxLabelTxt}>Pet Name</Text>
+              <Text style={formStyles.inputBoxLabelTxt}>{translate('PetNameLabel')}</Text>
               <Input
                 ref={(i) => this.petTextBox = i}
                 style={formStyles.inputBoxLabel}
                 textStyle={formStyles.inputBoxText}
                 autoCapitalize="none"
-                placeholder="e.g Luna"
+                placeholder={translate('PetNamePlaceHolder')}
                 placeholderTextColor={"#fff"}
                 value={name}
                 onChangeText={onNameInputTextChange}
@@ -289,7 +284,7 @@ class AddPetFormComponent extends React.Component {
 
             <RNPickerSelect
               style={pickerSelectStyles}
-              placeholder={{ label: 'e.g Dog', value: '0' }}
+              placeholder={{ label: translate('PetTypePlaceHolder') , value: '0' }}
 
               onValueChange={(value, index) => {
                 if(value!='0')
@@ -299,7 +294,7 @@ class AddPetFormComponent extends React.Component {
               items={petTypes}
               value={pet}
             >
-            <Text style={formStyles.inputBoxLabelTxt}>Pet Type</Text>
+            <Text style={formStyles.inputBoxLabelTxt}>{translate('PetTypeLabel')}</Text>
             <Text style={formStyles.inputBoxValueTxt}>{petTypeName}</Text>
             </RNPickerSelect>
 
@@ -318,11 +313,11 @@ class AddPetFormComponent extends React.Component {
                 if(value!='0')
                   onBreedInputTextChange(value, index)
               }}
-              placeholder={{ label: 'e.g Shiba Inu', value: '0' }}
+              placeholder={{ label: translate('BreedTypePlaceHolder'), value: '0' }}
               items={breedTypes}
               value={breed}
             >
-            <Text style={formStyles.inputBoxLabelTxt}>Breed</Text>
+            <Text style={formStyles.inputBoxLabelTxt}>{translate('BreedLabel')}</Text>
             <Text style={[formStyles.inputBoxValueTxt]}>{breedTypeName}</Text>
             
             </RNPickerSelect>
@@ -345,13 +340,13 @@ class AddPetFormComponent extends React.Component {
               style={formStyles.inputLabelContainer}
             >
 
-              <Text style={formStyles.inputBoxLabelTxt}>Age</Text>
+              <Text style={formStyles.inputBoxLabelTxt}>{translate('AgeLabel')}</Text>
               <Input
                 ref={(i) => this.ageTextBox = i}
                 style={formStyles.inputBoxLabel}
                 textStyle={formStyles.inputBoxText}
                 autoCapitalize="none"
-                placeholder="e.g: 1.5"
+                placeholder={translate('AgePlaceHolder')}
                 placeholderTextColor={"#fff"}
                 keyboardType={'number-pad'}
                 value={age}
@@ -370,31 +365,18 @@ class AddPetFormComponent extends React.Component {
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 14,
-    // paddingVertical: 12,
     marginBottom: 12,
-    // paddingHorizontal: 10,
-    // borderBottomColor: '#7384B2',
-    // borderBottomWidth: 1,
     color: '#FFF',
     fontFamily: "Montserrat",
-    // paddingRight: 30, // to ensure the text is never behind the icon
-    // padding: 10,
-    // margin: 10,
+  
   },
   inputAndroid: {
     fontSize: 10,
     padding: 0,
     margin: 0,
-    // paddingHorizontal: 10,
-    // paddingVertical: 8,
-    // marginBottom: 12,
-    // borderBottomColor: '#7384B2',
-    // borderBottomWidth: 1,
     color: '#FFF',
     fontFamily: "Montserrat",
-    // paddingRight: 30, // to ensure the text is never behind the icon
-    // padding: 10,
-    // margin: 10,
+  
   },
 });
 

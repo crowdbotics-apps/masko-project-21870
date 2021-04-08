@@ -17,6 +17,12 @@ export function addPet( accessToken, pet ) {
         pet_type: pet.pet_type,
         breed: pet.breed,
       };
+
+    if( pet.image && pet.image.content!=null ) {
+        body.file = pet.image.content.data
+        body.file_mime = pet.image.content.mime
+    }    
+    
     return Api(path, body, 'post', accessToken);
 }
 
@@ -29,6 +35,11 @@ export function updatePet( accessToken, pet ) {
         pet_type: pet.pet_type,
         breed: pet.breed,
       };
+
+    if( pet.image && pet.image.content!=null ) {
+        body.file = pet.image.content.data
+        body.file_mime = pet.image.content.mime
+    }    
     return Api(path, body, 'put', accessToken);
 }
 

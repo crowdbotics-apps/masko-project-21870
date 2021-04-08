@@ -40,6 +40,31 @@
     "UpdatePetsError":"Can't Update Pet",
     "PetDeleteSuccess":"Pet has been successfully delete!",
     "PetUpdateSuccess":"Pet has been successfully updated!",
-    "PetCreateSuccess":"Pet has been successfully created!"
+    "PetCreateSuccess":"Pet has been successfully created!",
+    "AddPhotoLabel":"Add Photo",
+    "ChangePhotoLabel":"Change Photo",
+    "NextButtonLabel":"Next",
+    "CancelButtonLabel":"Cancel",
+    "AddPetNavTitle":"Add Pet",
+    "UpdatePetNavTitle":"Update Pet",
+    "SelectAlbumLabel":"Select Album",
+    "SelectCameraLabel":"Select Camera",
+    "PhotoActionSheetDesc": "Please select from following options",
+    "OpenCameraButton":"Open Camera",
+    "SelectAlbumButton":"Select From Album",
+    "PetNameLabel":"Pet Name",
+    "PetTypeLabel":"Pet Type",
+    "BreedLabel":"Breed",
+    "AgeLabel":"Age",
+    "PetNamePlaceHolder": "e.g Luna",
+    "PetTypePlaceHolder": "e.g Dog",
+    "BreedTypePlaceHolder": "e.g Shiba Inu",
+    "AgePlaceHolder": "e.g: 1.5",
+    "PetSelectSuccess": "Pet Selected Successfully.",
+    "PetDeleteConfirmation": "Are you sure you want to delete this pet?",
+    "PetMoreActionSheetDescription": "Please select from following options",
+    "PetMoreActionChoosePet": "Choose pet",
+    "PetMoreActionDeletePet": "Delete pet"
+    
 
 }

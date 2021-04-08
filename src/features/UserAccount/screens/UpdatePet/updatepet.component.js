@@ -22,6 +22,8 @@ import { AddPetForm } from '../../components/forms/AddPetForm';
 import { Spinner } from 'src/components/Spinner';
 import * as _ from 'lodash';
 
+import { translate }  from 'src/utils/translation';
+
 const initialState = {
   name: undefined,
   pet: undefined,
@@ -51,25 +53,8 @@ class _UpdatePetComponent extends React.Component {
         path: pet.photo
       },
     };
-    // this.setPetData();
   }
 
-  // setPetData(){
-  //   const { navigation } = this.props;
-  //   const { pet } = navigation.state.params;
-  //   console.log("Set Pet Data");
-  //   console.log(pet) 
-  //   this.setState({
-  //     name: pet.name,
-  //     pet: pet.type,
-  //     breed: pet.breed,
-  //     age: pet.age,
-  //     image: {
-  //       content: null,
-  //       path: pet.photo
-  //     },
-  //   });
-  // }
 
   getBreedType = ( index = -1 , value = -1 ) => {
     if (index>-1){
@@ -217,7 +202,6 @@ class _UpdatePetComponent extends React.Component {
         <ScrollableAvoidKeyboard style={themedStyle.container}>
 
         <AddPetForm
-            // style={themedStyle.formContainer}
             name={name}
             pet={pet}
             breed={breed}
@@ -232,7 +216,7 @@ class _UpdatePetComponent extends React.Component {
             onBreedInputTextChange={this.onBreedInputTextChange}
             onAgeInputTextChange={this.onAgeInputTextChange}
             onPetImageChange={this.onPetImageChange}
-            changePhotoLabel={'Change Photo'}
+            changePhotoLabel={translate('ChangePhotoLabel')}
           />
          <Button
             style={styles.yellowButton}
@@ -243,7 +227,7 @@ class _UpdatePetComponent extends React.Component {
             onPress={this.onNextButtonPress}
 
           >
-            Next
+            {translate("NextButtonLabel")}
         </Button>
         <Button
             style={styles.yellowButton}
@@ -254,7 +238,7 @@ class _UpdatePetComponent extends React.Component {
             onPress={this.onCancelButtonPress}
 
           >
-            Cancel
+            {translate("CancelButtonLabel")}
         </Button>
 
         </ScrollableAvoidKeyboard>

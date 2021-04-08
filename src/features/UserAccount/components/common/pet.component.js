@@ -69,14 +69,16 @@ class _PetComponent extends React.Component {
           onHideUnderlay={separators.unhighlight} 
           >
           <View style={themedStyle.imageContainer} >
-            <Avatar size='giant' 
-                  style={childContainerStyle} 
-                  source={ 
-                          {
-                            uri:item.photo
-                          }
-                        }
-               />
+             {(item.photo && (
+               <Avatar 
+               size='giant' 
+               style={childContainerStyle} 
+               source={{
+                         uri:  item.photo
+                       }}
+            />
+             ))}
+             
           </View>
         </TouchableOpacity>];
       

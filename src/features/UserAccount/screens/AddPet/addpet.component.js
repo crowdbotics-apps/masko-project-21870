@@ -20,6 +20,7 @@ import styles from '../styles'
 
 import { AddPetForm } from '../../components/forms/AddPetForm';
 import { Spinner } from 'src/components/Spinner';
+import { translate }  from 'src/utils/translation';
 
 class _AddPetComponent extends React.Component {
  
@@ -158,7 +159,6 @@ class _AddPetComponent extends React.Component {
         <ScrollableAvoidKeyboard style={themedStyle.container}>
 
             <AddPetForm
-                // style={themedStyle.formContainer}
                 name={this.state.name}
                 pet={this.state.pet}
                 breed={this.state.breed}
@@ -172,7 +172,7 @@ class _AddPetComponent extends React.Component {
                 onBreedInputTextChange={this.onBreedInputTextChange}
                 onAgeInputTextChange={this.onAgeInputTextChange}
                 onPetImageChange={this.onPetImageChange}
-                changePhotoLabel={'Add Photo'}
+                changePhotoLabel={translate("AddPhotoLabel")}
               />
             <Button
                 style={styles.yellowButton}
@@ -183,7 +183,7 @@ class _AddPetComponent extends React.Component {
                 onPress={this.onAddButtonPress}
 
               >
-                Next
+                {translate("NextButtonLabel")}
             </Button>
             <Button
             style={styles.yellowButton}
@@ -194,7 +194,7 @@ class _AddPetComponent extends React.Component {
             onPress={this.onCancelButtonPress}
 
           >
-            Cancel
+            {translate("CancelButtonLabel")}
         </Button>
 
         </ScrollableAvoidKeyboard>

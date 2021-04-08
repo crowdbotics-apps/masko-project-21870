@@ -9,6 +9,8 @@ import { fromPairs } from 'lodash';
 import * as userAccountActions from '../../redux/actions';
 import * as utils from 'src/utils/alertUtil';
 import * as NavigationService from 'src/navigator/NavigationService';
+import { translate }  from 'src/utils/translation';
+import appConfig from 'src/config/app';
 
 export class _MoreActionPetComponent extends React.Component {
 
@@ -19,14 +21,14 @@ export class _MoreActionPetComponent extends React.Component {
     selectPet = () => {
         const { pet, actions } = this.props;
         actions.selectPet(pet);
-        utils.showSuccessAlert("Pet Selected Successfully.")
-        NavigationService.navigate('Home');
-        // navigation.navigate("Home");
+        utils.showSuccessAlert( translate("PetSelectSuccess") )
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
+     
 
     }
 
     deletePet = () => {
-        utils.showConfirmDialog("Are you sure you want to delete this pet?",this.confirmDeletePet, ()=>{
+        utils.showConfirmDialog( translate("PetDeleteConfirmation") ,this.confirmDeletePet, ()=>{
             console.log("Cancel Pressed");
         } )
     }
@@ -49,8 +51,8 @@ export class _MoreActionPetComponent extends React.Component {
             >
                   <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        title={'Please select from following options'}
-                        options={['Choose pet', 'Delete pet', 'Cancel']}
+                        title={ translate("PetMoreActionSheetDescription") }
+                        options={[ translate("PetMoreActionChoosePet"), translate("PetMoreActionDeletePet"), translate("CancelButtonLabel") ]}
                         cancelButtonIndex={2}
                         destructiveButtonIndex={1}
                         onPress={(index) => {

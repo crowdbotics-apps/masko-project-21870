@@ -8,11 +8,14 @@ import appConfig from 'src/config/app';
 
 import { RightIcon } from 'src/components/HeaderBar';
 
+import { translate }  from 'src/utils/translation';
+
+
 export class _AddPetContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-                title: "Add Pet",
+                title: translate('AddPetNavTitle'),
                 headerBackTitle: null,
                 headerTintColor: '#fff',
                 headerTitleStyle: { 
@@ -36,7 +39,7 @@ export class _AddPetContainer extends React.Component {
 
   onCancelButtonPress = data => {
     const { actions } = this.props;
-    this.props.navigation.navigate("Home")
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.Home )
   };
 
   render() {
@@ -65,7 +68,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     AddPet: (accessToken, pet) => {
-      dispatch(userAccountActions.addPet(accessToken, pet));
+      dispatch( userAccountActions.addPet( accessToken, pet ) );
     },
   },
 });

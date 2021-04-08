@@ -8,20 +8,19 @@ import appConfig from 'src/config/app';
 
 import { MoreActionPetComponent } from '../../components/common/moreAction.component';
 
-import { RightIcon } from 'src/components/HeaderBar';
+import { translate }  from 'src/utils/translation';
 
 export class _UpdatePetContainer extends React.Component {
 
   constructor(props){
     super(props);
-    // this.state.pet = navigation.state.params.pet;
   }
 
 
   static navigationOptions = ({ navigation }) => {
   
     const { pet } = navigation.state.params;
-    titleText = "Update Pet";
+    titleText = translate('UpdatePetNavTitle');
     if (pet){
       titleText = pet.name;
     }
@@ -55,7 +54,7 @@ export class _UpdatePetContainer extends React.Component {
 
   onCancelButtonPress = data => {
     const { actions } = this.props;
-    this.props.navigation.navigate("Home")
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.Home )
   };
 
   render() {
