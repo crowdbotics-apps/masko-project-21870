@@ -204,7 +204,9 @@ class AddPetFormComponent extends React.Component {
       themedStyle,
       name,
       pet,
+      petTypeName, 
       breed,
+      breedTypeName,
       age,
       image,
       onNameInputTextChange,
@@ -282,18 +284,24 @@ class AddPetFormComponent extends React.Component {
 
 
           <View
-            style={formStyles.inputLabelContainer}
+            style={formStyles.pickerContainer}
           >
 
-            <Text style={formStyles.inputBoxLabelTxt}>Pet Type</Text>
             <RNPickerSelect
               style={pickerSelectStyles}
               placeholder={{ label: 'e.g Dog', value: '0' }}
 
-              onValueChange={(value) => onPetInputTextChange(value)}
+              onValueChange={(value, index) => {
+                if(value!='0')
+                  onPetInputTextChange(value, index)
+              }
+              }
               items={petTypes}
               value={pet}
-            />
+            >
+            <Text style={formStyles.inputBoxLabelTxt}>Pet Type</Text>
+            <Text style={formStyles.inputBoxValueTxt}>{petTypeName}</Text>
+            </RNPickerSelect>
 
           </View>
 
@@ -301,17 +309,23 @@ class AddPetFormComponent extends React.Component {
 
 
           <View
-            style={formStyles.inputLabelContainer}
+            style={formStyles.pickerContainer}
           >
 
-            <Text style={formStyles.inputBoxLabelTxt}>Breed</Text>
             <RNPickerSelect
               style={pickerSelectStyles}
-              onValueChange={(value) => onBreedInputTextChange(value)}
+              onValueChange={(value, index) => {
+                if(value!='0')
+                  onBreedInputTextChange(value, index)
+              }}
               placeholder={{ label: 'e.g Shiba Inu', value: '0' }}
               items={breedTypes}
               value={breed}
-            />
+            >
+            <Text style={formStyles.inputBoxLabelTxt}>Breed</Text>
+            <Text style={[formStyles.inputBoxValueTxt]}>{breedTypeName}</Text>
+            
+            </RNPickerSelect>
 
           </View>
 
@@ -368,10 +382,12 @@ const pickerSelectStyles = StyleSheet.create({
     // margin: 10,
   },
   inputAndroid: {
-    fontSize: 14,
+    fontSize: 10,
+    padding: 0,
+    margin: 0,
     // paddingHorizontal: 10,
     // paddingVertical: 8,
-    marginBottom: 12,
+    // marginBottom: 12,
     // borderBottomColor: '#7384B2',
     // borderBottomWidth: 1,
     color: '#FFF',

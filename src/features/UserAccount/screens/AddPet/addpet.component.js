@@ -26,13 +26,23 @@ class _AddPetComponent extends React.Component {
   state = {
     name: undefined,
     pet: undefined,
+    petTypeName: undefined,
     breed: undefined,
+    breedTypeName: undefined,
     age: undefined,
     image: {
       content: null,
       path: ''
     },
   };
+  
+  getBreedType = ( index ) => {
+    return this.props.breedTypes[(index-1)];
+  }
+
+  getPetType = ( index ) => {
+    return this.props.petTypes[(index-1)];
+  }
 
   onTermsValueChange = termsAccepted => {
     this.setState({ termsAccepted });
@@ -42,12 +52,12 @@ class _AddPetComponent extends React.Component {
     this.setState({ name });
   };
 
-  onPetInputTextChange = pet => {
-    this.setState({ pet });
+  onPetInputTextChange = ( pet, index ) => {
+    this.setState({ pet, petTypeName: this.getPetType(index).name });
   };
 
-  onBreedInputTextChange = breed => {
-    this.setState({ breed });
+  onBreedInputTextChange = ( breed , index ) => {
+    this.setState({ breed, breedTypeName: this.getBreedType(index).name });
   };
 
   onAgeInputTextChange = age => {
@@ -147,33 +157,35 @@ class _AddPetComponent extends React.Component {
         {this.renderSpinner()}
         <ScrollableAvoidKeyboard style={themedStyle.container}>
 
-        <AddPetForm
-            // style={themedStyle.formContainer}
-            name={this.state.name}
-            pet={this.state.pet}
-            breed={this.state.breed}
-            age={this.state.age}
-            breedTypes={this.props.breedTypes}
-            petTypes={this.props.petTypes}
-            onNameInputTextChange={this.onNameInputTextChange}
-            onPetInputTextChange={this.onPetInputTextChange}
-            onBreedInputTextChange={this.onBreedInputTextChange}
-            onAgeInputTextChange={this.onAgeInputTextChange}
-            onPetImageChange={this.onPetImageChange}
-            changePhotoLabel={'Add Photo'}
-          />
-         <Button
-            style={styles.yellowButton}
-            textStyle={styles.whiteFont}
-            size="giant"
-            status='warning'
-            disabled={!this.validator()}
-            onPress={this.onAddButtonPress}
+            <AddPetForm
+                // style={themedStyle.formContainer}
+                name={this.state.name}
+                pet={this.state.pet}
+                breed={this.state.breed}
+                age={this.state.age}
+                breedTypes={this.props.breedTypes}
+                breedTypeName={this.state.breedTypeName}
+                petTypeName={this.state.petTypeName}
+                petTypes={this.props.petTypes}
+                onNameInputTextChange={this.onNameInputTextChange}
+                onPetInputTextChange={this.onPetInputTextChange}
+                onBreedInputTextChange={this.onBreedInputTextChange}
+                onAgeInputTextChange={this.onAgeInputTextChange}
+                onPetImageChange={this.onPetImageChange}
+                changePhotoLabel={'Add Photo'}
+              />
+            <Button
+                style={styles.yellowButton}
+                textStyle={styles.whiteFont}
+                size="giant"
+                status='warning'
+                disabled={!this.validator()}
+                onPress={this.onAddButtonPress}
 
-          >
-            Next
-        </Button>
-        <Button
+              >
+                Next
+            </Button>
+            <Button
             style={styles.yellowButton}
             textStyle={styles.whiteFont}
             size="giant"

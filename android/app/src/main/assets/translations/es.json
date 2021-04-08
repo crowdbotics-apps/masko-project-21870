@@ -1,0 +1,12 @@
+{
+    "LoginText": "Login",
+    "LoginButton": "Login",
+    "SignUpText": "Sign Up",
+    "SignUpButton": "Sign up using email",
+    "ForgetPasswordText": "Forgot your password?",
+    "ResetPasswordText": "Reset password",
+    "Donot have account?":"Don't have account?",
+    "Forgot your password?":"Forgot your password?",
+    "placeholdersEmail":"Email",
+    "placeholdersPassword":"Enter Password"
+}

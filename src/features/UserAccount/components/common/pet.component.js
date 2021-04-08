@@ -86,6 +86,10 @@ class _PetComponent extends React.Component {
     const { themedStyle, userPets } = this.props;
     const { items } = this.state;
 
+    if(userPets.length==0){
+      return ((this.renderAddPetBtn({})));
+    }
+    
     return (<FlatList
       style={{margin:5}}
       horizontal={true}

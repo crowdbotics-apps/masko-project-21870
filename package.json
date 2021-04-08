@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "android": "ENVFILE=.env react-native run-android",
+    "clean:android": "cd android;./gradlew cleanBuildCache;",
+    "android:build:release": "npm run clean:android && ENVFILE=.env react-native run-android --variant=release",
     "ios": "ENVFILE=.env react-native run-ios --simulator='iPhone X'",
     "postinstall": "npx jetify && rndebugger-open",
     "lint": "eslint .",

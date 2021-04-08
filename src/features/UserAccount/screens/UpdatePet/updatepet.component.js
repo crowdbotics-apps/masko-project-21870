@@ -20,6 +20,7 @@ import styles from '../styles'
 
 import { AddPetForm } from '../../components/forms/AddPetForm';
 import { Spinner } from 'src/components/Spinner';
+import * as _ from 'lodash';
 
 const initialState = {
   name: undefined,
@@ -41,7 +42,9 @@ class _UpdatePetComponent extends React.Component {
       id: pet.id,
       name: pet.name,
       pet: pet.typeInfo.id,
+      petTypeName: this.getPetType(-1, pet.typeInfo.id ).name,
       breed: pet.breed,
+      breedTypeName: this.getBreedType(-1, pet.breed ).name,
       age: pet.age,
       image: {
         content: null,
@@ -68,6 +71,35 @@ class _UpdatePetComponent extends React.Component {
   //   });
   // }
 
+  getBreedType = ( index = -1 , value = -1 ) => {
+    if (index>-1){
+      return this.props.breedTypes[(index-1)];
+    }else{
+      let item = null;
+      _.forEach(this.props.breedTypes, (i) => {
+        if( i.id == value ){
+          item = i;
+        }
+      });
+      return item;
+    } 
+   
+  }
+
+  getPetType = ( index = -1 , value = -1 ) => {
+    if (index>-1){
+      return this.props.petTypes[(index-1)];
+    }else{
+      let item = null;
+      _.forEach(this.props.petTypes, (i) => {
+        if( i.id == value ){
+          item = i;
+        }
+      });
+      return item;
+    } 
+  }
+
   onTermsValueChange = termsAccepted => {
     this.setState({ termsAccepted });
   };
@@ -76,12 +108,12 @@ class _UpdatePetComponent extends React.Component {
     this.setState({ name });
   };
 
-  onPetInputTextChange = pet => {
-    this.setState({ pet });
+  onPetInputTextChange = ( pet, index ) => {
+    this.setState({ pet, petTypeName: this.getPetType(index,-1).name });
   };
 
-  onBreedInputTextChange = breed => {
-    this.setState({ breed });
+  onBreedInputTextChange = ( breed , index ) => {
+    this.setState({ breed, breedTypeName: this.getBreedType(index,-1).name });
   };
 
   onAgeInputTextChange = age => {
@@ -189,6 +221,8 @@ class _UpdatePetComponent extends React.Component {
             name={name}
             pet={pet}
             breed={breed}
+            breedTypeName={this.state.breedTypeName}
+            petTypeName={this.state.petTypeName}
             age={age.toString()}
             petImage={image}
             breedTypes={this.props.breedTypes}
