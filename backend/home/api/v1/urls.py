@@ -7,15 +7,19 @@ from home.api.v1.viewsets import (
     LoginViewSet,
     HomePageViewSet,
     CustomTextViewSet,
+    ServiceViewSet,
+    ServiceCategoryViewSet,
     PetViewSet, 
     PetTypeViewSet,
-    BreedTypeViewSet
-    
+    BreedTypeViewSet,
 )
 
 router = DefaultRouter()
 router.register("signup", SignupViewSet, basename="signup")
 router.register("login", LoginViewSet, basename="login")
+
+router.register("service", ServiceViewSet, basename="service")
+router.register("service-category", ServiceCategoryViewSet, basename="service-category")
 router.register("pet", PetViewSet, basename="pet")
 router.register("pet-type", PetTypeViewSet, basename="pet-type")
 router.register("breed-type", BreedTypeViewSet, basename="breed-type")

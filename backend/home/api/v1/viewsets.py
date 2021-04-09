@@ -17,10 +17,13 @@ from home.api.v1.serializers import (
     UserSerializer,
     PetSerializer,
     PetTypeSerializer,
-    BreedTypeSerializer
+    BreedTypeSerializer,
+    ServiceSerializer,
+    ServiceCategorySerializer
 )
 from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
+from service.models import Service, Category as ServiceCategory
 
 
 class SignupViewSet(ModelViewSet):
@@ -57,10 +60,25 @@ class HomePageViewSet(ModelViewSet):
     queryset = HomePage.objects.all()
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
-    permission_classes = [IsAdminUser]
-    http_method_names = ["get", "put", "patch"]
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
 
 
+class ServiceCategoryViewSet(ModelViewSet):
+    serializer_class = ServiceCategorySerializer
+    queryset = ServiceCategory.objects.all().order_by('-sort')
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
+
+class ServiceViewSet(ModelViewSet):
+    serializer_class = ServiceSerializer
+    queryset = Service.objects.all().order_by('-sort')
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
+
+    
 
 class PetViewSet(ModelViewSet):
     serializer_class = PetSerializer
@@ -77,7 +95,7 @@ class PetViewSet(ModelViewSet):
     
 class PetTypeViewSet(ModelViewSet):
     serializer_class = PetTypeSerializer
-    queryset = PetType.objects.all()
+    queryset = PetType.objects.all().order_by('-sort')
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = [IsOwnerOrReadOnly]
@@ -86,7 +104,7 @@ class PetTypeViewSet(ModelViewSet):
     
 class BreedTypeViewSet(ModelViewSet):
     serializer_class = BreedTypeSerializer
-    queryset = BreedType.objects.all()
+    queryset = BreedType.objects.all().order_by('-sort')
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = [IsOwnerOrReadOnly]

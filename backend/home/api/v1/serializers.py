@@ -11,6 +11,9 @@ from rest_auth.serializers import PasswordResetSerializer
 from home.models import HomePage, CustomText
 
 from pet.models import Pet, PetType, BreedType
+from service.models import Service, Category
+
+
 import boto3
 import base64
 import os
@@ -77,6 +80,23 @@ class CustomTextSerializer(serializers.ModelSerializer):
         model = CustomText
         fields = "__all__"
 
+   
+
+class ServiceCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"  
+
+class ServiceCategoryShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id','name_en','name_es','description_en','description_es','sort')          
+
+class ServiceSerializer(serializers.ModelSerializer):
+    category = ServiceCategoryShortSerializer()
+    class Meta:
+        model = Service
+        fields = "__all__"
 
 class HomePageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -244,3 +264,5 @@ class PetSerializer(serializers.ModelSerializer):
         fields = [  "id", "name", "age","pet_type",
                     "typeInfo","breed","breedInfo","ownerInfo","pet_image"
                 ]
+
+                
