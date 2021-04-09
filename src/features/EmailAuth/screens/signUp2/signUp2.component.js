@@ -16,12 +16,15 @@ import { ScrollableAvoidKeyboard, textStyle } from '../../components/common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { EmailValidator, PasswordValidator } from '../../core/validators';
 
+import { Spinner } from 'src/components/Spinner';
 
 import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
-import styles from '../styles'
+import styles from '../styles';
+import { translate }  from 'src/utils/translation';
+
 
 class SignUp2Component extends React.Component {
 
@@ -111,17 +114,26 @@ class SignUp2Component extends React.Component {
     this.props.onForgetPasswordButtonPress();
   }
 
+  renderSpinner = () => {
+    const { signUpLoading } = this.props;
+    if (signUpLoading) {
+      return <Spinner />;
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { themedStyle } = this.props;
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
-
+        {this.renderSpinner()}
         <ScrollableAvoidKeyboard style={themedStyle.container}>
           <View  >
-            <LargeLogo width={width} style={{ marginBottom: 30, marginTop: 50 }} />
-            <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
-              SIGNUP
+            <LargeLogo width={width} style={{ marginBottom: 10, marginTop: 40 }} />
+            <Text style={themedStyle.signInLabel} category="s1" style={styles.signUpHeading} >
+              {translate('SignUpText')}
               </Text>
           </View>
           {this.props.errorMsg && (
@@ -148,29 +160,25 @@ class SignUp2Component extends React.Component {
             style={styles.yellowButton}
             textStyle={styles.whiteFont}
             size="giant"
-            status='warning'
+            status='primary'
             disabled={!this.validator()}
             onPress={this.onSignUpButtonPress}
 
           >
-            Sign Up
+            {translate('SignUp2Button')}
         </Button>
-          <Button
-            // style={themedStyle.signInButton}
-            // textStyle={themedStyle.signInText}
+        <Button
             appearance="ghost"
             activeOpacity={0.75}
             onPress={this.onSignInButtonPress}>
-            <Text style={styles.whiteFont}>Already have an account?</Text> <Text style={styles.yellowFont}>Login</Text>
+            <Text style={styles.whiteFont}>{translate('Already have an account?')}</Text> <Text style={styles.yellowFont}>{translate('LoginText')}</Text>
 
           </Button>
           <Button
-            // style={themedStyle.signInButton}
-            // textStyle={themedStyle.signInText}
             appearance="ghost"
             activeOpacity={0.75}
             onPress={this.onForgetPasswordButtonPress}>
-            <Text style={styles.whiteFont}>Forgot your password?</Text> <Text style={styles.yellowFont}>Reset Password</Text>
+            <Text style={styles.whiteFont}>{translate('ForgetPasswordText')}</Text> <Text style={styles.yellowFont}>{translate('ResetPasswordText')}</Text>
 
           </Button>
         </ScrollableAvoidKeyboard>
@@ -191,8 +199,7 @@ export const SignUp2 = withStyles(SignUp2Component, theme => ({
     backgroundColor: theme['color-primary-default'],
   },
   formContainer: {
-    flex: 1,
-    marginTop: 15,
+    marginTop: 0,
     paddingHorizontal: 16,
   },
   photo: {

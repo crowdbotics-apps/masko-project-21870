@@ -45,11 +45,12 @@ export const styles = StyleSheet.create({
     },
     yellowButton:{
         fontFamily: "Montserrat",
-        backgroundColor: "#FFCD3E",
+        // backgroundColor: "#FFCD3E",
+        zIndex: 1000,
         borderRadius: 30,
         margin: 10,
         borderWidth: 0,
-        width: width*0.85,
+        width: width*0.85
     },
     whiteFont: {
         fontFamily: "Montserrat",

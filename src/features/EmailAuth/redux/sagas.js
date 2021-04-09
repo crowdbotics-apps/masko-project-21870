@@ -12,122 +12,35 @@ import {
   EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
   EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
 } from './constants';
-import { request } from '../../../utils/http';
 
-import appConfig from "../../../config/app";
+
+import * as UserActions from '../../../features/UserAccount/redux/actions'
+import appConfig from "src/config/app";
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
 
-function sendLogin({email, password}) {
-  
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/login/';
-  let body = {
-      username: email, 
-      email,
-      password,
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
-    const statusCode = response.status;
-    const data =  statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-
-
-function sendSignUp({email, password, name}) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/signup/';
-  let body = {
-      name,
-      email,
-      username: email,
-      password,
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendPasswordRecovery(email) {
- 
-  let url = appConfig.emailAuthAPIEndPoint+'/rest-auth/password/reset/';
-  let body = {
-      email
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }).then((response) => {
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
+import { translate }  from 'src/utils/translation';
+import ApiConstants from 'src/api/ApiConstants';
+import loginUser from 'src/api/methods/loginUser';
+import signUpUser from 'src/api/methods/signUpUser';
+import * as UserPasswordMethods from 'src/api/methods/forgetPassword';
 
 function* handleSignUp(action) {
   const {
     user: {email, password, name},
   } = action;
   try {
-    const {status, data, error} = yield call(sendSignUp, {email, password, name});
+    const {status, data, error} = yield call(signUpUser, {email, password, name});
 
-      if (status === 201) {
+      if (status === ApiConstants.STATUS_CODES.SUCCESS_CREATED ) {
         yield put({
           type: EMAIL_AUTH_SIGNUP_SUCCESS,
           user: data,
         });
         setTimeout(()=>{
-            showSuccessAlert("Your account has been created successfully!")
+            showSuccessAlert(translate('SignUpSuccessMsg'))
         },500);
-        NavigationService.navigate('SignIn4');
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.SignIn );
 
       } else {
         let msg = compileErrorMessage(error,data)
@@ -143,7 +56,7 @@ function* handleSignUp(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: EMAIL_AUTH_SIGNUP_ERROR,
-      error: "Can't sign up with provided credentials",
+      error: translate('SignUpErrorMsg'),
     });
   }
 }
@@ -153,18 +66,32 @@ function* handleLogin(action) {
     user: {email, password},
   } = action;
   try {
-    const {status, data, error} = yield call(sendLogin, {email, password});
+    const {status, data, error} = yield call(loginUser, email, password );
 
-    if (status === 200) {
+    if (status === ApiConstants.STATUS_CODES.SUCCESS_OK) {
+
+      // Take User Pets Data   
+      yield put(UserActions.getPets(data.token));
+
+      // Take Pet Type Data   
+      yield put(UserActions.getPetType(data.token));
+
+      // Take Breed Type Data   
+      yield put(UserActions.getBreedType(data.token));
+
+
       yield put({
         type: EMAIL_AUTH_LOGIN_SUCCESS,
         accessToken: data.token,
+        user: data.user
       });
+
+
       setTimeout(()=>{
-        showSuccessAlert("Account successfully logged in!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('UserAccount');
+        showSuccessAlert(translate('LoginSuccessMsg'))
+      },500);
+
+       NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount );
     } else {
       yield put({
         type: EMAIL_AUTH_LOGIN_ERROR,
@@ -179,27 +106,27 @@ function* handleLogin(action) {
     // todo add errors with similar structure in backend
     yield put({
       type: EMAIL_AUTH_LOGIN_ERROR,
-      error: "Can't sign in with provided credentials",
+      error: translate('LoginErrorDefault'),
     });
   }
 }
 
 function* handlePasswordRecovery(action) {
-  const {email} = action;
+  const { email } = action;
 
   try {
-    const {status, data, error} = yield call(sendPasswordRecovery, email);
+    const {status, data, error} = yield call( UserPasswordMethods.forgetPassword, email );
 
-    if (status === 200) {
+    if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
       yield put({
         type: EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
         email,
       });
       setTimeout(()=>{
-        showSuccessAlert("Password Reset Request has been sent!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('SignIn4');
+          showSuccessAlert(translate('PwdResetSuccessMsg'))
+      },500);
+     
+      NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.SignIn );
 
     } else {
       yield put({
@@ -213,7 +140,7 @@ function* handlePasswordRecovery(action) {
   } catch (error) {
     yield put({
       type: EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
-      error: "Can't recover password with provided email",
+      error: translate('PwdResetErrorMsg'),
     });
   }
 }
@@ -222,6 +149,5 @@ export default all([
   takeLatest(EMAIL_AUTH_LOGIN_REQUEST, handleLogin),
   takeLatest(EMAIL_AUTH_SIGNUP_REQUEST, handleSignUp),
   takeLatest(EMAIL_AUTH_PASSWORD_RECOVER_REQUEST, handlePasswordRecovery),
-  
   
 ]);

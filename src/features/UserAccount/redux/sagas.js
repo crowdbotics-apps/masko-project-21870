@@ -1,138 +1,63 @@
 import {all, takeLatest, put, call} from 'redux-saga/effects';
 import * as NavigationService from '../../../navigator/NavigationService';
+import * as utils from '../utils/general';
 
 import {
-  EMAIL_AUTH_LOGIN_REQUEST,
-  EMAIL_AUTH_LOGIN_ERROR,
-  EMAIL_AUTH_SIGNUP_REQUEST,
-  EMAIL_AUTH_PASSWORD_RECOVER_REQUEST,
-  EMAIL_AUTH_LOGIN_SUCCESS,
-  EMAIL_AUTH_SIGNUP_ERROR,
-  EMAIL_AUTH_SIGNUP_SUCCESS,
-  EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
-  EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
+  USER_PET_ADD_REQUEST,
+  USER_PET_ADD_SUCCESS,
+  USER_PET_ADD_ERROR,
+  USER_PET_GET_REQUEST,
+  USER_PET_GET_SUCCESS,
+  USER_PET_GET_ERROR,
+  USER_PET_TYPE_GET_REQUEST,
+  USER_PET_BREED_GET_REQUEST,
+  USER_PET_TYPE_GET_SUCCESS,
+  USER_PET_TYPE_GET_ERROR,
+  USER_PET_BREED_GET_SUCCESS,
+  USER_PET_BREED_GET_ERROR,
+  USER_PET_SELECT_SUCCESS,
+  USER_PET_SELECT_REQUEST,
+  USER_PET_UPDATE_REQUEST,
+  USER_PET_UPDATE_SUCCESS,
+  USER_PET_UPDATE_ERROR,
+  USER_PET_DELETE_REQUEST,
+  USER_PET_DELETE_SUCCESS,
+  USER_PET_DELETE_ERROR
 } from './constants';
-import { request } from '../../../utils/http';
 
-import appConfig from "../../../config/app";
+import appConfig from "src/config/app";
+
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
 
-function sendLogin({email, password}) {
-  
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/login/';
-  let body = {
-      username: email, 
-      email,
-      password,
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
-    const statusCode = response.status;
-    const data =  statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
+import { translate }  from 'src/utils/translation';
+import ApiConstants from 'src/api/ApiConstants';
+import getBreedType from 'src/api/methods/breedType';
+import getPetType from 'src/api/methods/petType';
+import * as PetMethods from 'src/api/methods/pet';
 
-
-
-function sendSignUp({email, password, name}) {
-
-  let url = appConfig.emailAuthAPIEndPoint+'/api/v1/signup/';
-  let body = {
-      name,
-      email,
-      username: email,
-      password,
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }, ).then((response) => {
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-function sendPasswordRecovery(email) {
- 
-  let url = appConfig.emailAuthAPIEndPoint+'/rest-auth/password/reset/';
-  let body = {
-      email
-    };
-  return fetch(url, { 
-    method: 'post', 
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': appConfig.contentType.json
-    }
-  }).then((response) => {
-    const statusCode = response.status;
-    const data =
-      statusCode != 204
-        ? response.json()
-        : {};
-    return Promise.all([statusCode, data]);
-  })
-  .then((response) => {
-    return { status: response[0], data: response[1], error: response[1] };
-    
-  })
-  .catch(error => {
-    return {status: 400, data: error, error: error};
-  });
-}
-
-
-function* handleSignUp(action) {
+function* handleAddPet(action) {
   const {
-    user: {email, password, name},
+    accessToken,
+    pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendSignUp, {email, password, name});
+    const {status, data, error} = yield call( PetMethods.addPet, accessToken, pet );
 
-      if (status === 201) {
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_CREATED ) {
         yield put({
-          type: EMAIL_AUTH_SIGNUP_SUCCESS,
-          user: data,
+          type: USER_PET_ADD_SUCCESS,
+          pet: data,
         });
         setTimeout(()=>{
-            showSuccessAlert("Your account has been created successfully!")
+            showSuccessAlert( translate('PetCreateSuccess') )
         },500);
-        NavigationService.navigate('SignIn4');
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
 
       } else {
         let msg = compileErrorMessage(error,data)
         yield put({
-          type: EMAIL_AUTH_SIGNUP_ERROR,
+          type: USER_PET_ADD_ERROR,
           error: msg,
         });
         setTimeout(()=>{
@@ -142,86 +67,197 @@ function* handleSignUp(action) {
   } catch (error) {
     // todo add errors with similar structure in backend
     yield put({
-      type: EMAIL_AUTH_SIGNUP_ERROR,
-      error: "Can't sign up with provided credentials",
+      type: USER_PET_ADD_ERROR,
+      error: translate('AddPetsError'),
     });
   }
 }
 
-function* handleLogin(action) {
+function* handleUpdatePet(action) {
   const {
-    user: {email, password},
+    accessToken,
+    pet,
   } = action;
   try {
-    const {status, data, error} = yield call(sendLogin, {email, password});
+    const {status, data, error} = yield call( PetMethods.updatePet, accessToken, pet );
 
-    if (status === 200) {
-      yield put({
-        type: EMAIL_AUTH_LOGIN_SUCCESS,
-        accessToken: data.token,
-      });
-      setTimeout(()=>{
-        showSuccessAlert("Account successfully logged in!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('Home');
-    } else {
-      yield put({
-        type: EMAIL_AUTH_LOGIN_ERROR,
-        error: compileErrorMessage(error,data),
-      });
-      setTimeout(()=>{
-        showErrorAlert(compileErrorMessage(error,data))
-    },500);
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: USER_PET_UPDATE_SUCCESS,
+          pet: data,
+        });
+        setTimeout(()=>{
+            showSuccessAlert(translate("PetUpdateSuccess"))
+        },500);
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
 
-    }
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_UPDATE_ERROR,
+          error: msg,
+        });
+        setTimeout(()=>{
+          showErrorAlert(msg)
+      },500);
+      }
   } catch (error) {
     // todo add errors with similar structure in backend
     yield put({
-      type: EMAIL_AUTH_LOGIN_ERROR,
-      error: "Can't sign in with provided credentials",
+      type: USER_PET_UPDATE_ERROR,
+      error: translate('UpdatePetsError'),
     });
   }
 }
 
-function* handlePasswordRecovery(action) {
-  const {email} = action;
-
+function* handleDeletePet(action) {
+  const {
+    accessToken,
+    pet,
+  } = action;
   try {
-    const {status, data, error} = yield call(sendPasswordRecovery, email);
+    const {status, data, error} = yield call( PetMethods.deletePet, accessToken, pet );
 
-    if (status === 200) {
-      yield put({
-        type: EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
-        email,
-      });
-      setTimeout(()=>{
-        showSuccessAlert("Password Reset Request has been sent!")
-    },500);
-      // you can change the navigate for navigateAndResetStack to go to a protected route
-      NavigationService.navigate('SignIn4');
-
-    } else {
-      yield put({
-        type: EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
-        error: compileErrorMessage(error,data),
-      });
+      if ( status === ApiConstants.STATUS_CODES.NO_CONTENT ) {
+        yield put({
+          type: USER_PET_DELETE_SUCCESS,
+          pet: pet,
+        });
         setTimeout(()=>{
-          showErrorAlert(compileErrorMessage(error,data))
+            showSuccessAlert( translate('PetDeleteSuccess') )
+        },500);
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.Home );
+
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_DELETE_ERROR,
+          error: msg,
+        });
+        setTimeout(()=>{
+          showErrorAlert(msg)
       },500);
-    }
+      }
   } catch (error) {
+    
     yield put({
-      type: EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
-      error: "Can't recover password with provided email",
+      type: USER_PET_DELETE_ERROR,
+      error: translate('DeletePetsError'),
     });
   }
 }
+
+function* handleGetPet(action) {
+  const {
+    accessToken
+  } = action;
+  try {
+    const {status, data, error} = yield call( PetMethods.getPets, accessToken );
+
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: USER_PET_GET_SUCCESS,
+          pets: utils.formatPets(data.results),
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_GET_ERROR,
+          error: msg,
+        });
+      
+      }
+  } catch (error) {
+    // todo add errors with similar structure in backend
+    yield put({
+      type: USER_PET_GET_ERROR,
+      error: translate('GetPetsError'),
+    });
+  }
+}
+
+function* handleGetPetType(action) {
+  const {
+    accessToken
+  } = action;
+  try {
+    const {status, data, error} = yield call( getPetType, accessToken );
+
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: USER_PET_TYPE_GET_SUCCESS,
+          petTypes: data.results,
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_TYPE_GET_ERROR,
+          error: msg,
+        });
+      
+      }
+  } catch (error) {
+    // todo add errors with similar structure in backend
+    yield put({
+      type: USER_PET_TYPE_GET_ERROR,
+      error: translate('GetPetTypeError'),
+    });
+  }
+}
+
+function* handleGetBreedType(action) {
+  const {
+    accessToken
+  } = action;
+  try {
+    const {status, data, error} = yield call( getBreedType, accessToken );
+
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: USER_PET_BREED_GET_SUCCESS,
+          breedTypes: data.results,
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: USER_PET_BREED_GET_ERROR,
+          error: msg,
+        });
+      
+      }
+  } catch (error) {
+    
+    yield put({
+      type: USER_PET_BREED_GET_ERROR,
+      error: translate('GetBreedTypeError'),
+    });
+  }
+}
+
+function* handlePetSelect(action) {
+  
+    yield put({
+          type: USER_PET_SELECT_SUCCESS,
+          pet: action.pet,
+        });
+  
+}
+
 
 export default all([
-  takeLatest(EMAIL_AUTH_LOGIN_REQUEST, handleLogin),
-  takeLatest(EMAIL_AUTH_SIGNUP_REQUEST, handleSignUp),
-  takeLatest(EMAIL_AUTH_PASSWORD_RECOVER_REQUEST, handlePasswordRecovery),
+
+  takeLatest(USER_PET_GET_REQUEST, handleGetPet),
+  takeLatest(USER_PET_ADD_REQUEST, handleAddPet),
+  takeLatest(USER_PET_UPDATE_REQUEST, handleUpdatePet),
+  takeLatest(USER_PET_DELETE_REQUEST, handleDeletePet),
+
+  takeLatest(USER_PET_TYPE_GET_REQUEST, handleGetPetType),
+  takeLatest(USER_PET_BREED_GET_REQUEST, handleGetBreedType),
+  takeLatest(USER_PET_SELECT_REQUEST, handlePetSelect),
+  
   
   
 ]);

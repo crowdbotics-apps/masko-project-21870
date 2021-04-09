@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center",
         height: height,
-        width: width
+        width: width,
+        padding: 10,
     },
     item: {
         alignItems: 'center',
@@ -95,15 +96,83 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFF',
     },
-    inputBoxText:{
+    inputBoxLabel:{
+        // borderBottomColor:'#7384B2',
+        // borderBottomWidth:1,
+        // padding:10,
+        // margin:10,
+        // marginBottom: 10,
+        padding: 0,
+        margin: 0,
+        backgroundColor:null,
         fontFamily: "Montserrat",
         color: '#FFF',
     },
+    inputBoxLabelTxt:{
+        fontFamily: "Montserrat",
+        color: '#9BB2EF',
+        fontSize: 12,
+        padding: 0,
+        margin: 0,
+    },
+    inputBoxValueTxt:{
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        fontSize: 13,
+        padding: 0,
+        margin: 0,
+        marginBottom: 10,
+    },
+    inputBoxText:{
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        fontSize: 13
+    },
+    selectBox:{
+        borderBottomColor:'#7384B2',
+        borderBottomWidth:1,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        padding:10,
+        margin:10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        alignItems:'flex-start'
+    },
+
+    inputLabelContainer:{
+        flex: 1, 
+        flexDirection: 'column',
+        alignItems:'flex-start',
+        borderBottomColor:'#A0B0DC',
+        borderBottomWidth:1,
+        padding:0,
+        margin:15,
+        paddingBottom: 10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+
+    },
+    pickerContainer:{
+        alignItems:'flex-start',
+        borderBottomColor:'#A0B0DC',
+        borderBottomWidth:1,
+        padding:0,
+        margin:15,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+
+    },
+    
     inputIconContainer:{
         flex: 1, 
         flexDirection: 'row',
         alignItems:'center',
-        borderBottomColor:'#7384B2',
+        borderBottomColor:'#A0B0DC',
         borderBottomWidth:1,
         padding:10,
         margin:10,

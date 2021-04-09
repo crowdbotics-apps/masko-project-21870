@@ -5,16 +5,16 @@ const width = Dimensions.get('screen').width
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems: "flex-end",
+        // justifyContent: "flex-end",
         display: 'flex',
     }, // linear-gradient(180deg, #556897 50%, #6E87C6 100%)
     itemsContainer: {
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: "center",
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         height: height
     },
     item: {
@@ -65,6 +65,15 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFF',
         marginBottom:20,
+        marginTop:10,
+        fontSize:20,
+        alignSelf:'center',
+
+    },
+    signUpHeading:{
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        marginBottom:10,
         marginTop:10,
         fontSize:20,
         alignSelf:'center',

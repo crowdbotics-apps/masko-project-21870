@@ -7,14 +7,23 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from home.permissions import IsOwnerOrReadOnly
+from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 
 from home.api.v1.serializers import (
     SignupSerializer,
     CustomTextSerializer,
     HomePageSerializer,
     UserSerializer,
+    PetSerializer,
+    PetTypeSerializer,
+    BreedTypeSerializer,
+    ServiceSerializer,
+    ServiceCategorySerializer
 )
 from home.models import HomePage, CustomText
+from pet.models import Pet, PetType, BreedType
+from service.models import Service, Category as ServiceCategory
 
 
 class SignupViewSet(ModelViewSet):
@@ -49,6 +58,59 @@ class CustomTextViewSet(ModelViewSet):
 class HomePageViewSet(ModelViewSet):
     serializer_class = HomePageSerializer
     queryset = HomePage.objects.all()
+
     authentication_classes = (SessionAuthentication, TokenAuthentication)
-    permission_classes = [IsAdminUser]
-    http_method_names = ["get", "put", "patch"]
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
+
+
+class ServiceCategoryViewSet(ModelViewSet):
+    serializer_class = ServiceCategorySerializer
+    queryset = ServiceCategory.objects.all().order_by('-sort')
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
+
+class ServiceViewSet(ModelViewSet):
+    serializer_class = ServiceSerializer
+    queryset = Service.objects.all().order_by('-sort')
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
+
+    
+
+class PetViewSet(ModelViewSet):
+    serializer_class = PetSerializer
+    queryset = Pet.objects.all()
+
+    def get_queryset( self):
+        return Pet.objects.filter(owner=self.request.user)
+
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get", "post", "put", "patch", "delete"]
+    
+class PetTypeViewSet(ModelViewSet):
+    serializer_class = PetTypeSerializer
+    queryset = PetType.objects.all().order_by('-sort')
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get"]
+    
+class BreedTypeViewSet(ModelViewSet):
+    serializer_class = BreedTypeSerializer
+    queryset = BreedType.objects.all().order_by('-sort')
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get"]
+    
+
+
+

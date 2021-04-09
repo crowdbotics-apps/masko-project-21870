@@ -30,8 +30,8 @@ const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
-import { PetComponent } from './pet.component';
-import { ServicesComponent } from './services.component';
+import { PetComponent } from '../../components/common';
+import { ServicesComponent } from '../../components/common';
 
 class HomeComponent extends React.Component {
   state = {
@@ -51,28 +51,7 @@ class HomeComponent extends React.Component {
     this.props.onForgotPasswordPress();
   };
 
-  onSignInButtonPress = () => {
-    this.props.onSignInPress({
-      email: this.state.username,
-      password: this.state.password,
-    });
-  };
-
-  onSignUpButtonPress = () => {
-    this.props.onSignUpPress();
-  };
-
-  onGoogleButtonPress = () => {
-    this.props.onGooglePress();
-  };
-
-  onFacebookButtonPress = () => {
-    this.props.onFacebookPress();
-  };
-
-  onTwitterButtonPress = () => {
-    this.props.onTwitterPress();
-  };
+ 
 
   onFormDataChange = formData => {
     this.setState({formData});
@@ -92,18 +71,28 @@ class HomeComponent extends React.Component {
 
 
   render() {
-    const {themedStyle} = this.props;
+    const {
+            navigation,
+            userPets,
+            selectedPet,
+            onSelectPetPress
+          } = this.props;
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
            <ScrollView style={styles.scrollView} >
-              <PetComponent />
+              <PetComponent navigation={navigation}
+                            userPets={userPets}
+                            selectedPet={selectedPet}
+                            onSelectPetPress={onSelectPetPress}
+              />
               <ServicesComponent />
               <Button
               style={styles.yellowButton}
               status='warning'
               size="giant"
-              onPress={this.onSignInButtonPress}>
+              
+              >
               See All Products
             </Button>
             </ScrollView>          

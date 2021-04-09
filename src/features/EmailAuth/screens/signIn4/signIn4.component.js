@@ -9,6 +9,8 @@ import {Button, Text} from 'react-native-ui-kitten';
 import {SignInForm2, SocialAuth} from '../../components/auth';
 import { EmailValidator, PasswordValidator } from '../../core/validators';
 
+import { Spinner } from 'src/components/Spinner';
+
 import {
   ScrollableAvoidKeyboard,
   ImageOverlay,
@@ -19,13 +21,14 @@ import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
-import styles from '../styles'
+import styles from '../styles';
+import { translate }  from 'src/utils/translation';
 
 
 class SignIn4Component extends React.Component {
   state = {
-    username: '',
-    password: '',
+    username: 'usama149+05032021@gmail.com',
+    password: 'test123456',
   };
 
   onUsernameInputTextChange = username => {
@@ -79,6 +82,15 @@ class SignIn4Component extends React.Component {
     );
   }
 
+  renderSpinner = () => {
+    const { signInLoading } = this.props;
+    if (signInLoading) {
+      return <Spinner />;
+    } else {
+      return null;
+    }
+  };
+
 
   render() {
     const {themedStyle} = this.props;
@@ -86,11 +98,11 @@ class SignIn4Component extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         <ScrollableAvoidKeyboard >
-          
+            {this.renderSpinner()}
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >
-                LOGIN
+              {translate('LoginText')}
               </Text>
             </View>
             {this.props.errorMsg && (
@@ -104,18 +116,18 @@ class SignIn4Component extends React.Component {
               //onDataChange={this.onFormDataChange}
               onUsernameInputTextChange={this.onUsernameInputTextChange}
               onPasswordInputTextChange={this.onPasswordInputTextChange}
-              email={this.state.username}
+              username={this.state.username}
               password={this.state.password}
             />
             <Button
               style={styles.yellowButton}
               textStyle={styles.whiteFont}
-              status='warning'
+              status='primary'
               size="giant"
               disabled={!this.validator()}
               //disabled={!this.state.formData}
               onPress={this.onSignInButtonPress}>
-              Login
+              {translate('LoginButton')}
             </Button>
            
             <Button
@@ -124,9 +136,10 @@ class SignIn4Component extends React.Component {
               appearance="ghost"
               activeOpacity={0.75}
               onPress={this.onSignUpButtonPress}>
-               <Text style={styles.whiteFont}>Don't have an account?</Text> <Text style={styles.yellowFont}>Sign Up</Text>
+               <Text style={styles.whiteFont}> {translate('Donot have account?')}</Text> <Text style={styles.yellowFont}>{translate('SignUpText')}</Text>
             </Button>
-         
+              
+
         </ScrollableAvoidKeyboard>
       </LinearGradient>
     );
@@ -143,7 +156,7 @@ export const SignIn4 = withStyles(SignIn4Component, theme => ({
     alignItems: 'center',
   },
   formContainer: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 16,
   },
   socialAuthContainer: {

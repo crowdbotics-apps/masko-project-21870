@@ -1,5 +1,5 @@
 import {createStackNavigator} from 'react-navigation-stack';
-
+import appConfig from "src/config/app";
 import {SignUp2Container} from './screens/signUp2/signUp2.container';
 import {SignIn4Container} from './screens/signIn4/signIn4.container';
 import { ForgetPasswordContainer } from './screens/forgetpassword/forgetPassword.container';
