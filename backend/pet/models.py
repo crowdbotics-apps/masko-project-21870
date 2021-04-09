@@ -20,6 +20,9 @@ class BreedType(models.Model):
         auto_now=True,
     )
 
+    def __str__ (self):
+        return self.name
+
 
 # Pet Type Model.
 class PetType(models.Model):
@@ -39,6 +42,9 @@ class PetType(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+
+    def __str__ (self):
+        return self.name
 
 
 
@@ -73,5 +79,8 @@ class Pet(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+
+    def __str__ (self):
+        return self.name
 
    

@@ -14,7 +14,8 @@ import {
 } from './constants';
 
 
-import * as UserActions from '../../../features/UserAccount/redux/actions'
+import * as UserActions from '../../../features/UserAccount/redux/actions';
+import * as ServiceActions from '../../../features/Services/redux/actions';
 import appConfig from "src/config/app";
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
@@ -71,13 +72,19 @@ function* handleLogin(action) {
     if (status === ApiConstants.STATUS_CODES.SUCCESS_OK) {
 
       // Take User Pets Data   
-      yield put(UserActions.getPets(data.token));
+      yield put( UserActions.getPets(data.token) );
 
       // Take Pet Type Data   
-      yield put(UserActions.getPetType(data.token));
+      yield put( UserActions.getPetType(data.token) );
 
       // Take Breed Type Data   
-      yield put(UserActions.getBreedType(data.token));
+      yield put( UserActions.getBreedType(data.token) );
+
+      // Take Service Categoris Data
+      yield put( ServiceActions.getServiceCategories(data.token) );
+
+      // // Take Services Data
+      // yield put( ServiceActions.getServices(data.token) );
 
 
       yield put({

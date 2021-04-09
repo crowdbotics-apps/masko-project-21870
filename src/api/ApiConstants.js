@@ -14,6 +14,8 @@ const ApiConstants = {
     BREED_TYPE: "/api/v1/breed-type/",
     PET_TYPE:"/api/v1/pet-type/",
     PET: "/api/v1/pet/",
+    SERVICE: "/api/v1/service/",
+    SERVICE_CATEGORY: "/api/v1/service-category/",
   },
   STATUS_CODES: {
     SUCCESS_OK: 200,

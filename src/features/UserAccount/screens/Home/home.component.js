@@ -31,7 +31,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
 import { PetComponent } from '../../components/common';
-import { ServicesComponent } from '../../components/common';
+import { ServicesCatComponent } from '../../components/common';
 
 class HomeComponent extends React.Component {
   state = {
@@ -82,19 +82,15 @@ class HomeComponent extends React.Component {
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
            <ScrollView style={styles.scrollView} >
               <PetComponent navigation={navigation}
-                            userPets={userPets}
+                            data={userPets}
                             selectedPet={selectedPet}
                             onSelectPetPress={onSelectPetPress}
               />
-              <ServicesComponent />
-              <Button
-              style={styles.yellowButton}
-              status='warning'
-              size="giant"
-              
-              >
-              See All Products
-            </Button>
+              <ServicesCatComponent 
+                  data={this.props.serviceCat}
+                  onPressCategory={this.props.onPressCategory}
+                  />
+           
             </ScrollView>          
       </LinearGradient>
     );

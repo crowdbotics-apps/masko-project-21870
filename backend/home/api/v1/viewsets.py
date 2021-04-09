@@ -67,13 +67,25 @@ class HomePageViewSet(ModelViewSet):
 class ServiceCategoryViewSet(ModelViewSet):
     serializer_class = ServiceCategorySerializer
     queryset = ServiceCategory.objects.all().order_by('-sort')
+
+    
+
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
 
 class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
-    queryset = Service.objects.all().order_by('-sort')
+
+    def get_queryset( self ):
+        queryset = Service.objects.all()
+        category = self.request.query_params.get('category')
+        
+        if category is not None:
+            queryset = queryset.filter(category=category)
+
+        return queryset.order_by('-sort')
+
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]

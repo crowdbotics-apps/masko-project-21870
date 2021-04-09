@@ -39,6 +39,9 @@ class Category(models.Model):
         auto_now=True,
     )
 
+    def __str__ (self):
+        return self.name_es
+
 # Service Model
 class Service(models.Model):
 
@@ -86,5 +89,8 @@ class Service(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+
+    def __str__ (self):
+        return self.name_es
 
   

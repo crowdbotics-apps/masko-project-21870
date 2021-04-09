@@ -34,6 +34,13 @@ export class _HomeContainer extends React.Component {
     })
     // actions.SelectPet(item);
   }
+
+  onPressCategory = ( item ) => {
+    this.props.navigation.navigate("ServiceList",{
+      category: item,
+    })
+
+  }
  
   render() {
     const { navigation } = this.props;
@@ -42,9 +49,11 @@ export class _HomeContainer extends React.Component {
        
         errorMsg={this.props.signInErrors}
         navigation={navigation}
+        serviceCat={this.props.serviceCat}
         userPets={this.props.userPets}
         selectedPet={this.props.selectedPet}
         onSelectPetPress={this.onSelectPetPress}
+        onPressCategory={this.onPressCategory}
 
       />
     );
@@ -54,6 +63,7 @@ export class _HomeContainer extends React.Component {
 const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
   userPets: state.UserAccount.pets,
+  serviceCat: state.Service.categories,
   selectedPet: state.UserAccount.selectedPet
 });
 

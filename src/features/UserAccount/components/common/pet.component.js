@@ -85,10 +85,10 @@ class _PetComponent extends React.Component {
   }
 
   render() {
-    const { themedStyle, userPets } = this.props;
-    const { items } = this.state;
+    const { data } = this.props;
+    
 
-    if(userPets.length==0){
+    if(data.length==0){
       return ((this.renderAddPetBtn({})));
     }
     
@@ -106,7 +106,7 @@ class _PetComponent extends React.Component {
           />
         ))
       }
-      data={userPets}
+      data={data}
       renderItem={this.renderItem}
     />);
   }

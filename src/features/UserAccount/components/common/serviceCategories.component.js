@@ -9,15 +9,17 @@ import {
 
 import {
   withStyles,
-  Text
+  Text,
+  Avatar
 } from 'react-native-ui-kitten';
 
 import {
   textStyle,
 } from '../../components/common';
 
+const width = Dimensions.get('screen').width
 
-class _ServicesComponent extends React.Component {
+class _ServicesCatComponent extends React.Component {
   state = {
     username: '',
     password: '',
@@ -29,7 +31,7 @@ class _ServicesComponent extends React.Component {
   };
 
   _onPress = (item) => {
-    console.log("Item Pressed")
+    this.props.onPressCategory(item);
   }
 
 
@@ -41,10 +43,16 @@ class _ServicesComponent extends React.Component {
       onShowUnderlay={separators.highlight}
       onHideUnderlay={separators.unhighlight}>
       <View style={themedStyle.container} >
-        <Image  source={item.image} style={themedStyle.imageStyle} />
+   
+        <Image  
+         source={{
+          uri: item.photo,
+        }}
+        style={themedStyle.imageStyle}
+         />
         <View style={themedStyle.textContainer} >
-            <Text style={themedStyle.textTitle}  >{item.title}</Text>
-            <Text style={themedStyle.textDescription}  >{item.description}</Text>
+            <Text style={themedStyle.textTitle}  >{item.name_en}</Text>
+            <Text style={themedStyle.textDescription}  >{item.description_en}</Text>
         </View>
         
       </View>
@@ -54,6 +62,7 @@ class _ServicesComponent extends React.Component {
   render() {
     
     const { items } = this.state;
+    const { data } = this.props;
 
     return (<FlatList
       ItemSeparatorComponent={
@@ -67,13 +76,13 @@ class _ServicesComponent extends React.Component {
           />
         ))
       }
-      data={items}
+      data={data}
       renderItem={this.renderItem}
     />);
   }
 }
 
-export const ServicesComponent = withStyles(_ServicesComponent, theme => ({
+export const ServicesCatComponent = withStyles(_ServicesCatComponent, theme => ({
   container:{ 
     margin: 15,
     borderTopRadius: 15,
@@ -83,6 +92,9 @@ export const ServicesComponent = withStyles(_ServicesComponent, theme => ({
   },
   imageStyle:{
     borderTopRadius: 10,
+    width: width*0.9,
+    height: 120,
+    resizeMode: 'cover',
   },
   textContainer:{
     padding: 10

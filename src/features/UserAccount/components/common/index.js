@@ -8,8 +8,8 @@ export {
 } from './pet.component';
 
 export {
-  ServicesComponent
-} from './services.component';
+  ServicesCatComponent
+} from './serviceCategories.component';
 
 
 export {
