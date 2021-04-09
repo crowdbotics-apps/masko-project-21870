@@ -22,7 +22,7 @@ export class _HomeContainer extends React.Component {
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<PetButton />)
+                headerRight: (<RightIcon />)
           }
   };
   navigationKey = 'HomeContainer';

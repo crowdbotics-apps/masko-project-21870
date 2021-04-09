@@ -32,7 +32,7 @@ export class _PetButton extends React.Component {
   }
 
   onPress = () => {
-    this.setState({showPets = true})
+    this.setState({showPets: true})
   }
  
   render() {

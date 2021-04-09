@@ -178,7 +178,7 @@ class _AddPetComponent extends React.Component {
                 style={styles.yellowButton}
                 textStyle={styles.whiteFont}
                 size="giant"
-                status='warning'
+                status='primary'
                 disabled={!this.validator()}
                 onPress={this.onAddButtonPress}
 

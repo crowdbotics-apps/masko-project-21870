@@ -53,6 +53,7 @@ export class _ForgetPasswordContainer extends React.Component {
         onFacebookPress={this.onFacebookPress}
         onTwitterPress={this.onTwitterPress}
         errorMsg={this.props.signInErrors}
+        forgetPwdLoading={this.props.forgetPwdLoading}
 
       />
     );
@@ -60,6 +61,7 @@ export class _ForgetPasswordContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  forgetPwdLoading: state.EmailAuth.loaders.PasswordRecover,
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
 });
 

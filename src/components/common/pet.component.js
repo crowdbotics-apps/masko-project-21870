@@ -12,8 +12,6 @@ import {
   Avatar,
 } from 'react-native-ui-kitten';
 
-
-import { PetComponent } from 'src/components/common';
 import SmallPawIcon from 'src/assets/icons/paw-icon.svg';
 import { translate } from 'src/utils/translation'; 
 const width = Dimensions.get('screen').width
