@@ -139,7 +139,7 @@ export const PetComponent = withStyles(_PetComponent, theme => ({
       imgContChild:{ 
         width:60,
         height:60,
-        opacity: 0.2
+        opacity: 0.4
       },
       imgContChildSel:{ 
         borderWidth: 2,

@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "location",
     "vehicle",
     "wallet",
-    "pet"
+    "pet",
+    "service"
 ]
 LOCAL_APPS = [
     "home",
@@ -214,7 +215,13 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_REGION = os.getenv("AWS_STORAGE_REGION")
+AWS_S3_REGION_NAME = os.getenv("AWS_STORAGE_REGION")
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10000000
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+
 
 if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):
     # output email to console instead of sending
