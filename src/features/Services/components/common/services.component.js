@@ -48,7 +48,7 @@ class _ServicesComponent extends React.Component {
             <Text style={themedStyle.textDescription}  >{item.getDescription()}</Text>
             <Button
               textStyle={themedStyle.yellowBtnText}
-              status='warning'
+              status='primary'
               size="giant"
               style={themedStyle.yellowBtn}
               >{translate('AddToCartBtn')} - ${item.price}

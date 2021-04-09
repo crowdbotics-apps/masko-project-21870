@@ -21,13 +21,7 @@ export class _ServiceListContainer extends React.Component {
                 title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
                 headerLeft: (<BackHomeIcon navigation={navigation} />),
-                headerTitleStyle: { 
-                    textAlign:"center", 
-                    color: "#FFF",
-                    fontFamily:"Montserrat",
-                    border: null,
-                },
-                
+                headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
                 headerRight: (<RightIcon />)
           }

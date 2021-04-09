@@ -91,7 +91,7 @@ ROOT_URLCONF = "masko_project_21870.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'home/templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -193,11 +193,16 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 # Custom user model
 AUTH_USER_MODEL = "users.User"
 
+SENDGRID_USERNAME = os.getenv('SENDGRID_USERNAME')
+SENDGRID_PASSWORD = os.getenv('SENDGRID_PASSWORD')
+BACKEND_DEFAULT_EMAIL = os.getenv('BACKEND_DEFAULT_EMAIL')
+
 EMAIL_HOST = env.str("EMAIL_HOST", "smtp.sendgrid.net")
-EMAIL_HOST_USER = env.str("SENDGRID_USERNAME", "")
-EMAIL_HOST_PASSWORD = env.str("SENDGRID_PASSWORD", "")
+EMAIL_HOST_USER = SENDGRID_USERNAME
+EMAIL_HOST_PASSWORD = SENDGRID_PASSWORD
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = BACKEND_DEFAULT_EMAIL
 
 
 # start fcm_django push notifications
@@ -223,10 +228,10 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 
 
-if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):
-    # output email to console instead of sending
-    if not DEBUG:
-        logging.warning(
-            "You should setup `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` env vars to send emails."
-        )
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):
+#     # output email to console instead of sending
+#     if not DEBUG:
+#         logging.warning(
+#             "You should setup `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` env vars to send emails."
+#         )
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

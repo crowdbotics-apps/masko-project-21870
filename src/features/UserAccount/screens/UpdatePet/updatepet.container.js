@@ -28,13 +28,7 @@ export class _UpdatePetContainer extends React.Component {
                 title: titleText,
                 headerBackTitle: null,
                 headerTintColor: '#fff',
-                headerTitleStyle: { 
-                    textAlign:"center", 
-                    color: "#FFF",
-                    fontFamily:"Montserrat",
-                    flex:1 ,
-                    border: null,
-                },
+                headerTitleStyle: appConfig.headerTitleStyle,
                 
                 headerStyle: appConfig.headerStyle,
                 headerRight: (<MoreActionPetComponent

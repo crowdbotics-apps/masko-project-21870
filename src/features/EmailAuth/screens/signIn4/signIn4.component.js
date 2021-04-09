@@ -169,6 +169,7 @@ export const SignIn4 = withStyles(SignIn4Component, theme => ({
   signInLabel: {
     marginTop: 16,
     color: 'white',
+    textTransform: "uppercase",
     ...textStyle.subtitle,
   },
   socialAuthIcon: {

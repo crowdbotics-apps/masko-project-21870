@@ -5,8 +5,8 @@ import React from "react";
 
 export default function RightIcon({ iconText }) {
     return (
-        <View style={{flex:1, flexDirection:'row'}}>
-                  <CartIcon width={50}   />
+        <View style={{flex:1, flexDirection:'row', marginRight: 10}}>
+                  <CartIcon width={40}   />
             {/* <Avatar source={require('src/assets/images/pets/pet1.png') } /> */}
          </View> 
     );

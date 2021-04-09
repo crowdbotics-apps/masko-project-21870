@@ -17,13 +17,21 @@ export default appConfig = {
     color: "#FFF",
     fontFamily:"Montserrat",
   },
+  headerTitleStyle: {
+    textAlign:"center", 
+    color: "#FFF",
+    fontFamily:"Montserrat",
+    flex:1 ,
+    border: null,
+    textTransform:'uppercase'
+  },
   contentType:{
     'json':'application/json'
   },
   NAVIGATOR_ROUTE:{
     "SignIn":"SignIn4",
     "SignUp":"SignUp2",
-    "ForgetPassword":"",
+    "ForgetPassword":"ForgetPassword",
     "UserAccount": "UserAccount",
     "Home": "Home"
   },
