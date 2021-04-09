@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import * as userAccountActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
-import { LogoIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
+import { LogoIcon, RightIcon, HamBurgerIcon, PetButton } from 'src/components/HeaderBar';
 
 export class _HomeContainer extends React.Component {
 
@@ -22,7 +22,7 @@ export class _HomeContainer extends React.Component {
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<PetButton />)
           }
   };
   navigationKey = 'HomeContainer';
