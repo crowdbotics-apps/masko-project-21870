@@ -50,13 +50,15 @@ INSTALLED_APPS = [
     "booking",
     "location",
     "vehicle",
-    "wallet",
-    "pet",
-    "service"
+    "wallet"
+    
 ]
 LOCAL_APPS = [
     "home",
     "users.apps.UsersConfig",
+    "pet",
+    "service",
+    "payment_stripe"
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
@@ -184,6 +186,7 @@ SOCIALACCOUNT_ALLOW_REGISTRATION = env.bool("SOCIALACCOUNT_ALLOW_REGISTRATION", 
 REST_AUTH_SERIALIZERS = {
     # Replace password reset serializer to fix 500 error
     "PASSWORD_RESET_SERIALIZER": "home.api.v1.serializers.PasswordSerializer",
+    'USER_DETAILS_SERIALIZER': 'home.api.v1.serializers.UserSerializer'
 }
 REST_AUTH_REGISTER_SERIALIZERS = {
     # Use custom serializer that has no username and matches web signup
@@ -226,6 +229,16 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10000000
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 
 # if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):

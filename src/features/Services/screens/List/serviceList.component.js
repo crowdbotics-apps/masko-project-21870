@@ -26,6 +26,8 @@ import styles from '../styles'
 import { ServicesComponent } from '../../components/common';
 
 import { Spinner } from 'src/components/Spinner';
+import { translate } from 'src/utils/translation';
+import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
 
 class ServiceListComponent extends React.Component {
  
@@ -38,7 +40,14 @@ class ServiceListComponent extends React.Component {
     }
   };
   render() {
-  
+    
+    if(this.props.services.length==0){
+      return (
+        <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerEmpty}>
+            <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
+      </LinearGradient>);
+    }
+    
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>

@@ -93,7 +93,7 @@ class _PetComponent extends React.Component {
     }
     
     return (<FlatList
-      style={{margin:5}}
+      style={{margin:5,height:70}}
       horizontal={true}
       ItemSeparatorComponent={
         Platform.OS !== 'android' &&

@@ -70,7 +70,27 @@
     "ServiceListtNavTitle":"Service List",
     "AddToCartBtn": "Add to Cart",
     "SelectPetLabel": "Select Pet",
+    "UpdateProfileNavTitle": "User Account",
+    "FullNameLabel": "Full Name",
+    "AddressLabel": "Address",
+    "AddressPlaceHolder": "e.g House 12, Zip Code, City and Country",
+    "CdCreateSuccess": "Your card has been successfully added",
+    "AddCdsError": "Cannot create CDS",
+    "CdUpdateSuccess": "Your card has been successfully updated",
+    "UpdateCdsError": "Cannot update CDS",
+    "CdDeleteSuccess": "Your card has been successfully deleted",
+    "DeleteCdsError": "Cannot delete CDS",
+    "GetCdsError": "Cannot Get CDS",
+    "UserUpdateSuccess": "Your profile has been successfully updated",
+    "UpdateUserError": "Cannot Update User",
+    "CdLabel": "Card Number",
+    "EMLabel": "MM/YY",
+    "CVLabel": "CVV",
+    "AddCardButtonLabel": "Add Card",
+    "CardListHeading":"Select default payment card",
+    "AddAnotherCardLabel": "Add Another Card",
+    "NoRecordFoundLabel": "No Record Found",
 
-    
+
 
 }

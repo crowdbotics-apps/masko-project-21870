@@ -8,7 +8,7 @@ const ApiConstants = {
     BASE_URL: appConfig.APIEndPoint,
     LOGIN: '/api/v1/login/',
     SIGNUP: '/api/v1/signup/',
-    UPDATE_PROFILE: '/accounts/user/',
+    USER: '/rest-auth/user/',
     FORGET_PASSWORD: '/rest-auth/password/reset/',
     CHANGE_PASSWORD: '/accounts/password/change/',
     BREED_TYPE: "/api/v1/breed-type/",
@@ -16,6 +16,7 @@ const ApiConstants = {
     PET: "/api/v1/pet/",
     SERVICE: "/api/v1/service/",
     SERVICE_CATEGORY: "/api/v1/service-category/",
+    UNDS: "/api/v1/unds/",
   },
   STATUS_CODES: {
     SUCCESS_OK: 200,

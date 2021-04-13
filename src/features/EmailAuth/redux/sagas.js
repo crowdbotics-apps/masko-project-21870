@@ -11,6 +11,8 @@ import {
   EMAIL_AUTH_SIGNUP_SUCCESS,
   EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
   EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
+  EMAIL_AUTH_SET_USER_REQUEST,
+  EMAIL_AUTH_SET_USER_SUCCESS,
 } from './constants';
 
 
@@ -80,8 +82,12 @@ function* handleLogin(action) {
       // Take Breed Type Data   
       yield put( UserActions.getBreedType(data.token) );
 
-      // Take Service Categoris Data
+      // Take Service Categories Data
       yield put( ServiceActions.getServiceCategories(data.token) );
+      
+      // Take User UNDS Data
+      yield put( UserActions.getCd(data.token) );
+      
 
       // // Take Services Data
       // yield put( ServiceActions.getServices(data.token) );
@@ -152,9 +158,19 @@ function* handlePasswordRecovery(action) {
   }
 }
 
+function* handleUserSet(action) {
+  const { user } = action;
+  yield put({
+        type: EMAIL_AUTH_SET_USER_SUCCESS,
+        user,
+      });
+  
+}
+
 export default all([
   takeLatest(EMAIL_AUTH_LOGIN_REQUEST, handleLogin),
   takeLatest(EMAIL_AUTH_SIGNUP_REQUEST, handleSignUp),
   takeLatest(EMAIL_AUTH_PASSWORD_RECOVER_REQUEST, handlePasswordRecovery),
+  takeLatest(EMAIL_AUTH_SET_USER_REQUEST, handleUserSet),
   
 ]);

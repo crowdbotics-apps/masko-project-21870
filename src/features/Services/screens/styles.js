@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
         width: width,
         padding: 10,
     },
+    itemsContainerEmpty: {
+        
+        height: height,
+        width: width,
+        padding: 10,
+    },
     item: {
         alignItems: 'center',
         borderWidth: 1,

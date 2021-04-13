@@ -19,3 +19,9 @@ export const resetPassword = email => ({
   email
 });
 
+
+export const setUser = ( user ) => ({
+  type: actions.EMAIL_AUTH_SET_USER_REQUEST,
+  user
+})
+

@@ -107,7 +107,7 @@ class HomePageSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "name"]
+        fields = ["id", "email", "name","address","default_card"]
 
 
 class PasswordSerializer(PasswordResetSerializer):
