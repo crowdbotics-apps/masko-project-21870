@@ -19,6 +19,15 @@ const styles = StyleSheet.create({
         width: width,
         padding: 10,
     },
+    itemsContainerWithOutPad: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: "center",
+        height: height,
+        width: width,
+    },
     item: {
         alignItems: 'center',
         borderWidth: 1,

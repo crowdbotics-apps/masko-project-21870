@@ -90,6 +90,12 @@
     "CardListHeading":"Select default payment card",
     "AddAnotherCardLabel": "Add Another Card",
     "NoRecordFoundLabel": "No Record Found",
+    "ServiceDetailsNavTitle": "Service Detail",
+    "SearchBoxLabel": "Search in ",
+    "ServiceDetailPriceLabel": "Price",
+    "ServiceDetailTimeLabel": "Time",
+    "ServiceDetailAddLabel": "Address",
+    "ServiceDetailNoteLabel": "Note",
 
 
 

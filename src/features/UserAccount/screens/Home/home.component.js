@@ -5,7 +5,8 @@ import {
   FlatList,
   TouchableHighlight,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 
 import {
@@ -30,9 +31,8 @@ const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles'
 
-import { PetComponent } from '../../components/common';
+import { AdComponent } from 'src/components/Ads/ads.component';
 
-// import { PetComponent } from 'src/components/common';
 import { ServicesCatComponent } from '../../components/common';
 
 
@@ -82,13 +82,9 @@ class HomeComponent extends React.Component {
           } = this.props;
 
     return (
-      <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
+      <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithOutPad}>
            <ScrollView style={styles.scrollView} >
-              <PetComponent navigation={navigation}
-                            data={userPets}
-                            selectedPet={selectedPet}
-                            onSelectPetPress={onSelectPetPress}
-              />
+              <AdComponent />
               <ServicesCatComponent 
                   data={this.props.serviceCat}
                   onPressCategory={this.props.onPressCategory}
@@ -105,7 +101,7 @@ export const Home = withStyles(HomeComponent, theme => ({
     flex: 1,
   },
   scrollView:{
-    padding: 10,
+    // padding: 10,
   },
   headerContainer: {
     minHeight: 216,

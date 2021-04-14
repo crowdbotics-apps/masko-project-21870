@@ -1,24 +1,25 @@
 import React from 'react';
 
-import { ServiceList } from './serviceList.component';
-import {connect} from 'react-redux';
+import { ServiceDetails } from './serviceDetails.component';
+
+import { connect } from 'react-redux';
 import * as ServiceActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
-import { BackHomeIcon, RightIcon, LogoIcon } from 'src/components/HeaderBar';
+import { BackHomeIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
 
-export class _ServiceListContainer extends React.Component {
+
+export class _ServiceDetailsContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     const { category } = navigation.state.params;
-    titleText = translate('ServiceListtNavTitle');
+    titleText = translate('ServiceDetailsNavTitle');
     if (category){
-      titleText = category.name_en;
+      titleText = category.getName();
     }
     return {
-                // title: titleText,
-                headerTitle: (<LogoIcon navigation={navigation} />),
+                title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
                 headerLeft: (<BackHomeIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
@@ -26,7 +27,7 @@ export class _ServiceListContainer extends React.Component {
                 headerRight: (<RightIcon />)
           }
   };
-  navigationKey = 'ServiceListContainer';
+  navigationKey = 'ServiceDetailsContainer';
 
   constructor( props ){
     super(props);
@@ -44,27 +45,21 @@ export class _ServiceListContainer extends React.Component {
   }
 
   getServices = () => {
-    const { accessToken, actions, navigation } = this.props;
-    actions.getServices( accessToken, navigation.state.params.category );
+    // const { accessToken, actions, navigation } = this.props;
+    // actions.getServices( accessToken, navigation.state.params.category );
   }
 
-  onPressServiceItem = (item) => {
-    const { navigation  } = this.props;
-    this.props.navigation.navigate("ServiceDetails",{
-      category: navigation.state.params.category,
-      service: item 
-    })
-  }
+  
   
   render() {
     const { navigation } = this.props;
     return (
-      <ServiceList
+      <ServiceDetails
         errorMsg={this.props.signInErrors}
         navigation={navigation}
         services={this.props.services}
         getServiceLoading={this.props.getServiceLoading}
-        onPressServiceItem={this.onPressServiceItem}
+        
        />
     );
   }
@@ -84,7 +79,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export const ServiceListContainer =  connect(
+export const ServiceDetailsContainer =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(_ServiceListContainer);
+)(_ServiceDetailsContainer);

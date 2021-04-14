@@ -24,7 +24,7 @@ import { translate } from 'src/utils/translation';
 class _ServicesComponent extends React.Component {
   
   _onPress = (item) => {
-    console.log("Item Pressed")
+    this.props.onPressServiceItem(item)
   }
 
 
@@ -49,7 +49,6 @@ class _ServicesComponent extends React.Component {
             <Button
               textStyle={themedStyle.yellowBtnText}
               status='primary'
-              size="giant"
               style={themedStyle.yellowBtn}
               >{translate('AddToCartBtn')} - ${item.price}
             </Button>
@@ -88,7 +87,8 @@ export const ServicesComponent = withStyles(_ServicesComponent, theme => ({
     borderTopRadius: 15,
     borderRadius: 15,
     backgroundColor:'#FFF',
-    alignSelf:'center'
+    alignSelf:'center',
+    overflow: 'hidden'
   },
   imageStyle:{
     borderTopRadius: 10,
@@ -110,12 +110,11 @@ export const ServicesComponent = withStyles(_ServicesComponent, theme => ({
   },
   yellowBtn:{
         fontFamily: "Montserrat",
-        
         borderRadius: 30,
         margin: 10,
         borderWidth: 0,
         width: 200,
-        alignSelf: 'center'
+        alignSelf: 'flex-start'
   },
   yellowBtnText:{
     fontSize: 14
