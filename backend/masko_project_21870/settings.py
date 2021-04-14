@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY","121312")
 
 ALLOWED_HOSTS = env.list("HOST", default=["*"])
 SITE_ID = 1
@@ -50,11 +50,15 @@ INSTALLED_APPS = [
     "booking",
     "location",
     "vehicle",
-    "wallet",
+    "wallet"
+    
 ]
 LOCAL_APPS = [
     "home",
     "users.apps.UsersConfig",
+    "pet",
+    "service",
+    "payment_stripe"
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
@@ -89,7 +93,7 @@ ROOT_URLCONF = "masko_project_21870.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'home/templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -182,6 +186,7 @@ SOCIALACCOUNT_ALLOW_REGISTRATION = env.bool("SOCIALACCOUNT_ALLOW_REGISTRATION", 
 REST_AUTH_SERIALIZERS = {
     # Replace password reset serializer to fix 500 error
     "PASSWORD_RESET_SERIALIZER": "home.api.v1.serializers.PasswordSerializer",
+    'USER_DETAILS_SERIALIZER': 'home.api.v1.serializers.UserSerializer'
 }
 REST_AUTH_REGISTER_SERIALIZERS = {
     # Use custom serializer that has no username and matches web signup
@@ -191,11 +196,16 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 # Custom user model
 AUTH_USER_MODEL = "users.User"
 
+SENDGRID_USERNAME = os.getenv('SENDGRID_USERNAME')
+SENDGRID_PASSWORD = os.getenv('SENDGRID_PASSWORD')
+BACKEND_DEFAULT_EMAIL = os.getenv('BACKEND_DEFAULT_EMAIL')
+
 EMAIL_HOST = env.str("EMAIL_HOST", "smtp.sendgrid.net")
-EMAIL_HOST_USER = env.str("SENDGRID_USERNAME", "")
-EMAIL_HOST_PASSWORD = env.str("SENDGRID_PASSWORD", "")
+EMAIL_HOST_USER = SENDGRID_USERNAME
+EMAIL_HOST_PASSWORD = SENDGRID_PASSWORD
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = BACKEND_DEFAULT_EMAIL
 
 
 # start fcm_django push notifications
@@ -208,10 +218,33 @@ SWAGGER_SETTINGS = {
     "DEFAULT_INFO": f"{ROOT_URLCONF}.api_info",
 }
 
-if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):
-    # output email to console instead of sending
-    if not DEBUG:
-        logging.warning(
-            "You should setup `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` env vars to send emails."
-        )
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_REGION = os.getenv("AWS_STORAGE_REGION")
+AWS_S3_REGION_NAME = os.getenv("AWS_STORAGE_REGION")
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10000000
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+
+# if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):
+#     # output email to console instead of sending
+#     if not DEBUG:
+#         logging.warning(
+#             "You should setup `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` env vars to send emails."
+#         )
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { appConfig } from "../config/app";
+import appConfig from "../config/app";
 
 const APP_PLATFORM = "Mobile";
 
@@ -18,3 +18,10 @@ export function setupHttpConfig() {
 
   // you can add more default values for http requests here
 }
+
+export const setHeaderToken = (accessToken) =>{
+  return {
+    'Authorization': 'Token '+accessToken
+  };
+}
+

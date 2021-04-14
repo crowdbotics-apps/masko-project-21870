@@ -11,7 +11,6 @@
 		01077B1C1F614405B543AC17 /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4896057A7874236B24D7425 /* Nunito-Italic.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		15750E5F640B44D39FDA2C5F /* Merriweather-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D363A40D266F4A2F9DA43BBB /* Merriweather-BoldItalic.ttf */; };
 		16ADA8091A4C4AE985704520 /* CrimsonText-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA27BA82B6F54E6AA774837A /* CrimsonText-BoldItalic.ttf */; };
@@ -20,7 +19,6 @@
 		2511B32A63584791852AB44B /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0370C43804734F8989BE25EE /* OpenSans-Italic.ttf */; };
 		2626FA13119A47B7B5E4D14C /* Merriweather-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEB7F9516140407291C96D71 /* Merriweather-Regular.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* masko_project_21870Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* masko_project_21870Tests.m */; };
 		321B955E9F4B438B8801785E /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7E14FAA250F4E34BCB78BC9 /* OpenSans-BoldItalic.ttf */; };
@@ -28,6 +26,7 @@
 		381938E5484D4BE0A64756D0 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DACF422EB66C4A2E8C8F57CB /* Lato-Bold.ttf */; };
 		49219009619343CEADF8DA68 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E24F890818DA41B4BF35BE6B /* Montserrat-BoldItalic.ttf */; };
 		4C77C18783050D906770A235 /* libPods-masko_project_21870-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F54B9B2B81485B0522A46C /* libPods-masko_project_21870-tvOSTests.a */; };
+		5069F13A260CAFE70059E7B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5069F139260CAFE70059E7B5 /* Images.xcassets */; };
 		523A8852C06F494284355BA7 /* Nunito-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4608F2B2D4EB4D0E8D6BD41F /* Nunito-BoldItalic.ttf */; };
 		533E4C0A25504B459E8225A6 /* CrimsonText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10678ED2081D4BFAAD1E0350 /* CrimsonText-Regular.ttf */; };
 		562D3B995129E6F93FAB6323 /* libPods-masko_project_21870-masko_project_21870Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 110CFC874FE5D94299F66989 /* libPods-masko_project_21870-masko_project_21870Tests.a */; };
@@ -93,7 +92,6 @@
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = masko_project_21870/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = masko_project_21870/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = masko_project_21870/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = masko_project_21870/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = masko_project_21870/main.m; sourceTree = "<group>"; };
 		1938E99EC00E44A6A3D4F8BE /* fontawesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = fontawesome.ttf; path = ../src/assets/fonts/fontawesome.ttf; sourceTree = "<group>"; };
@@ -115,6 +113,7 @@
 		48DC98A3B2A9418AB4085CB9 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		491A4F07E9CA46AE9CD3670F /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../src/assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 		4D86F7DB16EF4FFFB7E447B9 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../src/assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
+		5069F139260CAFE70059E7B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = masko_project_21870/Images.xcassets; sourceTree = "<group>"; };
 		54F1BA04FCED47AF89550842 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../src/assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		5AA7C8E525C54993B40CB260 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		5AFE77026DD04F16A1A563FA /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -224,8 +223,8 @@
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				5069F139260CAFE70059E7B5 /* Images.xcassets */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -460,7 +459,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 6YKR59QXKM;
+						DevelopmentTeam = 6XD8L2QK46;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -510,8 +509,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				5069F13A260CAFE70059E7B5 /* Images.xcassets in Resources */,
 				592C50879F7B4E5AAB9EEF5E /* CrimsonText-Bold.ttf in Resources */,
 				16ADA8091A4C4AE985704520 /* CrimsonText-BoldItalic.ttf in Resources */,
 				CCB1D492906B4B3D805A3DAD /* CrimsonText-Italic.ttf in Resources */,
@@ -557,7 +556,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,7 +943,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 6YKR59QXKM;
+				DEVELOPMENT_TEAM = 6XD8L2QK46;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -958,8 +956,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.masko-project-21870";
 				PRODUCT_NAME = masko_project_21870;
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: *";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -975,7 +974,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 6YKR59QXKM;
+				DEVELOPMENT_TEAM = 6XD8L2QK46;
 				INFOPLIST_FILE = masko_project_21870/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -983,8 +982,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.masko-project-21870";
 				PRODUCT_NAME = masko_project_21870;
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: *";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
