@@ -25,10 +25,11 @@ import getServiceCategories from 'src/api/methods/serviceCategory';
 function* handleGetServices(action) {
   const {
     accessToken,
-    category
+    category,
+    keyword
   } = action;
   try {
-    const {status, data, error} = yield call( getServices, accessToken,category );
+    const {status, data, error} = yield call( getServices, accessToken,category,keyword );
 
       if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({

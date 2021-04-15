@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
+from django.db.models import Q
 
 from home.api.v1.serializers import (
     SignupSerializer,
@@ -83,9 +84,19 @@ class ServiceViewSet(ModelViewSet):
     def get_queryset( self ):
         queryset = Service.objects.all()
         category = self.request.query_params.get('category')
+        keyword = self.request.query_params.get('keyword')
         
         if category is not None:
             queryset = queryset.filter(category=category)
+
+        if keyword is not None:
+
+            queryset = queryset.filter(
+                                        Q(name_en__contains=keyword) |
+                                        Q(name_es__contains=keyword) |
+                                        Q(description_en__contains=keyword) |
+                                        Q(description_es__contains=keyword) 
+                                      )
 
         return queryset.order_by('-sort')
 

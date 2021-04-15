@@ -32,13 +32,20 @@ import { AdComponent } from 'src/components/Ads/ads.component';
 
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
-import SearchGlassIcon from 'src/assets/icons/search-glass.svg';
 import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
+import { SearchBox } from '../../components/common/searchBox.component';
+import * as _ from 'lodash';
 
 class ServiceListComponent extends React.Component {
   state = {
     search: '',
   }
+  
+  constructor(props){
+    super(props);
+    this.onChangeSearchTextDelayed = _.debounce(this.callGetService, 1000);
+  }
+
   renderSpinner = () => {
     const { getServiceLoading } = this.props;
     if (getServiceLoading) {
@@ -54,6 +61,12 @@ class ServiceListComponent extends React.Component {
 
   onSearchInputTextChange = (text) => {
     this.setState({ search: text });
+    this.onChangeSearchTextDelayed(text)
+    
+  }
+
+  callGetService = (text)=>{
+    this.props.getServicesCb(text);
   }
 
   render() {
@@ -62,53 +75,39 @@ class ServiceListComponent extends React.Component {
     const { search } = this.state;
     let category = navigation.state.params.category
 
-    if (this.props.services.length == 0) {
-      return (
-        <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerEmpty}>
-          <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
-        </LinearGradient>);
-    }
+    // if (this.props.services.length == 0) {
+    //   return (
+    //     <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerEmpty}>
+    //       {this.renderSpinner()}
+    //       <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
+    //     </LinearGradient>);
+    // }
 
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithoutPad}>
         {this.renderSpinner()}
-        <TouchableWithoutFeedback
-
-          onPress={() => {
-            this.searchTexBox.focus()
-          }}
-        >
-          <View
-            style={themedStyle.inputLabelContainer}
-          >
-
-            <Text style={themedStyle.inputBoxLabelTxt}>{translate('SearchBoxLabel')} {category.getName()}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Input
-                ref={(i) => this.searchTexBox = i}
-                style={[themedStyle.inputBoxLabel]}
-                textStyle={themedStyle.inputBoxText}
-                autoCapitalize="none"
-                placeholderTextColor={"#fff"}
-                value={search}
-                onChangeText={(text) => this.onSearchInputTextChange(text)}
-              />
-
-              <SearchGlassIcon width={50} />
-            </View>
-
-          </View>
-        </TouchableWithoutFeedback>
+        <SearchBox 
+              extraTitle={category.getName()}
+              onSearchInputTextChange={this.onSearchInputTextChange} 
+              search={search}
+        />
         <Text style={themedStyle.categoryHead}>{category.getName()}</Text>
         <AdComponent />
         <ScrollView style={styles.scrollView} >
+          
+        { this.props.services.length == 0 && (
+          <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
+        )} 
 
+        { this.props.services.length > 0 && (
           <ServicesComponent
-            data={this.props.services}
-            onPressServiceItem={this.onPressServiceItem}
+          data={this.props.services}
+          onPressServiceItem={this.onPressServiceItem}
 
-          />
+        />
+        )}   
+          
 
         </ScrollView>
       </LinearGradient>

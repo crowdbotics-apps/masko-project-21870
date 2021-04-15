@@ -1,9 +1,10 @@
 import * as actions from "./constants";
 
-export const getServices = ( accessToken, category )  => ({
+export const getServices = ( accessToken, category, keyword )  => ({
   type: actions.SERVICE_GET_REQUEST,
   accessToken,
-  category
+  category,
+  keyword
 });
 
 export const getServiceCategories = accessToken => ({

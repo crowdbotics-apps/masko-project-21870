@@ -43,10 +43,12 @@ export class _ServiceListContainer extends React.Component {
       this.getServices();
   }
 
-  getServices = () => {
+  getServices = (keyword) => {
     const { accessToken, actions, navigation } = this.props;
-    actions.getServices( accessToken, navigation.state.params.category );
+    actions.getServices( accessToken, navigation.state.params.category, keyword );
   }
+
+  
 
   onPressServiceItem = (item) => {
     const { navigation  } = this.props;
@@ -65,6 +67,7 @@ export class _ServiceListContainer extends React.Component {
         services={this.props.services}
         getServiceLoading={this.props.getServiceLoading}
         onPressServiceItem={this.onPressServiceItem}
+        getServicesCb={this.getServices}
        />
     );
   }
@@ -78,8 +81,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getServices: (accessToken, category) => {
-      dispatch(ServiceActions.getServices( accessToken, category ));
+    getServices: (accessToken, category, keyword) => {
+      dispatch(ServiceActions.getServices( accessToken, category, keyword ));
     },
   },
 });
