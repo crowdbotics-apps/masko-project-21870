@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   root: {
     paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    backgroundColor: '#6D84C1',
+    backgroundColor: '#455272',
     height: height
   },
   content: {

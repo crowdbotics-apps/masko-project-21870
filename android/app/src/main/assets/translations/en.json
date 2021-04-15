@@ -94,8 +94,13 @@
     "SearchBoxLabel": "Search in ",
     "ServiceDetailPriceLabel": "Price",
     "ServiceDetailTimeLabel": "Time",
+    "ServiceDetailDateLabel": "DD/MM/YY",
+    "ServiceDetailDayTimeLabel": "Time",
     "ServiceDetailAddLabel": "Address",
     "ServiceDetailNoteLabel": "Note",
+    "ChooseDayTimeLabel": "Please Choose Day Time",
+    "ChooseTimeLabel": "Please Choose Time",
+
 
 
 

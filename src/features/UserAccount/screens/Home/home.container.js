@@ -15,8 +15,14 @@ export class _HomeContainer extends React.Component {
                 headerTitle: (<LogoIcon navigation={navigation} />),
                 headerBackTitle: null,
                 headerLeft: (<HamBurgerIcon navigation={navigation} />),
+                headerTitleAlign: 'center',
+
                 headerTitleStyle: { 
-                    textAlign:"center", 
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    flexGrow: 1,
                     flex:1 ,
                     border: null,
                 },

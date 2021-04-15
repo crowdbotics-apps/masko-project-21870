@@ -4,7 +4,9 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  View
+  View,
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 
 import {
@@ -14,7 +16,8 @@ import {
   Avatar,
   Button,
   Text,
-  Input
+  Input,
+  Datepicker,
 } from 'react-native-ui-kitten';
 
 
@@ -29,17 +32,56 @@ import styles from '../styles'
 
 
 import RNPickerSelect from 'react-native-picker-select';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
+// import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+const moment = require('moment');
+
+
+const timeOptions = [
+      {
+        value: 'ASAP', label: "ASAP"
+      },
+      {
+        value: 'Schedule', label: "Schedule"
+      }
+    ];
+
+    const dayTimeOption = [
+      {
+        value: 'Morning', label: "Morning"
+      },
+      {
+        value: 'Mid-Day', label: "Mid-Day"
+      },
+      {
+        value: 'Afternoon', label: "Afternoon"
+      },
+      {
+        value: 'Evening', label: "Evening"
+      }
+    ];
 
 class ServiceDetailsComponent extends React.Component {
 
   state = {
     timeOptionValue: undefined,
     timeOptionLabel: undefined,
-    notes: undefined
+    dateOptionValue: undefined,
+    dateOptionLabel: undefined,
+    dayTimeOptionValue: undefined,
+    dayTimeOptionLabel: undefined,
+    notes: undefined,
+    bookingDate: {
+      display: moment().format(AppConfig.dateFormat),
+      value: new Date()
+    },
+    showDatePicker: false,
+    showTimePicker: false,
 
   }
 
@@ -53,7 +95,25 @@ class ServiceDetailsComponent extends React.Component {
   };
 
   onTimeInputTextChange = (value, index) => {
-    this.setState({timeOptionValue: index,timeOptionLabel: value});
+
+    let newState = {...this.state}
+  
+    if(value===timeOptions[1].value){
+      newState.showTimePicker = true
+    }
+    newState.timeOptionValue = index;
+    newState.timeOptionLabel = value;
+
+
+    this.setState(newState);
+  }
+
+  onDateInputTextChange = (value, index) => {
+    this.setState({ dateOptionValue: index, dateOptionLabel: value});
+  }
+
+  onDayTimeInputTextChange = (value, index) => {
+    this.setState({dayTimeOptionValue: index, dayTimeOptionLabel: value});
   }
 
   onNotesInputTextChange = (value) => {
@@ -68,20 +128,52 @@ class ServiceDetailsComponent extends React.Component {
     this.props.navigation.pop();
   }
 
+  handleBookingDateChange = (event, date) => {
+
+    if(date!=null){
+    
+      let { bookingDate } = this.state;
+      bookingDate = {
+        display: moment(date).format(AppConfig.dateFormat),
+        value: new Date(date)
+      }
+      
+      if(Platform.OS !== 'ios'){
+        this.setState({ bookingDate , showDatePicker: false});
+      }else{
+        this.setState({ bookingDate });
+      }
+    }else{
+      this.setState({ showDatePicker: false});
+    } 
+  }
+
+  toggleDateModal = () => {
+    // alert("TOGGLE")
+    const { showDatePicker } = this.state;
+    
+    let status = false;
+    if (showDatePicker) {
+      status = false;
+    } else {
+      status = true;
+    }
+    this.setState({ showDatePicker: status })
+
+  }
+
+  toggleTimePicker = () => {
+    this.setState({showTimePicker: !this.state.showTimePicker})
+  }
+   
 
   render() {
 
     const { themedStyle, navigation } = this.props;
     const { service } = navigation.state.params; 
+    const { showDatePicker, showTimePicker,  bookingDate } = this.state
 
-    const timeOptions = [
-      {
-        value: 'ASAP', label: "ASAP"
-      },
-      {
-        value: 'Schedule', label: "Schedule"
-      }
-    ]
+    
 
 
     return (
@@ -106,23 +198,72 @@ class ServiceDetailsComponent extends React.Component {
           <View style={themedStyle.detailContainer.container}>  
              <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailPriceLabel')}</Text>
              <Text style={themedStyle.detailContainer.valueText}>${service.price}</Text>   
+            <View style={themedStyle.detailContainer.pickerContainer} >
+                <RNPickerSelect
+                  style={pickerSelectStyles}
+                
+                  onValueChange={(value, index) => {
+                      if(value!='0'){
+                        this.onTimeInputTextChange(value, index)
+                        
+                      }
+                        
+                  }
+                  }
+                  placeholder={{ label: translate('ChooseTimeLabel'), value: '0' }}
+                  items={timeOptions}
+                  value={this.state.timeOptionLabel}
+                >
+                <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailTimeLabel')}</Text>
+                <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.timeOptionLabel}</Text>
+                </RNPickerSelect> 
+            </View>  
+           
+            { showTimePicker && (      
+            <View style={themedStyle.detailContainer.inputContainerHalf}>
+                <TouchableOpacity style={themedStyle.detailContainer.pickerContainer2} 
+                       onPress={this.toggleDateModal}
+                  > 
+                      <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDateLabel')}</Text>
+                      <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{bookingDate.display}</Text>
+                     
 
-             <RNPickerSelect
-              style={pickerSelectStyles}
-              // placeholder={{ label: translate('PetTypePlaceHolder') , value: '0' }}
-
-              onValueChange={(value, index) => {
-                if(value!='0')
-                  this.onTimeInputTextChange(value, index)
-              }
-              }
-              items={timeOptions}
-              value={this.state.timeOptionLabel}
-            >
-            <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailTimeLabel')}</Text>
-            <Text style={themedStyle.detailContainer.valueText}>{this.state.timeOptionLabel}</Text>
-            </RNPickerSelect> 
-
+                </TouchableOpacity>
+                <View style={{width:20}} ></View>
+                <View style={themedStyle.detailContainer.pickerContainer2} >   
+                
+                      <RNPickerSelect
+                          style={pickerSelectStyles}
+                        
+                          onValueChange={(value, index) => {
+                            if(value!='0')
+                              this.onDayTimeInputTextChange(value, index)
+                          }
+                          }
+                          placeholder={{ label: translate('ChooseDayTimeLabel'), value: '0' }}
+                          items={dayTimeOption}
+                          value={this.state.timeOptionLabel}
+                        >
+                        <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDayTimeLabel')}</Text>
+                        <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>
+                        </RNPickerSelect> 
+                 </View>      
+            </View>
+            )}
+            {showTimePicker && showDatePicker && (
+                <DateTimePicker
+                  value={bookingDate.value}
+                  mode={'date'}
+                  style={{color:"#FFF"}}
+                  textColor={'#FFF'}
+                  onChange={this.handleBookingDateChange}
+                  onConfirm={this.handleBookingDateChange}
+                  onCancel={this.toggleDateModal}
+                />
+            )}
+            
+        
+            
 
              <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
              <Text style={themedStyle.detailContainer.valueText}>4505  Melody Lane, Reston, Virginia</Text>   
@@ -189,6 +330,8 @@ const pickerSelectStyles = StyleSheet.create({
   
   },
 });
+
+
 
 export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
   container: {
@@ -272,6 +415,7 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
       padding: 20,
 
     },
+    
     placeHolderText:{
       color: "#9BB2EF",
       fontSize: 12,
@@ -280,6 +424,25 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
       color: "#FFFF",
       fontSize: 15,
       marginBottom: 20,
+    },
+    pickerContainer:{     
+      borderBottomColor: "#A0B0DC",
+      borderBottomWidth: 1,
+      marginBottom: 10
+    },
+    inputContainerHalf:{
+      flexDirection:'row'
+    },
+    pickerContainer2:{     
+      borderBottomColor: "#A0B0DC",
+      borderBottomWidth: 1,
+      marginBottom: 10,
+      flex: 3,
+    },
+    valueTextWithOutMargin:{
+      color: "#FFFF",
+      fontSize: 15,
+      marginBottom: 10,
     },
     noteTextArea:{
       color: "white",
