@@ -190,7 +190,6 @@ class ServiceDetailsComponent extends React.Component {
             <View style={themedStyle.serviceItem.textContainer} >
               <Text style={themedStyle.serviceItem.textTitle}  >{service.name_en}</Text>
               <Text style={themedStyle.serviceItem.textDescription}  >{service.description_es}</Text>
-            
             </View>
 
 
@@ -388,7 +387,8 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
                 width: width,
                 backgroundColor:'#FFF',
                 alignSelf:'center',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                marginTop: 5,
             },
             imageStyle:{
               borderTopRadius: 10,

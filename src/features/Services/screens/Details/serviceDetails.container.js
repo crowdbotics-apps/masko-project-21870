@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as ServiceActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
-import { BackHomeIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
+import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
 
 
@@ -21,7 +21,7 @@ export class _ServiceDetailsContainer extends React.Component {
     return {
                 title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
-                headerLeft: (<BackHomeIcon navigation={navigation} />),
+                headerLeft: (<BackIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
                 headerRight: (<RightIcon />)
@@ -32,23 +32,9 @@ export class _ServiceDetailsContainer extends React.Component {
   constructor( props ){
     super(props);
 
-    const didFocusSubscription = props.navigation.addListener(
-      'didFocus',
-      payload => {
-        this.getServices();
-      }
-    );
   }
 
-  componentDidMount(){
-      this.getServices();
-  }
-
-  getServices = () => {
-    // const { accessToken, actions, navigation } = this.props;
-    // actions.getServices( accessToken, navigation.state.params.category );
-  }
-
+ 
   
   
   render() {

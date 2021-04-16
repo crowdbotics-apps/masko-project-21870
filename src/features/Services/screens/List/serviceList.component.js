@@ -46,6 +46,7 @@ class ServiceListComponent extends React.Component {
     this.onChangeSearchTextDelayed = _.debounce(this.callGetService, 1000);
   }
 
+
   renderSpinner = () => {
     const { getServiceLoading } = this.props;
     if (getServiceLoading) {

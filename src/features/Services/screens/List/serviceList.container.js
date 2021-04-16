@@ -30,14 +30,25 @@ export class _ServiceListContainer extends React.Component {
 
   constructor( props ){
     super(props);
+    this.state = {
+      searchKeyword: '',
+    }
 
-    const didFocusSubscription = props.navigation.addListener(
-      'didFocus',
-      payload => {
-        this.getServices();
-      }
-    );
+    // const didFocusSubscription = props.navigation.addListener(
+    //   'didFocus',
+    //   payload => {
+    //     // this.getServices();
+    //   }
+    // );
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+      if(this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
+        this.getServices();
+          
+      }
+  }
+
 
   componentDidMount(){
       this.getServices();
@@ -68,6 +79,7 @@ export class _ServiceListContainer extends React.Component {
         getServiceLoading={this.props.getServiceLoading}
         onPressServiceItem={this.onPressServiceItem}
         getServicesCb={this.getServices}
+        
        />
     );
   }

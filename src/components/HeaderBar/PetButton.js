@@ -101,11 +101,11 @@ const styles = {
       // marginRight: 10
   },
   choosePetContainer:{
-    marginTop: 5,
+    marginTop: 2,
     backgroundColor:"#FFCD3E",
     borderWidth: 2,
     borderColor: "#FFF",
-    width: 45,
+    width: 50,
     height: 45,
     borderRadius: 18,
     // marginRight: 12,
