@@ -34,7 +34,7 @@ import styles from './styles'
 import { AdComponent } from 'src/components/Ads/ads.component';
 
 import { ServicesCatComponent } from '../../components/common';
-
+import { PetComponent } from 'src/components/common';
 
 class HomeComponent extends React.Component {
   state = {
@@ -84,7 +84,9 @@ class HomeComponent extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithOutPad}>
            <ScrollView style={styles.scrollView} >
+       
               <AdComponent />
+             
               <ServicesCatComponent 
                   data={this.props.serviceCat}
                   onPressCategory={this.props.onPressCategory}

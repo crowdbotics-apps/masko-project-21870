@@ -48,7 +48,7 @@ class _PetComponent extends React.Component {
       >
       <View style={themedStyle.addContainer} >
         <SmallPawIcon width={20} style={{alignSelf: "center"}} />
-        <Text style={themedStyle.addContainerText} >Add Pet</Text>
+        <Text style={themedStyle.addContainerText} >{translate("AddPetBtn")}</Text>
       </View>
     </TouchableOpacity>);
   }
@@ -83,48 +83,53 @@ class _PetComponent extends React.Component {
   }
 
   render() {
-    const { data, themedStyle} = this.props;
+    const { data, themedStyle, visible} = this.props;
     
 
-    // if(data.length==0){
-    //   return ((this.renderAddPetBtn({})));
-    // }
+    let mainContainer = [themedStyle.container, (visible)?themedStyle.visibleContainer: themedStyle.hideContainer];
+    
     
     return (
-    <View style={themedStyle.container} >
-    <Text style={themedStyle.headLabel} >{translate('SelectPetLabel')}</Text>
-    <FlatList
-      style={{margin:5}}
-      horizontal={true}
-      ItemSeparatorComponent={
-        Platform.OS !== 'android' &&
-        (({ highlighted }) => (
-          <View
-            style={[
-              // style.separator,
-              highlighted && { marginLeft: 0 }
-            ]}
-          />
-        ))
-      }
-      data={data}
-      renderItem={this.renderItem}
-    />
+    <View style={mainContainer} >
+        <Text style={themedStyle.headLabel} >{translate('SelectPetLabel')}</Text>
+        <FlatList
+          style={{margin:5}}
+          horizontal={true}
+          ItemSeparatorComponent={
+            Platform.OS !== 'android' &&
+            (({ highlighted }) => (
+              <View
+                style={[
+                  // style.separator,
+                  highlighted && { marginLeft: 0 }
+                ]}
+              />
+            ))
+          }
+          data={data}
+          renderItem={this.renderItem}
+        />
     </View>);
   }
 }
 
 export const PetComponent = withStyles(_PetComponent, theme => ({
+    visibleContainer:{
+      display: 'flex',
+    },
+    hideContainer:{
+      display: 'none',
+    },
     container:{
+      
       backgroundColor: "#FFCD3E",
       padding: 20,
       height: 140,
       position: "absolute",
-      top: 15,
+      top: 50,
       zIndex: 2,
       width: width,
-      marginLeft: 0,
-      left: 0,
+      left: -(width-60),
     },
     headLabel:{
       color: "#FFF",

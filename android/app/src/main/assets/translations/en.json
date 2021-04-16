@@ -46,6 +46,7 @@
     "NextButtonLabel":"Next",
     "CancelButtonLabel":"Cancel",
     "AddPetNavTitle":"Add Pet",
+    "AddPetBtn":"Add Pet",
     "UpdatePetNavTitle":"Update Pet",
     "SelectAlbumLabel":"Select Album",
     "SelectCameraLabel":"Select Camera",
@@ -100,7 +101,6 @@
     "ServiceDetailNoteLabel": "Note",
     "ChooseDayTimeLabel": "Please Choose Day Time",
     "ChooseTimeLabel": "Please Choose Time",
-
 
 
 
