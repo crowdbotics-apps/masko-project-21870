@@ -69,3 +69,11 @@ export const updateProfile = (accessToken , user )  => ({
   accessToken,
   user
 });
+
+export const showPetSelector = ()  => ({
+  type: actions.USER_SHOW_PET_SELECTOR_SUCCESS
+});
+
+export const hidePetSelector = ()  => ({
+  type: actions.USER_HIDE_PET_SELECTOR_SUCCESS
+});

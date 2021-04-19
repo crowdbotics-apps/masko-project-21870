@@ -16,6 +16,7 @@ import NotificationListNavigator from '../features/NotificationList/navigator';
 import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
 import ServiceNavigator from '../features/Services/navigator';
+import CheckoutNavigator from '../features/Checkout/navigator';
 /**
  * new navigators can be imported here
  */
@@ -39,6 +40,7 @@ AddItem: {screen: AddItemNavigator},
 Maps: { screen: MapsNavigator },
 UserAccount: { screen: UserAccountNavigator},
 Service: { screen: ServiceNavigator },
+Checkout: { screen: CheckoutNavigator},
 
     /** new navigators can be added here */
     SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({

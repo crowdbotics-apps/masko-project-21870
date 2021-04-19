@@ -3,6 +3,7 @@ import * as AuthActions from 'src/features/EmailAuth/redux/constants';
 import * as utils from 'src/features/UserAccount/utils/general';
 
 const initialState = {
+  showPetSelector: false,
   pets: [],
   unds: [], // For cDs
   petTypes: [],
@@ -554,6 +555,23 @@ export default UserAccountReducer = (state = initialState, action) => {
 
 
     ///
+
+    case actions.USER_SHOW_PET_SELECTOR_SUCCESS:
+      return {
+        ...state,
+        showPetSelector: true
+        
+      };      
+        
+
+      case actions.USER_HIDE_PET_SELECTOR_SUCCESS:
+        return {
+          ...state,
+          showPetSelector: false
+          
+        };      
+          
+
     
     
 

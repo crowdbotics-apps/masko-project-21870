@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import * as userAccountActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
-import { LogoIcon, RightIcon, HamBurgerIcon, PetButton } from 'src/components/HeaderBar';
+import { LogoIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 
 export class _HomeContainer extends React.Component {
 
@@ -15,14 +15,20 @@ export class _HomeContainer extends React.Component {
                 headerTitle: (<LogoIcon navigation={navigation} />),
                 headerBackTitle: null,
                 headerLeft: (<HamBurgerIcon navigation={navigation} />),
+                headerTitleAlign: 'center',
+
                 headerTitleStyle: { 
-                    textAlign:"center", 
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    flexGrow: 1,
                     flex:1 ,
                     border: null,
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<RightIcon navigation={navigation} />)
           }
   };
   navigationKey = 'HomeContainer';
@@ -54,6 +60,7 @@ export class _HomeContainer extends React.Component {
         selectedPet={this.props.selectedPet}
         onSelectPetPress={this.onSelectPetPress}
         onPressCategory={this.onPressCategory}
+        showPetSelector={this.props.showPetSelector}
 
       />
     );
@@ -64,7 +71,7 @@ const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
   userPets: state.UserAccount.pets,
   serviceCat: state.Service.categories,
-  selectedPet: state.UserAccount.selectedPet
+  selectedPet: state.UserAccount.selectedPet,
 });
 
 const mapDispatchToProps = dispatch => ({

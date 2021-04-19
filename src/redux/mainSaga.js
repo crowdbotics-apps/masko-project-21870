@@ -4,6 +4,7 @@ import { all, takeEvery, take } from "redux-saga/effects";
 import EmailAuthSaga from 'src/features/EmailAuth/redux/sagas';
 import UserAccountSaga from 'src/features/UserAccount/redux/sagas';
 import ServiceSaga from 'src/features/Services/redux/sagas';
+import CheckoutSaga from 'src/features/Checkout/redux/sagas';
 
 //@BlueprintReduxSagaImportInsertion
 
@@ -17,7 +18,8 @@ export function* mainSaga() {
     // other sagas go here
     EmailAuthSaga,
     UserAccountSaga,
-    ServiceSaga
+    ServiceSaga,
+    CheckoutSaga,
     //@BlueprintReduxSagaMainInsertion
     
   ]);

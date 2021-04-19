@@ -88,7 +88,8 @@ export const ServicesCatComponent = withStyles(_ServicesCatComponent, theme => (
     borderTopRadius: 15,
     borderRadius: 15,
     backgroundColor:'#FFF',
-    alignSelf:'center'
+    alignSelf:'center',
+    overflow: 'hidden'
   },
   imageStyle:{
     borderTopRadius: 10,
