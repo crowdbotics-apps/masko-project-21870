@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
+from django.db.models import Q
 
 from home.api.v1.serializers import (
     SignupSerializer,
@@ -21,6 +22,10 @@ from home.api.v1.serializers import (
     ServiceSerializer,
     ServiceCategorySerializer
 )
+
+from payment_stripe.serializers import ( CardSerializer )
+from payment_stripe.models import ( Card ) 
+
 from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category as ServiceCategory
@@ -33,7 +38,6 @@ class SignupViewSet(ModelViewSet):
 
 class LoginViewSet(ViewSet):
     """Based on rest_framework.authtoken.views.ObtainAuthToken"""
-
     serializer_class = AuthTokenSerializer
 
     def create(self, request):
@@ -67,13 +71,35 @@ class HomePageViewSet(ModelViewSet):
 class ServiceCategoryViewSet(ModelViewSet):
     serializer_class = ServiceCategorySerializer
     queryset = ServiceCategory.objects.all().order_by('-sort')
+
+    
+
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
 
 class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
-    queryset = Service.objects.all().order_by('-sort')
+
+    def get_queryset( self ):
+        queryset = Service.objects.all()
+        category = self.request.query_params.get('category')
+        keyword = self.request.query_params.get('keyword')
+        
+        if category is not None:
+            queryset = queryset.filter(category=category)
+
+        if keyword is not None:
+
+            queryset = queryset.filter(
+                                        Q(name_en__contains=keyword) |
+                                        Q(name_es__contains=keyword) |
+                                        Q(description_en__contains=keyword) |
+                                        Q(description_es__contains=keyword) 
+                                      )
+
+        return queryset.order_by('-sort')
+
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
@@ -110,6 +136,19 @@ class BreedTypeViewSet(ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
     http_method_names = ["get"]
+
+
+class CardViewSet(ModelViewSet):
+    serializer_class = CardSerializer
+    
+    def get_queryset( self):
+        return Card.objects.filter( owner = self.request.user )
+
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     
 
 

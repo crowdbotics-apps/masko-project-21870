@@ -3,6 +3,7 @@ import {NavigationStackScreenProps} from 'react-navigation-stack';
 import {SignIn4} from './signIn4.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
+import appConfig from 'src/config/app';
 
 export class _SignIn4Container extends React.Component {
   static navigationOptions = {
@@ -18,14 +19,14 @@ export class _SignIn4Container extends React.Component {
   onSignUpPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'SignUp2',
+      routeName: appConfig.NAVIGATOR_ROUTE.SignUp,
     });
   };
 
   onForgotPasswordPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'ForgetPassword',
+      routeName: appConfig.NAVIGATOR_ROUTE.ForgetPassword,
     });
   };
 

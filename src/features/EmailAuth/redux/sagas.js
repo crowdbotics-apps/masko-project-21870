@@ -11,10 +11,13 @@ import {
   EMAIL_AUTH_SIGNUP_SUCCESS,
   EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS,
   EMAIL_AUTH_PASSWORD_RECOVER_ERROR,
+  EMAIL_AUTH_SET_USER_REQUEST,
+  EMAIL_AUTH_SET_USER_SUCCESS,
 } from './constants';
 
 
-import * as UserActions from '../../../features/UserAccount/redux/actions'
+import * as UserActions from '../../../features/UserAccount/redux/actions';
+import * as ServiceActions from '../../../features/Services/redux/actions';
 import appConfig from "src/config/app";
 import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
@@ -71,13 +74,23 @@ function* handleLogin(action) {
     if (status === ApiConstants.STATUS_CODES.SUCCESS_OK) {
 
       // Take User Pets Data   
-      yield put(UserActions.getPets(data.token));
+      yield put( UserActions.getPets(data.token) );
 
       // Take Pet Type Data   
-      yield put(UserActions.getPetType(data.token));
+      yield put( UserActions.getPetType(data.token) );
 
       // Take Breed Type Data   
-      yield put(UserActions.getBreedType(data.token));
+      yield put( UserActions.getBreedType(data.token) );
+
+      // Take Service Categories Data
+      yield put( ServiceActions.getServiceCategories(data.token) );
+      
+      // Take User UNDS Data
+      yield put( UserActions.getCd(data.token) );
+      
+
+      // // Take Services Data
+      // yield put( ServiceActions.getServices(data.token) );
 
 
       yield put({
@@ -90,7 +103,7 @@ function* handleLogin(action) {
       setTimeout(()=>{
         showSuccessAlert(translate('LoginSuccessMsg'))
       },500);
-
+     
        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount );
     } else {
       yield put({
@@ -145,9 +158,19 @@ function* handlePasswordRecovery(action) {
   }
 }
 
+function* handleUserSet(action) {
+  const { user } = action;
+  yield put({
+        type: EMAIL_AUTH_SET_USER_SUCCESS,
+        user,
+      });
+  
+}
+
 export default all([
   takeLatest(EMAIL_AUTH_LOGIN_REQUEST, handleLogin),
   takeLatest(EMAIL_AUTH_SIGNUP_REQUEST, handleSignUp),
   takeLatest(EMAIL_AUTH_PASSWORD_RECOVER_REQUEST, handlePasswordRecovery),
+  takeLatest(EMAIL_AUTH_SET_USER_REQUEST, handleUserSet),
   
 ]);

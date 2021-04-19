@@ -51,9 +51,31 @@ export default EmailAuthReducer = (state = initialState, action) => {
         errors: { ...state.errors, SignUp: action.error },
         loaders: { ...state.loaders, SignUp: null },
        };
+    
+    
+       case actions.EMAIL_AUTH_PASSWORD_RECOVER_REQUEST:
+        return { 
+          ...state,
+          errors: {  ...state.errors, PasswordRecover: null },
+          loaders: { ...state.loaders, PasswordRecover: true },
+         };
+      case actions.EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS:
+        return { 
+          ...state,
+          loaders: { ...state.loaders, PasswordRecover: null },
+         };   
 
     case actions.EMAIL_AUTH_PASSWORD_RECOVER_ERROR:
-      return { ...state, errors: { PasswordRecover: action.error } };  
+      return { ...state,
+            errors: { PasswordRecover: action.error },
+            loaders: { ...state.loaders, PasswordRecover: null }
+           };  
+    case actions.EMAIL_AUTH_SET_USER_SUCCESS:
+            return { 
+                  ...state,
+                  user: action.user
+                  
+                 };         
     case actions.EMAIL_AUTH_LOGOUT:
       return initialState;
     default:

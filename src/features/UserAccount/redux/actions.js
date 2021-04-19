@@ -37,3 +37,43 @@ export const deletePet = (accessToken , pet )  => ({
   accessToken,
   pet
 });
+
+
+export const getCd =  accessToken => ({
+  type: actions.USER_CARD_GET_REQUEST,
+  accessToken
+});
+
+
+export const addCd = (accessToken , cd ) => ({
+  type: actions.USER_CARD_CREATE_REQUEST,
+  accessToken,
+  cd
+});
+
+export const updateCd = (accessToken , cd )  => ({
+  type: actions.USER_CARD_UPDATE_REQUEST,
+  accessToken,
+  cd
+});
+
+
+export const deleteCd = (accessToken , cd )  => ({
+  type: actions.USER_CARD_DELETE_REQUEST,
+  accessToken,
+  cd
+});
+
+export const updateProfile = (accessToken , user )  => ({
+  type: actions.USER_PROFILE_UPDATE_REQUEST,
+  accessToken,
+  user
+});
+
+export const showPetSelector = ()  => ({
+  type: actions.USER_SHOW_PET_SELECTOR_SUCCESS
+});
+
+export const hidePetSelector = ()  => ({
+  type: actions.USER_HIDE_PET_SELECTOR_SUCCESS
+});

@@ -4,6 +4,9 @@ import {SignUp2} from './signUp2.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
 
+import appConfig from 'src/config/app';
+
+
 export class _SignUp2Container extends React.Component {
   static navigationOptions = {
     header: null,
@@ -20,14 +23,14 @@ export class _SignUp2Container extends React.Component {
   onSignInPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'SignIn4',
+      routeName: appConfig.NAVIGATOR_ROUTE.SignIn,
     });
   };
 
   onForgetPasswordButtonPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'ForgetPassword',
+      routeName: appConfig.NAVIGATOR_ROUTE.ForgetPassword,
     });
   }
 

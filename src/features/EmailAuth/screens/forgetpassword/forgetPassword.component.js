@@ -8,6 +8,7 @@ import {ForgetPasswordForm } from '../../components/auth';
 
 import { EmailValidator } from '../../core/validators';
 
+import { Spinner } from 'src/components/Spinner';
 
 import {
   ScrollableAvoidKeyboard,
@@ -78,13 +79,22 @@ class ForgetPasswordComponent extends React.Component {
     );
   }
 
+  renderSpinner = () => {
+    const { forgetPwdLoading } = this.props;
+    if (forgetPwdLoading) {
+      return <Spinner />;
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const {themedStyle} = this.props;
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         <ScrollableAvoidKeyboard >
-          
+            {this.renderSpinner()}
             <View style={themedStyle.headerContainer}>
               <LargeLogo width={width} style={{marginBottom:50,marginTop:50}} />
               <Text style={themedStyle.signInLabel} category="s1" style={styles.loginHeading} >

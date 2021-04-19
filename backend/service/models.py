@@ -39,6 +39,9 @@ class Category(models.Model):
         auto_now=True,
     )
 
+    def __str__ (self):
+        return self.name_es
+
 # Service Model
 class Service(models.Model):
 
@@ -74,6 +77,8 @@ class Service(models.Model):
         default=0.00
     )
 
+    is_recurring = models.BooleanField(default=False)
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  
 
     sort = models.IntegerField(default=0)  
@@ -86,5 +91,9 @@ class Service(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+    
+
+    def __str__ (self):
+        return self.name_es
 
   

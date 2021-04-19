@@ -77,3 +77,55 @@ export function deletePet( storePets, userPet ){
    return list;
 
 }
+
+
+export function appendCd( storeCds, userCds ){
+
+  let list = []
+  list.push(userCds);
+  
+  _.forEach(storeCds,(i)=>{
+    list.push(i);
+   });
+
+   return list;
+
+}
+
+export function updateCd( storeCds, userCds ){
+
+let updateCds = userCds;
+let list = []
+
+
+_.forEach(storeCds,(i)=>{
+  if(i.id === updateCds.id){
+    list.push(updateCds);
+    
+  }else{
+    list.push(i);
+  }
+  
+ });
+
+ return list;
+
+}
+
+
+export function deleteCd( storeCds, userCds ){
+
+let list = []
+
+
+_.forEach(storeCds,(i)=>{
+  if(i.id !== userCds.id){
+    list.push(i);
+    
+  }
+  
+ });
+
+ return list;
+
+}

@@ -3,15 +3,17 @@ import {NavigationStackScreenProps} from 'react-navigation-stack';
 import {ForgetPassword} from './forgetPassword.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
+import  appConfig from 'src/config/app';
 
 export class _ForgetPasswordContainer extends React.Component {
   static navigationOptions = {
     header: null,
   };
-  navigationKey = 'SignIn4Container';
+  navigationKey = 'ForgetPasswordContainer';
 
   onSignInPress = data => {
-     this.props.navigation.goBack();
+    //  this.props.navigation.goBack();
+    this.props.navigation.navigation( appConfig.NAVIGATOR_ROUTE.SignIn )
     // const { actions } = this.props;
     // actions.resetPassword(data)
   };
@@ -19,14 +21,14 @@ export class _ForgetPasswordContainer extends React.Component {
   onSignUpPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'SignUp2',
+      routeName: appConfig.NAVIGATOR_ROUTE.SignUp,
     });
   };
 
   onSignInButtonPress = () => {
     this.props.navigation.navigate({
       key: this.navigationKey,
-      routeName: 'SignIn4',
+      routeName: appConfig.NAVIGATOR_ROUTE.SignIn,
     });
   };
 
@@ -51,6 +53,7 @@ export class _ForgetPasswordContainer extends React.Component {
         onFacebookPress={this.onFacebookPress}
         onTwitterPress={this.onTwitterPress}
         errorMsg={this.props.signInErrors}
+        forgetPwdLoading={this.props.forgetPwdLoading}
 
       />
     );
@@ -58,6 +61,7 @@ export class _ForgetPasswordContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  forgetPwdLoading: state.EmailAuth.loaders.PasswordRecover,
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
 });
 

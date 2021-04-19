@@ -54,6 +54,17 @@ const styles = StyleSheet.create({
         width: width*0.85,
         alignSelf: 'center'
     },
+
+    yellowButton2:{
+        fontFamily: "Montserrat",
+        // backgroundColor: "#FFCD3E",
+        borderRadius: 30,
+        margin: 10,
+        borderWidth: 0,
+        width: width*0.7,
+        alignSelf: 'center'
+    },
+
     whiteFont: {
         fontFamily: "Montserrat",
         color: 'white',
@@ -156,6 +167,23 @@ const styles = StyleSheet.create({
         color: '#FFF',
 
     },
+
+    inputLabelContainerMid:{
+        flex: 3, 
+        flexDirection: 'column',
+        alignItems:'flex-start',
+        borderBottomColor:'#A0B0DC',
+        borderBottomWidth:1,
+        padding:0,
+        margin:15,
+        paddingBottom: 10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+
+    },
+
+
     pickerContainer:{
         alignItems:'flex-start',
         borderBottomColor:'#A0B0DC',

@@ -15,6 +15,7 @@ import SettingsNavigator from '../features/Settings/navigator';
 import NotificationListNavigator from '../features/NotificationList/navigator';
 import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
+import ServiceNavigator from '../features/Services/navigator';
 /**
  * new navigators can be imported here
  */
@@ -27,9 +28,9 @@ const AppNavigator = {
 // Settings172630: { screen: Settings172630Navigator },
 // SignIn: { screen: SignInNavigator },
 EmailAuth:  { screen: EmailAuthNavigator ,  navigationOptions: ({ navigation }) => ({
-  // swipeEnabled: true,
-  // gesturesEnabled: true,
-  // drawerLockMode: 'locked-closed',
+  swipeEnabled: true,
+  gesturesEnabled: true,
+  drawerLockMode: 'locked-closed',
 })},
 UserProfile: { screen: UserProfileNavigator },
 Settings: { screen: SettingsNavigator },
@@ -37,12 +38,13 @@ NotificationList: { screen: NotificationListNavigator },
 AddItem: {screen: AddItemNavigator},
 Maps: { screen: MapsNavigator },
 UserAccount: { screen: UserAccountNavigator},
+Service: { screen: ServiceNavigator },
 
     /** new navigators can be added here */
     SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
-      // swipeEnabled: true,
-      // gesturesEnabled: true,
-      // drawerLockMode: 'locked-closed',
+      swipeEnabled: true,
+      gesturesEnabled: true,
+      drawerLockMode: 'locked-closed',
     })},
 };
 
