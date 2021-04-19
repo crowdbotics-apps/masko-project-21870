@@ -76,15 +76,14 @@ class HomeComponent extends React.Component {
   render() {
     const {
             navigation,
-            userPets,
-            selectedPet,
-            onSelectPetPress
           } = this.props;
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithOutPad}>
            <ScrollView style={styles.scrollView} >
-       
+             <PetComponent 
+                  navigation={navigation}
+              />
               <AdComponent />
              
               <ServicesCatComponent 

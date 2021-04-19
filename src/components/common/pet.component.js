@@ -4,6 +4,7 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
+  // TouchableNativeFeedback,
   Text
 } from 'react-native';
 
@@ -12,13 +13,17 @@ import {
   Avatar,
 } from 'react-native-ui-kitten';
 
+import { connect } from 'react-redux';
+
 import SmallPawIcon from 'src/assets/icons/paw-icon.svg';
 import { translate } from 'src/utils/translation'; 
 const width = Dimensions.get('screen').width
+// import { TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler'
+import * as userAccountActions from 'src/features/UserAccount/redux/actions';
 
 const addPetConst = "addpet"
 
-class _PetComponent extends React.Component {
+class __PetComponent extends React.Component {
   state = {
     username: '',
     password: '',
@@ -29,10 +34,12 @@ class _PetComponent extends React.Component {
   };
 
   _onPress = (item) => {
-    this.props.onSelectPetPress(item);
+    const { actions } = this.props;
+    actions.SelectPet(item)
   }
 
   _onPressAdd = () => {
+    
     const { navigation } = this.props;
     navigation.navigate("AddPet");
   }
@@ -41,6 +48,7 @@ class _PetComponent extends React.Component {
 
     const { themedStyle } = this.props;
     return (<TouchableOpacity
+      // style={{zIndex:4,elevation: 4}}
       key={'ADDBUTTON'}
       onPress={() => this._onPressAdd()}
       onShowUnderlay={separators.highlight}
@@ -61,6 +69,7 @@ class _PetComponent extends React.Component {
       return [
          (index == 0 && this.renderAddPetBtn(separators)) ,
         <TouchableOpacity
+          // style={{zIndex:4,elevation: 4}}
           key={item.id}
           onPress={() => this._onPress(item)}
           onShowUnderlay={separators.highlight}
@@ -83,35 +92,66 @@ class _PetComponent extends React.Component {
   }
 
   render() {
-    const { data, themedStyle, visible} = this.props;
+    const { data,userPets, themedStyle } = this.props;
     
 
-    let mainContainer = [themedStyle.container, (visible)?themedStyle.visibleContainer: themedStyle.hideContainer];
+    // let mainContainer = [themedStyle.container, (visible)?themedStyle.visibleContainer: themedStyle.hideContainer];
+    let mainContainer = themedStyle.container;
     
-    
+    if(!this.props.showPetSelector){
+      return (<View/>);
+    }
+
     return (
-    <View style={mainContainer} >
+    <View style={mainContainer}  >
+        
         <Text style={themedStyle.headLabel} >{translate('SelectPetLabel')}</Text>
         <FlatList
           style={{margin:5}}
           horizontal={true}
-          ItemSeparatorComponent={
-            Platform.OS !== 'android' &&
-            (({ highlighted }) => (
-              <View
-                style={[
-                  // style.separator,
-                  highlighted && { marginLeft: 0 }
-                ]}
-              />
-            ))
-          }
-          data={data}
+          // ItemSeparatorComponent={
+          //   Platform.OS !== 'android' &&
+          //   (({ highlighted }) => (
+          //     <View
+          //       style={[
+          //         // style.separator,
+          //         highlighted && { marginLeft: 0 }
+          //       ]}
+          //     />
+          //   ))
+          // }
+          data={userPets}
           renderItem={this.renderItem}
         />
     </View>);
   }
 }
+
+
+const mapStateToProps = state => ({
+  accessToken: state.EmailAuth.accessToken,
+  selectedPet: state.UserAccount.selectedPet,
+  showPetSelector: state.UserAccount.showPetSelector,
+  userPets: state.UserAccount.pets,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    SelectPet: (pet) => {
+      dispatch(userAccountActions.setPet(pet));
+    },
+    ShowPetSelector: () => {
+      dispatch(userAccountActions.showPetSelector());
+    },
+    HidePetSelector: () => {
+      dispatch(userAccountActions.hidePetSelector());
+    },
+  },
+});
+const _PetComponent =  connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(__PetComponent);
 
 export const PetComponent = withStyles(_PetComponent, theme => ({
     visibleContainer:{
@@ -125,11 +165,14 @@ export const PetComponent = withStyles(_PetComponent, theme => ({
       backgroundColor: "#FFCD3E",
       padding: 20,
       height: 140,
-      position: "absolute",
-      top: 50,
-      zIndex: 2,
       width: width,
-      left: -(width-60),
+      // position: "absolute",
+      // top: 50,
+      zIndex: 9999,
+      elevation: 9999,
+      // zIndex: 2,
+      // left: -(width-60),
+      // left: -(width-60),
     },
     headLabel:{
       color: "#FFF",
@@ -140,7 +183,6 @@ export const PetComponent = withStyles(_PetComponent, theme => ({
     },
     imageContainer:{
      padding: 5,
-     
      },
      addContainer:{
         marginTop: 5,

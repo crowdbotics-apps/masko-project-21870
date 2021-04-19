@@ -37,8 +37,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
-import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
-// import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
+import { PetComponent } from 'src/components/common';
+
 const moment = require('moment');
 
 
@@ -179,6 +180,9 @@ class ServiceDetailsComponent extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
+        <PetComponent 
+                  navigation={navigation}
+              />
         <ScrollView style={styles.scrollView} >
           <View style={themedStyle.serviceItem.container} >
             <Image

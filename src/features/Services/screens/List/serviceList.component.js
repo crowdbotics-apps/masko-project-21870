@@ -36,6 +36,8 @@ import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordConta
 import { SearchBox } from '../../components/common/searchBox.component';
 import * as _ from 'lodash';
 
+import { PetComponent } from 'src/components/common';
+
 class ServiceListComponent extends React.Component {
   state = {
     search: '',
@@ -88,6 +90,9 @@ class ServiceListComponent extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithoutPad}>
         {this.renderSpinner()}
+        <PetComponent 
+                  navigation={navigation}
+              />
         <SearchBox 
               extraTitle={category.getName()}
               onSearchInputTextChange={this.onSearchInputTextChange} 

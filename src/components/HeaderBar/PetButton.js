@@ -8,6 +8,8 @@ import * as userAccountActions from 'src/features/UserAccount/redux/actions';
 
 import { TouchableOpacity } from 'react-native';
 import { PetComponent } from 'src/components/common';
+// import { PetComponent } from 'src/features/UserAccount/components/common';
+
 import SmallPawIcon from 'src/assets/icons/paw-icon.svg';
 
 export class _PetButton extends React.Component {
@@ -33,14 +35,20 @@ export class _PetButton extends React.Component {
   }
 
   onPress = () => {
-    this.setState({showPets: !this.state.showPets})
+    const { actions } = this.props;
+    if(this.props.showPetSelector){
+      actions.HidePetSelector();
+    }else{
+      actions.ShowPetSelector();
+    }
+    // this.setState({showPets: !this.state.showPets})
   }
 
   renderBtn = () => {
-    const { navigation, selectedPet,userPets } = this.props;
+    const { navigation, selectedPet, userPets, showPetSelector } = this.props;
     const { showPets } = this.state;
     let btnStyle = styles.normalBtn
-    if(showPets){
+    if(showPetSelector){
       btnStyle = styles.selectedBtn
     }
     if(selectedPet){
@@ -67,13 +75,13 @@ export class _PetButton extends React.Component {
       return (
         <View  >
             {this.renderBtn()}
-            <PetComponent 
-                visible={showPets}
+            {/* {showPets && (<PetComponent 
+                
                 data={userPets}
                 navigation={navigation}
                 selectedPet={selectedPet}
                 onSelectPetPress={this.onSelectPetPress} 
-            />
+            />)} */}
         
           </View>
      );
@@ -85,6 +93,7 @@ export class _PetButton extends React.Component {
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
   selectedPet: state.UserAccount.selectedPet,
+  showPetSelector: state.UserAccount.showPetSelector,
   userPets: state.UserAccount.pets,
 });
 
@@ -125,6 +134,12 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     SelectPet: (pet) => {
       dispatch(userAccountActions.setPet(pet));
+    },
+    ShowPetSelector: () => {
+      dispatch(userAccountActions.showPetSelector());
+    },
+    HidePetSelector: () => {
+      dispatch(userAccountActions.hidePetSelector());
     },
   },
 });

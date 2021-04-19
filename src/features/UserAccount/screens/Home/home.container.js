@@ -60,6 +60,7 @@ export class _HomeContainer extends React.Component {
         selectedPet={this.props.selectedPet}
         onSelectPetPress={this.onSelectPetPress}
         onPressCategory={this.onPressCategory}
+        showPetSelector={this.props.showPetSelector}
 
       />
     );
@@ -70,7 +71,7 @@ const mapStateToProps = state => ({
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
   userPets: state.UserAccount.pets,
   serviceCat: state.Service.categories,
-  selectedPet: state.UserAccount.selectedPet
+  selectedPet: state.UserAccount.selectedPet,
 });
 
 const mapDispatchToProps = dispatch => ({
