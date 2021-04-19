@@ -101,6 +101,13 @@
     "ServiceDetailNoteLabel": "Note",
     "ChooseDayTimeLabel": "Please Choose Day Time",
     "ChooseTimeLabel": "Please Choose Time",
+    "MyCartNavTitle": "My Cart",
+    "CheckoutBtn": "Checkout",
+    "OrderSummaryLabel": "Summary",
+    "OrderSubTotalLabel": "Subtotal",
+    "OrderShippingLabel": "Shipping",
+    "OrderTaxLabel": "Tax",
+    "OrderTotalLabel": "Total",
 
 
 

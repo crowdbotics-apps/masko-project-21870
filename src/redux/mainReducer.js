@@ -12,6 +12,7 @@ import EmailAuthReducer from 'src/features/EmailAuth/redux/reducers'
 
 import UserAccountReducer from 'src/features/UserAccount/redux/reducers'
 import ServiceReducer from 'src/features/Services/redux/reducers'
+import CheckoutReducer from 'src/features/Checkout/redux/reducers'
 
 const emailAuthPersistConfig = {
   key: "emailAuth",
@@ -31,6 +32,12 @@ const servicePersistConfig = {
   blacklist: ["errors","loaders"],
 };
 
+const checkoutPersistConfig = {
+  key: "checkout",
+  storage : AsyncStorage,
+  blacklist: ["errors","loaders"],
+};
+
 export const combinedReducers = combineReducers({
   blank: (state, action) => {
     if (state == null) state = [];
@@ -39,9 +46,9 @@ export const combinedReducers = combineReducers({
 
 
   //@BlueprintReduxCombineInsertion
-
   EmailAuth: persistReducer( emailAuthPersistConfig, EmailAuthReducer),
   UserAccount: persistReducer( userAccountPersistConfig, UserAccountReducer),
   Service: persistReducer( servicePersistConfig, ServiceReducer),
+  Checkout: persistReducer( checkoutPersistConfig, CheckoutReducer),
 
 });
