@@ -34,7 +34,11 @@ export class _ServiceDetailsContainer extends React.Component {
 
   }
 
- 
+  onSelectPetPress = ( item ) => {
+    const { actions } = this.props;
+   
+    // actions.SelectPet(item);
+  }
   
   
   render() {
@@ -45,6 +49,10 @@ export class _ServiceDetailsContainer extends React.Component {
         navigation={navigation}
         services={this.props.services}
         getServiceLoading={this.props.getServiceLoading}
+        userPets={this.props.userPets}
+        selectedPet={this.props.selectedPet}
+        
+        onSelectPetPress={this.onSelectPetPress}
         
        />
     );
@@ -54,7 +62,9 @@ export class _ServiceDetailsContainer extends React.Component {
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
   services: state.Service.services,
-  getServiceLoading: state.Service.GetService
+  getServiceLoading: state.Service.GetService,
+  userPets: state.UserAccount.pets,
+  selectedPet: state.UserAccount.selectedPet
 });
 
 const mapDispatchToProps = dispatch => ({

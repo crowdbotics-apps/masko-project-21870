@@ -39,33 +39,36 @@ import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 
 import { PetComponent } from 'src/components/common';
+import { ServicePetComponent } from '../../components/common';
+
+import * as _ from 'lodash';
 
 const moment = require('moment');
 
 
 const timeOptions = [
-      {
-        value: 'ASAP', label: "ASAP"
-      },
-      {
-        value: 'Schedule', label: "Schedule"
-      }
-    ];
+  {
+    value: 'ASAP', label: "ASAP"
+  },
+  {
+    value: 'Schedule', label: "Schedule"
+  }
+];
 
-    const dayTimeOption = [
-      {
-        value: 'Morning', label: "Morning"
-      },
-      {
-        value: 'Mid-Day', label: "Mid-Day"
-      },
-      {
-        value: 'Afternoon', label: "Afternoon"
-      },
-      {
-        value: 'Evening', label: "Evening"
-      }
-    ];
+const dayTimeOption = [
+  {
+    value: 'Morning', label: "Morning"
+  },
+  {
+    value: 'Mid-Day', label: "Mid-Day"
+  },
+  {
+    value: 'Afternoon', label: "Afternoon"
+  },
+  {
+    value: 'Evening', label: "Evening"
+  }
+];
 
 class ServiceDetailsComponent extends React.Component {
 
@@ -83,8 +86,17 @@ class ServiceDetailsComponent extends React.Component {
     },
     showDatePicker: false,
     showTimePicker: false,
+    pets: [],
 
   }
+
+  constructor(props){
+    super(props)
+    this.state.pets = this.setPetInfo();
+  }
+
+ 
+
 
   renderSpinner = () => {
     const { getServiceLoading } = this.props;
@@ -97,9 +109,9 @@ class ServiceDetailsComponent extends React.Component {
 
   onTimeInputTextChange = (value, index) => {
 
-    let newState = {...this.state}
-  
-    if(value===timeOptions[1].value){
+    let newState = { ...this.state }
+
+    if (value === timeOptions[1].value) {
       newState.showTimePicker = true
     }
     newState.timeOptionValue = index;
@@ -110,19 +122,19 @@ class ServiceDetailsComponent extends React.Component {
   }
 
   onDateInputTextChange = (value, index) => {
-    this.setState({ dateOptionValue: index, dateOptionLabel: value});
+    this.setState({ dateOptionValue: index, dateOptionLabel: value });
   }
 
   onDayTimeInputTextChange = (value, index) => {
-    this.setState({dayTimeOptionValue: index, dayTimeOptionLabel: value});
+    this.setState({ dayTimeOptionValue: index, dayTimeOptionLabel: value });
   }
 
   onNotesInputTextChange = (value) => {
-    this.setState({notes:value});
+    this.setState({ notes: value });
   }
 
   onAddButtonPress = () => {
-   
+
   }
 
   onCancelButtonPress = () => {
@@ -131,28 +143,28 @@ class ServiceDetailsComponent extends React.Component {
 
   handleBookingDateChange = (event, date) => {
 
-    if(date!=null){
-    
+    if (date != null) {
+
       let { bookingDate } = this.state;
       bookingDate = {
         display: moment(date).format(AppConfig.dateFormat),
         value: new Date(date)
       }
-      
-      if(Platform.OS !== 'ios'){
-        this.setState({ bookingDate , showDatePicker: false});
-      }else{
+
+      if (Platform.OS !== 'ios') {
+        this.setState({ bookingDate, showDatePicker: false });
+      } else {
         this.setState({ bookingDate });
       }
-    }else{
-      this.setState({ showDatePicker: false});
-    } 
+    } else {
+      this.setState({ showDatePicker: false });
+    }
   }
 
   toggleDateModal = () => {
     // alert("TOGGLE")
     const { showDatePicker } = this.state;
-    
+
     let status = false;
     if (showDatePicker) {
       status = false;
@@ -164,25 +176,76 @@ class ServiceDetailsComponent extends React.Component {
   }
 
   toggleTimePicker = () => {
-    this.setState({showTimePicker: !this.state.showTimePicker})
+    this.setState({ showTimePicker: !this.state.showTimePicker })
   }
+
+  setPetInfo = () => {
+    const { userPets, selectedPet } = this.props;
+    let list = [];
+    _.forEach(userPets, (i) => {
+        list.push({
+          ...i,
+          qty: 0,
+          selected: ( selectedPet && i.id == selectedPet.id )? true: false
+        })  
+    });
+    return list;    
+
+
+  }
+
+  onSelectPetPress = ( item ) => {
+    const { pets } = this.state;
+    let list = [];
+    _.forEach(pets, (i) => {
+        list.push({
+          ...i,
+          selected: (item && i.id == item.id)?true:false
+        })  
+    });
    
+    this.setState({pets: list})   
+  }
+
+  onUpdatePetQtyPress = ( item , qty ) => {
+    const { pets } = this.state;
+   
+    let list = [];
+    _.forEach(pets, (i) => {
+       list.push({
+          ...i,
+          qty: ( item && i.id == item.id )? qty : i.qty
+        })  
+    });
+    this.setState({pets: list})   
+  }
+
 
   render() {
 
-    const { themedStyle, navigation } = this.props;
-    const { service } = navigation.state.params; 
-    const { showDatePicker, showTimePicker,  bookingDate } = this.state
+    const {
+      themedStyle,
+      navigation,
+      selectedPet,
+    } = this.props;
 
-    
+    const { service } = navigation.state.params;
+
+    const {
+      showDatePicker,
+      showTimePicker,
+      bookingDate
+    } = this.state
+
+
 
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
-        <PetComponent 
-                  navigation={navigation}
-              />
+        <PetComponent
+          navigation={navigation}
+        />
         <ScrollView style={styles.scrollView} >
           <View style={themedStyle.serviceItem.container} >
             <Image
@@ -198,116 +261,127 @@ class ServiceDetailsComponent extends React.Component {
 
 
           </View>
-          <View style={themedStyle.detailContainer.container}>  
-             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailPriceLabel')}</Text>
-             <Text style={themedStyle.detailContainer.valueText}>${service.price}</Text>   
+
+          <View style={themedStyle.detailContainer.container}>
+            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailPriceLabel')}</Text>
+            <Text style={themedStyle.detailContainer.valueText}>${service.price}</Text>
             <View style={themedStyle.detailContainer.pickerContainer} >
-                <RNPickerSelect
-                  style={pickerSelectStyles}
-                
-                  onValueChange={(value, index) => {
-                      if(value!='0'){
-                        this.onTimeInputTextChange(value, index)
-                        
-                      }
-                        
+              <RNPickerSelect
+                style={pickerSelectStyles}
+
+                onValueChange={(value, index) => {
+                  if (value != '0') {
+                    this.onTimeInputTextChange(value, index)
+
                   }
-                  }
-                  placeholder={{ label: translate('ChooseTimeLabel'), value: '0' }}
-                  items={timeOptions}
-                  value={this.state.timeOptionLabel}
-                >
+
+                }
+                }
+                placeholder={{ label: translate('ChooseTimeLabel'), value: '0' }}
+                items={timeOptions}
+                value={this.state.timeOptionLabel}
+              >
                 <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailTimeLabel')}</Text>
                 <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.timeOptionLabel}</Text>
-                </RNPickerSelect> 
-            </View>  
-           
-            { showTimePicker && (      
-            <View style={themedStyle.detailContainer.inputContainerHalf}>
-                <TouchableOpacity style={themedStyle.detailContainer.pickerContainer2} 
-                       onPress={this.toggleDateModal}
-                  > 
-                      <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDateLabel')}</Text>
-                      <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{bookingDate.display}</Text>
-                     
+              </RNPickerSelect>
+            </View>
+
+            {showTimePicker && (
+              <View style={themedStyle.detailContainer.inputContainerHalf}>
+                <TouchableOpacity style={themedStyle.detailContainer.pickerContainer2}
+                  onPress={this.toggleDateModal}
+                >
+                  <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDateLabel')}</Text>
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{bookingDate.display}</Text>
+
 
                 </TouchableOpacity>
-                <View style={{width:20}} ></View>
-                <View style={themedStyle.detailContainer.pickerContainer2} >   
-                
-                      <RNPickerSelect
-                          style={pickerSelectStyles}
-                        
-                          onValueChange={(value, index) => {
-                            if(value!='0')
-                              this.onDayTimeInputTextChange(value, index)
-                          }
-                          }
-                          placeholder={{ label: translate('ChooseDayTimeLabel'), value: '0' }}
-                          items={dayTimeOption}
-                          value={this.state.timeOptionLabel}
-                        >
-                        <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDayTimeLabel')}</Text>
-                        <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>
-                        </RNPickerSelect> 
-                 </View>      
-            </View>
+                <View style={{ width: 20 }} ></View>
+                <View style={themedStyle.detailContainer.pickerContainer2} >
+
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+
+                    onValueChange={(value, index) => {
+                      if (value != '0')
+                        this.onDayTimeInputTextChange(value, index)
+                    }
+                    }
+                    placeholder={{ label: translate('ChooseDayTimeLabel'), value: '0' }}
+                    items={dayTimeOption}
+                    value={this.state.timeOptionLabel}
+                  >
+                    <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDayTimeLabel')}</Text>
+                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>
+                  </RNPickerSelect>
+                </View>
+              </View>
             )}
             {showTimePicker && showDatePicker && (
-                <DateTimePicker
-                  value={bookingDate.value}
-                  mode={'date'}
-                  style={{color:"#FFF"}}
-                  textColor={'#FFF'}
-                  onChange={this.handleBookingDateChange}
-                  onConfirm={this.handleBookingDateChange}
-                  onCancel={this.toggleDateModal}
-                />
+              <DateTimePicker
+                value={bookingDate.value}
+                mode={'date'}
+                style={{ color: "#FFF" }}
+                textColor={'#FFF'}
+                onChange={this.handleBookingDateChange}
+                onConfirm={this.handleBookingDateChange}
+                onCancel={this.toggleDateModal}
+              />
             )}
-            
-        
-            
 
-             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
-             <Text style={themedStyle.detailContainer.valueText}>4505  Melody Lane, Reston, Virginia</Text>   
 
-             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailNoteLabel')}</Text>
-             <Input
-             textStyle={themedStyle.detailContainer.noteTextAreaText}
-             style={themedStyle.detailContainer.noteTextArea}
+
+
+            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
+            <Text style={themedStyle.detailContainer.valueText}>4505  Melody Lane, Reston, Virginia</Text>
+
+            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailNoteLabel')}</Text>
+            <Input
+              textStyle={themedStyle.detailContainer.noteTextAreaText}
+              style={themedStyle.detailContainer.noteTextArea}
               multiline={true}
               textStyle={{ minHeight: 80 }}
               placeholder='Add Notes'
               value={this.state.notes}
-              onChangeText={(value)=>this.onNotesInputTextChange(value)}
-            /> 
+              onChangeText={(value) => this.onNotesInputTextChange(value)}
+            />
+          </View>
+          <ServicePetComponent
+            navigation={navigation}
+            data={this.state.pets}
+            selectedPet={selectedPet}
+            onSelectPetPress={this.onSelectPetPress}
+            onUpdatePetQtyPress={this.onUpdatePetQtyPress}
+          />
 
-                     <Button
-                            style={styles.yellowButton}
-                            textStyle={styles.whiteFont}
-                            size="giant"
-                            status='primary'
-                            // disabled={!this.validator()}
-                            onPress={this.onAddButtonPress}
+          <View style={themedStyle.detailContainer.container}>
 
-                          >
-                            {translate("AddToCartBtn")}
-                        </Button>
-                        <Button
-                        style={styles.yellowButton}
-                        textStyle={styles.whiteFont}
-                        size="giant"
-                        status='info'
-                        // disabled={!this.validator()}
-                        onPress={this.onCancelButtonPress}
+            <Button
+              style={styles.yellowButton}
+              textStyle={styles.whiteFont}
+              size="giant"
+              status='primary'
+              // disabled={!this.validator()}
+              onPress={this.onAddButtonPress}
 
-                      >
-                        {translate("CancelButtonLabel")}
-                    </Button>
+            >
+              {translate("AddToCartBtn")}
+            </Button>
+            <Button
+              style={styles.yellowButton}
+              textStyle={styles.whiteFont}
+              size="giant"
+              status='info'
+              // disabled={!this.validator()}
+              onPress={this.onCancelButtonPress}
+
+            >
+              {translate("CancelButtonLabel")}
+            </Button>
 
 
 
-          </View>  
+          </View>
 
         </ScrollView>
       </LinearGradient>
@@ -322,7 +396,7 @@ const pickerSelectStyles = StyleSheet.create({
     marginBottom: 12,
     color: '#FFF',
     fontFamily: "Montserrat",
-  
+
   },
   inputAndroid: {
     fontSize: 10,
@@ -330,7 +404,7 @@ const pickerSelectStyles = StyleSheet.create({
     margin: 0,
     color: '#FFF',
     fontFamily: "Montserrat",
-  
+
   },
 });
 
@@ -386,76 +460,76 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
     justifyContent: "center",
     alignItems: "center"
   },
-  serviceItem:{
-            container:{ 
-                width: width,
-                backgroundColor:'#FFF',
-                alignSelf:'center',
-                overflow: 'hidden',
-                marginTop: 5,
-            },
-            imageStyle:{
-              borderTopRadius: 10,
-              width: width,
-              height: 180,
-              resizeMode: 'cover',
-            },
-            textContainer:{
-              padding: 20
-            },
-            textTitle:{
-              fontFamily: "Montserrat",
-              fontWeight: 'bold',
-              fontSize: 14,
-            },
-            textDescription:{
-              fontFamily: "Montserrat",
-              fontSize: 12,
-            }
+  serviceItem: {
+    container: {
+      width: width,
+      backgroundColor: '#FFF',
+      alignSelf: 'center',
+      overflow: 'hidden',
+      marginTop: 5,
+    },
+    imageStyle: {
+      borderTopRadius: 10,
+      width: width,
+      height: 180,
+      resizeMode: 'cover',
+    },
+    textContainer: {
+      padding: 20
+    },
+    textTitle: {
+      fontFamily: "Montserrat",
+      fontWeight: 'bold',
+      fontSize: 14,
+    },
+    textDescription: {
+      fontFamily: "Montserrat",
+      fontSize: 12,
+    }
   },
-  detailContainer:{
+  detailContainer: {
     container: {
       flexDirection: "column",
       padding: 20,
 
     },
-    
-    placeHolderText:{
+
+    placeHolderText: {
       color: "#9BB2EF",
       fontSize: 12,
     },
-    valueText:{
+    valueText: {
       color: "#FFFF",
       fontSize: 15,
       marginBottom: 20,
     },
-    pickerContainer:{     
+    pickerContainer: {
       borderBottomColor: "#A0B0DC",
       borderBottomWidth: 1,
       marginBottom: 10
     },
-    inputContainerHalf:{
-      flexDirection:'row'
+    inputContainerHalf: {
+      flexDirection: 'row'
     },
-    pickerContainer2:{     
+    pickerContainer2: {
       borderBottomColor: "#A0B0DC",
       borderBottomWidth: 1,
       marginBottom: 10,
       flex: 3,
     },
-    valueTextWithOutMargin:{
+    valueTextWithOutMargin: {
       color: "#FFFF",
       fontSize: 15,
       marginBottom: 10,
     },
-    noteTextArea:{
+    noteTextArea: {
       color: "white",
       borderColor: "#FFF",
       backgroundColor: null,
-      
+
       marginBottom: 20,
     },
-    noteTextAreaText:{
+    noteTextAreaText: {
       color: "white",
       fontSize: 10,
     }
