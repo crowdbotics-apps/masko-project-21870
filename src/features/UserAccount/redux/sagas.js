@@ -70,6 +70,8 @@ function* handleAddPet(action) {
           type: USER_PET_ADD_SUCCESS,
           pet: data,
         });
+
+        
         setTimeout(()=>{
             showSuccessAlert( translate('PetCreateSuccess') )
         },500);

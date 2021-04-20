@@ -30,6 +30,10 @@ class SignIn4Component extends React.Component {
     username: 'usama149+05032021@gmail.com',
     password: 'test123456',
   };
+  // state = {
+  //   username: '',
+  //   password: '',
+  // };
 
   onUsernameInputTextChange = username => {
     this.setState({username});
