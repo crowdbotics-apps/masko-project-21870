@@ -22,6 +22,7 @@ const width = Dimensions.get('screen').width
 import { translate } from 'src/utils/translation';
 
 
+
 import TrashIcon from 'src/assets/icons/trash-icon.svg';
 
 class _CartItemsComponent extends React.Component {
@@ -95,6 +96,8 @@ class _CartItemsComponent extends React.Component {
   render() {
     
     const { data } = this.props;
+
+   
 
     return (<FlatList
       ItemSeparatorComponent={

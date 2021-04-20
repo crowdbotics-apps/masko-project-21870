@@ -21,18 +21,15 @@ import {
 } from 'react-native-ui-kitten';
 
 
-import {
-  textStyle,
-} from '../../components/common';
-
 import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
 
-import RNPickerSelect from 'react-native-picker-select';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
 
 
 import { Spinner } from 'src/components/Spinner';
@@ -41,7 +38,6 @@ import { translate } from 'src/utils/translation';
 import { CartItems } from '../../components/common';
 
 
-import TrashIcon from 'src/assets/icons/trash-icon.svg';
 
 const moment = require('moment');
 
@@ -83,6 +79,9 @@ class UserCartComponent extends React.Component {
     this.props.navigation.pop();
   }
 
+   onPressContinue = () => {
+     this.props.navigation.navigate( AppConfig.NAVIGATOR_ROUTE.UserHome )
+   } 
 
 
  
@@ -91,7 +90,23 @@ class UserCartComponent extends React.Component {
 
     const { themedStyle, cart, navigation } = this.props;
 
-    
+    if(cart.items.length==0){
+      return (
+        <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPadWrap,{justifyContent:'center', alignItems:'center'}]}>
+             <EmptyRecordContainer emptyText={translate('EmptyCartMessage')} />
+             <Button
+                            style={styles.yellowButton}
+                            textStyle={styles.whiteFont}
+                            size="giant"
+                            status='primary'
+                            // disabled={!this.validator()}
+                            onPress={this.onPressContinue}
+
+                          >
+                            {translate("ContinueShoppingBtn")}
+                        </Button>
+        </LinearGradient>)
+    }
 
 
     return (

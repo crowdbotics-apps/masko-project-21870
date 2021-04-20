@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flexDirection:'column',
-    // alignItems: "center",
+    alignItems: "center",
     justifyContent: "center",
     alignSelf:'center'
   },

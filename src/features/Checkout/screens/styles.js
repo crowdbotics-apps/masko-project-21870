@@ -28,6 +28,15 @@ const styles = StyleSheet.create({
         height: height,
         width: width,
     },
+    itemsContainerWithoutPadWrap: {
+        display: 'flex',
+        flexDirection: 'column',
+        // flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: "center",
+        height: height,
+        width: width,
+    },
     itemsContainerEmpty: {
         
         height: height,

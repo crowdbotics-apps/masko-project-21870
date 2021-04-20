@@ -35,6 +35,8 @@ export default appConfig = {
     "ForgetPassword":"ForgetPassword",
     "UserAccount": "UserAccount",
     "Home": "Home",
+    "UserHome": "UserAccount",
+    
     "MyCart": "MyCart"
   },
   STATUS_CODES: {

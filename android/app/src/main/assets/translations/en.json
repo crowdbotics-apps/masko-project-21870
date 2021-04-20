@@ -108,6 +108,8 @@
     "OrderShippingLabel": "Shipping",
     "OrderTaxLabel": "Tax",
     "OrderTotalLabel": "Total",
+    "EmptyCartMessage": "Your cart is empty",
+    "ContinueShoppingBtn": "Continue Shopping"
 
 
 
