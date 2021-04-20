@@ -99,8 +99,8 @@ class ServiceDetailsComponent extends React.Component {
 
 
   renderSpinner = () => {
-    const { getServiceLoading } = this.props;
-    if (getServiceLoading) {
+    const { addItemToCartLoading } = this.props;
+    if (addItemToCartLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -134,7 +134,27 @@ class ServiceDetailsComponent extends React.Component {
   }
 
   onAddButtonPress = () => {
+      const {
+        navigation,
+      } = this.props;
 
+      const { service } = navigation.state.params;
+
+      this.props.onAddButtonPress({
+        type: AppConfig.ITEM_TYPES.SERVICES,
+        item: service,
+        pets: this.getPetsForCart(),
+        userSelection: {
+          notes: this.state.notes,
+          bookingDate: this.state.bookingDate, 
+          timeOptionLabel: this.state.timeOptionLabel, 
+          dateOptionLabel: this.state.dateOptionLabel,
+          dayTimeOptionLabel: this.state.dayTimeOptionLabel
+
+
+        }
+
+      })
   }
 
   onCancelButtonPress = () => {
@@ -191,7 +211,6 @@ class ServiceDetailsComponent extends React.Component {
     });
     return list;    
 
-
   }
 
   onSelectPetPress = ( item ) => {
@@ -218,6 +237,22 @@ class ServiceDetailsComponent extends React.Component {
         })  
     });
     this.setState({pets: list})   
+  }
+
+  getPetsForCart = () => {
+    const { pets } = this.state;
+    let list = [];
+    _.forEach(pets, (i) => {
+        if (i.qty>0){
+          list.push({
+            ...i
+          })  
+        }
+        
+    });
+
+    return list;
+   
   }
 
 

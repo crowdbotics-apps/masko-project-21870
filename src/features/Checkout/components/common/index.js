@@ -7,5 +7,10 @@ export {
 } from './services.component';
 
 
+export {
+  CartItems
+} from './cartItems.component';
+
+
 
 export { textStyle } from './style';

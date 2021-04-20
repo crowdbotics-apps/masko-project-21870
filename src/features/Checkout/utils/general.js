@@ -1,38 +1,45 @@
 import * as _ from 'lodash';
-import { ServiceModel as Service, ServiceCategoryModel as ServiceCategory } from '../models';
+import { CartItemModel as CartItem } from '../models';
 
-export function formatService(input){
-    return new Service(input);
+
+export function formatCartItem( type, item, pets, userSelection){
+    let input = {
+      type: type,
+      source: item, 
+      pets: pets,
+      userSelection: userSelection
+  };
+    return new CartItem(input);
 }
 
-export function formatServiceCategory(input){
-  return new ServiceCategory(input);
-}
+export function appendCart( storeCartItems, userItem ){
 
+  let list = []
+  list.push(userItem);
+  
+  _.forEach(storeCartItems,(i)=>{
+    list.push(i);
+   });
 
-export function getPageNumberInLink(link){
-    if(link){
-      let arr = link.match(/page=(\d*)/);
-      return (arr && arr[1])?arr[1]:null;
-    }
-
-    return link;
+   return list;
 
 }
 
-export function formatServices(results){
-      let list = [];
-      _.forEach(results, (i) => {
-        list.push(formatService(i));
-      })
-      return list;
+export function updateCartObject ( storeCart, userItem ){
+  
+  let list = []
+  list.push(userItem);
+  
+  _.forEach(storeCart.items,(i)=>{
+    if( i.source.id !== userItem.source.id )
+      list.push(i);
+   });
+
+   storeCart.updateCartItems(list);
+
+   return storeCart; 
 }
 
-export function formatServiceCategories(results){
-  let list = [];
-  _.forEach(results, (i) => {
-    list.push(formatServiceCategory(i));
-  })
-  return list;
-}
+
+
 

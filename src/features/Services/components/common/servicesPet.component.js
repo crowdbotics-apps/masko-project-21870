@@ -37,12 +37,11 @@ class _ServicePetComponent extends React.Component {
 
   _onPress = (item) => {
 
-    this.setState({qty:item.qty, selectedItem: item})
+    this.setState({qty:item.qty})
     this.props.onSelectPetPress(item);
   }
 
   _onPressQtyAdd = () => {
-    const { selectedItem } = this.state
     let sItem = this.getSelectedItem()
     
     if(sItem){
@@ -52,7 +51,6 @@ class _ServicePetComponent extends React.Component {
   }
 
   _onPressQtySubtract = () => {
-    const { selectedItem } = this.state
     let sItem = this.getSelectedItem()
 
     if(sItem && sItem.qty!=0){

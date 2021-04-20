@@ -38,7 +38,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 
-import { PetComponent } from 'src/components/common';
+import { CartItems } from '../../components/common';
 
 
 import TrashIcon from 'src/assets/icons/trash-icon.svg';
@@ -89,9 +89,7 @@ class UserCartComponent extends React.Component {
 
   render() {
 
-    const { themedStyle, navigation } = this.props;
-    // const { service } = navigation.state.params; 
-    const { showDatePicker, showTimePicker,  bookingDate } = this.state
+    const { themedStyle, cart, navigation } = this.props;
 
     
 
@@ -100,79 +98,9 @@ class UserCartComponent extends React.Component {
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
         <ScrollView style={themedStyle.scrollView} >
-          <View style={themedStyle.itemContainer}>
-              <View style={themedStyle.itemSubContainer}>
-                <Image 
-                    size="giant"
-                  source={require('src/assets/images/services-1.png')} />
-                 <View style={themedStyle.itemDetailContainer}>
-                   <Text style={themedStyle.itemHeading} >Service Name</Text>
-                   <Text style={themedStyle.itemLabel}>Scheduled</Text>
-                   <Text style={themedStyle.itemLabel}>01/26/21</Text>
-                  </View> 
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-           
-         
-          </View>
-
-
-
-
-          <View style={themedStyle.itemContainer}>
-              <View style={themedStyle.itemSubContainer}>
-                <Image 
-                    size="giant"
-                  source={require('src/assets/images/services-1.png')} />
-                 <View style={themedStyle.itemDetailContainer}>
-                   <Text style={themedStyle.itemHeading} >Product Name</Text>
-                   <Text style={themedStyle.itemLabel}>Weight</Text>
-                   <Text style={themedStyle.itemLabel}>Brand</Text>
-                  </View> 
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-          </View>
-
+          <CartItems
+              data={cart.items}
+          />
 
           <View style={[themedStyle.summary.headRowContainer]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
@@ -180,20 +108,20 @@ class UserCartComponent extends React.Component {
           </View>
           <View style={[themedStyle.summary.rowContainer]}   >
             <Text style={themedStyle.summary.label} >{translate('OrderSubTotalLabel')}</Text>
-            <Text style={themedStyle.summary.label} >$135.00</Text>
+            <Text style={themedStyle.summary.label} >${cart.subTotalPrice}</Text>
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
-            <Text style={themedStyle.summary.label} >$10.00</Text>
+            <Text style={themedStyle.summary.label} >${cart.shipping}</Text>
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
-            <Text style={themedStyle.summary.label}  >0</Text>
+            <Text style={themedStyle.summary.label}  >${cart.taxes}</Text>
           </View>
 
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
-            <Text style={themedStyle.summary.heading}  >$145.00</Text>
+            <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text>
           </View>
 
           <Button

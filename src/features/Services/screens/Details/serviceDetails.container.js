@@ -3,7 +3,7 @@ import React from 'react';
 import { ServiceDetails } from './serviceDetails.component';
 
 import { connect } from 'react-redux';
-import * as ServiceActions from '../../redux/actions';
+import * as CheckoutActions from 'src/features/Checkout/redux/actions';
 import appConfig from 'src/config/app';
 
 import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
@@ -34,6 +34,11 @@ export class _ServiceDetailsContainer extends React.Component {
 
   }
 
+  onAddButtonPress = (data) => {
+    const { actions } = this.props;
+    actions.addItemToCart(data)
+  }
+
   onSelectPetPress = ( item ) => {
     const { actions } = this.props;
    
@@ -51,8 +56,9 @@ export class _ServiceDetailsContainer extends React.Component {
         getServiceLoading={this.props.getServiceLoading}
         userPets={this.props.userPets}
         selectedPet={this.props.selectedPet}
-        
+        onAddButtonPress={this.onAddButtonPress}
         onSelectPetPress={this.onSelectPetPress}
+        addItemToCartLoading={this.props.addItemToCartLoading}
         
        />
     );
@@ -64,13 +70,14 @@ const mapStateToProps = state => ({
   services: state.Service.services,
   getServiceLoading: state.Service.GetService,
   userPets: state.UserAccount.pets,
-  selectedPet: state.UserAccount.selectedPet
+  selectedPet: state.UserAccount.selectedPet,
+  addItemToCartLoading: state.Checkout.loaders.AddItemToCart
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getServices: (accessToken, category) => {
-      dispatch(ServiceActions.getServices( accessToken, category ));
+    addItemToCart: ({type, item, pets, userSelection}) => {
+      dispatch( CheckoutActions.addItemToCart( type, item, pets, userSelection ));
     },
   },
 });

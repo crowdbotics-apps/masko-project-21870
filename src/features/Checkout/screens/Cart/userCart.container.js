@@ -31,20 +31,25 @@ export class _UserCartContainer extends React.Component {
 
   constructor( props ){
     super(props);
+        const didFocusSubscription = props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.setState({...this.state})
+      }
+    );
 
   }
 
- 
-  
   
   render() {
     const { navigation } = this.props;
     return (
       <UserCart
-        errorMsg={this.props.signInErrors}
-        navigation={navigation}
-        services={this.props.services}
-        getServiceLoading={this.props.getServiceLoading}
+          errorMsg={this.props.signInErrors}
+          navigation={navigation}
+          services={this.props.services}
+          cart={this.props.cart}
+          getServiceLoading={this.props.getServiceLoading}
         
        />
     );
@@ -54,7 +59,8 @@ export class _UserCartContainer extends React.Component {
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
   services: state.Service.services,
-  getServiceLoading: state.Service.GetService
+  getServiceLoading: state.Service.GetService,
+  cart: state.Checkout.cart,
 });
 
 const mapDispatchToProps = dispatch => ({

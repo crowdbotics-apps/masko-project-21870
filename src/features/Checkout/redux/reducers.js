@@ -1,101 +1,61 @@
 import * as actions from "./constants";
 import * as AuthActions from 'src/features/EmailAuth/redux/constants';
+import * as utils from '../utils/general';
+import * as _ from 'lodash';
+
+import { CartModel } from '../models';
+
+let tempCart = new CartModel();
 
 const initialState = {
-  services: [],
-  categories: [],
-  errors: { GetService: null, GetCategories: null},
-  loaders: { GetService: null, GetCategories: null }
+  cart: tempCart,
+  errors: { AddItemToCart: null, GetCategories: null},
+  loaders: { AddItemToCart: null, GetCategories: null }
 };
 
 export default CheckoutReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.SERVICE_CATEGORY_GET_REQUEST:
+    case actions.CHECKOUT_CART_ADD_ITEM_REQUEST:
       return {
         ...state,
         errors: {
           ...state.errors,
-          GetCategories: null
+          AddItemToCart: null
         },
         loaders: {
           ...state.loaders,
-          GetCategories: true
+          AddItemToCart: true
 
         }
 
       };
-    case actions.SERVICE_CATEGORY_GET_SUCCESS:
+    case actions.CHECKOUT_CART_ADD_ITEM_SUCCESS:
       return {
         ...state,
-        categories: action.categories,
+        cart: utils.updateCartObject( state.cart, action.data),
         errors: {
           ...state.errors,
-          GetCategories: null
+          AddItemToCart: null
         },
         loaders: {
           ...state.loaders,
-          GetCategories: null
+          AddItemToCart: null
 
         }
       };
-    case actions.SERVICE_CATEGORY_GET_ERROR:
+    case actions.CHECKOUT_CART_ADD_ITEM_ERROR:
       return {
         ...state,
         errors: {
           ...state.errors,
-          GetCategories: action.error
+          AddItemToCart: action.error
         },
         loaders: {
           ...state.loaders,
-          GetCategories: null
+          AddItemToCart: null
 
         }
       };
-    
-    case actions.SERVICE_GET_REQUEST:
-        return {
-          ...state,
-          services: [],
-          errors: {
-            ...state.errors,
-            GetService: null
-          },
-          loaders: {
-            ...state.loaders,
-            GetService: true
-  
-          }
-  
-        };
-    case actions.SERVICE_GET_SUCCESS:
-        return {
-          ...state,
-          services: action.services,
-          errors: {
-            ...state.errors,
-            GetService: null
-          },
-          loaders: {
-            ...state.loaders,
-            GetService: null
-  
-          }
-        };
-    case actions.SERVICE_CATEGORY_GET_ERROR:
-        return {
-          ...state,
-          errors: {
-            ...state.errors,
-            GetService: action.error
-          },
-          loaders: {
-            ...state.loaders,
-            GetService: null
-  
-          }
-        };
-  
-    
 
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
