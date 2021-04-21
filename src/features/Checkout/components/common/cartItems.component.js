@@ -51,6 +51,16 @@ class _CartItemsComponent extends React.Component {
     </View>);
   }
 
+  _onPressQtyAdd = (item, pet) => {
+    this.props.onPressQtyAdd(item,pet)
+  }
+
+  _onPressQtySubtract = (item, pet) => {
+    this.props.onPressQtySubtract(item,pet)
+
+  }
+    
+
 
   renderItem = ({ item, index, separators }) => {
     const name = (item.source)?item.source.getName():'';
@@ -79,8 +89,28 @@ class _CartItemsComponent extends React.Component {
              />
           
           <View style={themedStyle.itemQtyContainer}>
-              <TrashIcon style={{marginHorizontal: 10}}  />
-              <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text>
+             <TouchableOpacity style={themedStyle.petQtyBtn} 
+                  onPress={ () => this._onPressQtySubtract(item,pet) }
+              >
+                {pet.qty>1 && (
+                  <Text style={themedStyle.petQtyLabel}>-</Text>
+                )}
+
+                {pet.qty==1 && (
+                  <TrashIcon  />
+                )}
+                      
+
+              </TouchableOpacity>
+              <Text style={themedStyle.petQtyLabel}>{pet.qty}</Text>
+              <TouchableOpacity style={themedStyle.petQtyBtn} 
+                  onPress={() => this._onPressQtyAdd(item,pet) }
+              >
+                      <Text style={themedStyle.petQtyLabel}>+</Text>
+
+              </TouchableOpacity>
+              {/* <TrashIcon style={{marginHorizontal: 10}}  />
+              <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
           </View>
           <View style={themedStyle.itemPriceContainer}>
                <Text style={themedStyle.itemPriceLabel}>${price}</Text>
@@ -186,35 +216,25 @@ export const CartItems = withStyles(_CartItemsComponent, theme => ({
     color: "#000",
     marginHorizontal: 10,
   },
-  summary:{
-    rowContainer:{
-      flexDirection: "row",
-      // paddingHorizontal: 10,
-      marginHorizontal: 10,
-       
-    },
-    headRowContainer:{
-      flexDirection: "row",
-      // paddingHorizontal: 10,
-      marginHorizontal: 10,
-      marginBottom: 20,
-      paddingBottom:10,
-      borderBottomWidth: 1,
-      borderBottomColor: "#FFF"
-       
-    },
-    heading:{
-      flex: 3,
-      fontFamily: "Montserrat",
-      fontWeight: "bold",
-      fontSize: 14,
-      color: "#FFF",
-    },
-    label:{
-      flex: 3,
-      fontFamily: "Montserrat",
-      fontSize: 14,
-      color: "#FFF",
-    }
+  petQuantityCont: {
+    backgroundColor:"#455272",
+    paddingHorizontal: 20,
+    paddingVertical:10,
+  },
+  petQuantitySbContainer:{
+    flexDirection:"row",
+    padding:5,
+    backgroundColor: "#6C84C1",
+    borderRadius: 15,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  petQtyLabel:{
+    color:"#FFF"
+  },
+  petQtyBtn:{
+    color:"#FFF",
+    paddingHorizontal: 20
   }
 }));

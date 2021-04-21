@@ -61,8 +61,8 @@ class UserCartComponent extends React.Component {
   }
 
   renderSpinner = () => {
-    const { getServiceLoading } = this.props;
-    if (getServiceLoading) {
+    const { updateCartLoading } = this.props;
+    if (updateCartLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -83,6 +83,14 @@ class UserCartComponent extends React.Component {
      this.props.navigation.navigate( AppConfig.NAVIGATOR_ROUTE.UserHome )
    } 
 
+   onPressQtyAdd = (item, pet) => {
+      this.props.onPressQtyAdd(item, pet, (pet.qty+1) );
+   }
+
+   onPressQtySubtract = (item, pet) => {
+    this.props.onPressQtySubtract(item, pet, (pet.qty-1));
+     
+  }
 
  
 
@@ -99,7 +107,6 @@ class UserCartComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
-                            // disabled={!this.validator()}
                             onPress={this.onPressContinue}
 
                           >
@@ -115,6 +122,8 @@ class UserCartComponent extends React.Component {
         <ScrollView style={themedStyle.scrollView} >
           <CartItems
               data={cart.items}
+              onPressQtyAdd={this.onPressQtyAdd}
+              onPressQtySubtract={this.onPressQtySubtract}
           />
 
           <View style={[themedStyle.summary.headRowContainer]}  >
@@ -144,8 +153,6 @@ class UserCartComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
-                            // disabled={!this.validator()}
-                            // onPress={this.onAddButtonPress}
 
                           >
                             {translate("CheckoutBtn")}

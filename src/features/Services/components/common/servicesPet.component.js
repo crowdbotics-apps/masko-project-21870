@@ -14,9 +14,6 @@ import {
 
 
 
-import ScrollableAvoidKeyboard from 'src/components/common';
-import SmallPawIcon from 'src/assets/icons/paw-icon.svg';
-import * as commonUtils from 'src/utils/general';
 import * as _ from 'lodash';
 
 const addPetConst = "addpet"

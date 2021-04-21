@@ -8,4 +8,10 @@ export const addItemToCart = ( type, item, pets, userSelection )  => ({
   userSelection
 });
 
+export const updateItemToCart = ( item, pet, quantity ) => ({
+  type: actions.CHECKOUT_CART_UPDATE_ITEM_REQUEST,
+  item,
+  pet,
+  quantity
+});
 

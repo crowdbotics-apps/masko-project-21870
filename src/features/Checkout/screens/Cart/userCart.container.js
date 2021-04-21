@@ -3,7 +3,7 @@ import React from 'react';
 import { UserCart } from './userCart.component';
 
 import { connect } from 'react-redux';
-import * as ServiceActions from '../../redux/actions';
+import * as CheckoutActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
 import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
@@ -40,6 +40,16 @@ export class _UserCartContainer extends React.Component {
 
   }
 
+  onPressQtyAdd = (item, pet, quantity) => {
+    const { actions } = this.props;
+    actions.updateQuantity(item, pet, quantity)
+  }
+
+  onPressQtySubtract = (item, pet, quantity) => {
+    const { actions } = this.props;
+    actions.updateQuantity(item, pet, quantity)
+    
+  }
   
   render() {
     const { navigation } = this.props;
@@ -50,6 +60,9 @@ export class _UserCartContainer extends React.Component {
           services={this.props.services}
           cart={this.props.cart}
           getServiceLoading={this.props.getServiceLoading}
+          updateCartLoading={this.props.updateCartLoading}
+          onPressQtyAdd={this.onPressQtyAdd}
+          onPressQtySubtract={this.onPressQtySubtract}
         
        />
     );
@@ -61,12 +74,13 @@ const mapStateToProps = state => ({
   services: state.Service.services,
   getServiceLoading: state.Service.GetService,
   cart: state.Checkout.cart,
+  updateCartLoading: state.Checkout.loaders.UpdateItemToCart
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getServices: (accessToken, category) => {
-      dispatch(ServiceActions.getServices( accessToken, category ));
+    updateQuantity: ( item, pet, quantity ) => {
+      dispatch(CheckoutActions.updateItemToCart( item, pet, quantity ));
     },
   },
 });

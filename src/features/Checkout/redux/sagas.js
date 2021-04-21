@@ -5,6 +5,8 @@ import * as utils from '../utils/general';
 import { 
   CHECKOUT_CART_ADD_ITEM_REQUEST,
   CHECKOUT_CART_ADD_ITEM_SUCCESS,
+  CHECKOUT_CART_UPDATE_ITEM_REQUEST,
+  CHECKOUT_CART_UPDATE_ITEM_SUCCESS,
    } from './constants';
 
 import appConfig from "src/config/app";
@@ -33,8 +35,26 @@ function* handleAddItemToCart(action) {
 }
 
 
+function* handleUpdateItemToCart(action) {
+  const {
+    item,
+    pet,
+    quantity
+  } = action;
+  
+        yield put({
+          type: CHECKOUT_CART_UPDATE_ITEM_SUCCESS,
+          item,
+          pet,
+          quantity
+        });
+   
+  
+}
+
 
 export default all([
   takeLatest(CHECKOUT_CART_ADD_ITEM_REQUEST, handleAddItemToCart),
+  takeLatest(CHECKOUT_CART_UPDATE_ITEM_REQUEST, handleUpdateItemToCart),
   
 ]);

@@ -9,8 +9,8 @@ let tempCart = new CartModel();
 
 const initialState = {
   cart: tempCart,
-  errors: { AddItemToCart: null, GetCategories: null},
-  loaders: { AddItemToCart: null, GetCategories: null }
+  errors: { AddItemToCart: null, UpdateItemToCart: null, GetCategories: null},
+  loaders: { AddItemToCart: null, UpdateItemToCart: null,  GetCategories: null }
 };
 
 export default CheckoutReducer = (state = initialState, action) => {
@@ -56,6 +56,34 @@ export default CheckoutReducer = (state = initialState, action) => {
 
         }
       };
+      case actions.CHECKOUT_CART_UPDATE_ITEM_REQUEST:
+        return {
+          ...state,
+          errors: {
+            ...state.errors,
+            UpdateItemToCart: null
+          },
+          loaders: {
+            ...state.loaders,
+            UpdateItemToCart: true
+  
+          }
+        };  
+  
+    case actions.CHECKOUT_CART_UPDATE_ITEM_SUCCESS:
+        return {
+          ...state,
+          cart: utils.updateCartItemQty( state.cart, action ),
+          errors: {
+            ...state.errors,
+            UpdateItemToCart: null
+          },
+          loaders: {
+            ...state.loaders,
+            UpdateItemToCart: null
+  
+          }
+        };  
 
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
