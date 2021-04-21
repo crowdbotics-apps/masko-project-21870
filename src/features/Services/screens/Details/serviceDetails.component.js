@@ -76,7 +76,7 @@ class ServiceDetailsComponent extends React.Component {
     timeOptionValue: undefined,
     timeOptionLabel: undefined,
     dateOptionValue: undefined,
-    dateOptionLabel: undefined,
+    
     dayTimeOptionValue: undefined,
     dayTimeOptionLabel: undefined,
     notes: undefined,
@@ -121,9 +121,6 @@ class ServiceDetailsComponent extends React.Component {
     this.setState(newState);
   }
 
-  onDateInputTextChange = (value, index) => {
-    this.setState({ dateOptionValue: index, dateOptionLabel: value });
-  }
 
   onDayTimeInputTextChange = (value, index) => {
     this.setState({ dayTimeOptionValue: index, dayTimeOptionLabel: value });
@@ -147,8 +144,7 @@ class ServiceDetailsComponent extends React.Component {
         userSelection: {
           notes: this.state.notes,
           bookingDate: this.state.bookingDate, 
-          timeOptionLabel: this.state.timeOptionLabel, 
-          dateOptionLabel: this.state.dateOptionLabel,
+          timeOptionLabel: this.state.timeOptionLabel,
           dayTimeOptionLabel: this.state.dayTimeOptionLabel
 
 
@@ -157,8 +153,8 @@ class ServiceDetailsComponent extends React.Component {
       })
   }
 
-  onCancelButtonPress = () => {
-    this.props.navigation.pop();
+  onContinueButtonPress = () => {
+    this.props.navigation.navigate( AppConfig.NAVIGATOR_ROUTE.UserHome );
   }
 
   handleBookingDateChange = (event, date) => {
@@ -254,7 +250,26 @@ class ServiceDetailsComponent extends React.Component {
     return list;
    
   }
+  getPetTotalQty = () => {
+    let pets = this.getPetsForCart();
+    let count = 0;
+    _.forEach(pets, (i)=>{
+        count += i.qty
+    })
+    return count;
+  }
+  validator = () => {
+    let petQty = this.getPetTotalQty();
+    const { timeOptionLabel, dayTimeOptionLabel } = this.state;
 
+    return (
+            (petQty>0) &&
+            (    timeOptionLabel == 'ASAP' || 
+                (timeOptionLabel=="Schedule" && dayTimeOptionLabel != null) 
+            )
+    ) 
+    
+  }
 
   render() {
 
@@ -396,7 +411,7 @@ class ServiceDetailsComponent extends React.Component {
               textStyle={styles.whiteFont}
               size="giant"
               status='primary'
-              // disabled={!this.validator()}
+              disabled={!this.validator()}
               onPress={this.onAddButtonPress}
 
             >
@@ -408,10 +423,10 @@ class ServiceDetailsComponent extends React.Component {
               size="giant"
               status='info'
               // disabled={!this.validator()}
-              onPress={this.onCancelButtonPress}
+              onPress={this.onContinueButtonPress}
 
             >
-              {translate("CancelButtonLabel")}
+              {translate("ContinueShoppingBtn")}
             </Button>
 
 

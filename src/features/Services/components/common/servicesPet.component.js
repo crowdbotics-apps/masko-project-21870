@@ -59,7 +59,7 @@ class _ServicePetComponent extends React.Component {
  
   renderItem = ({ item, index, separators }) => {
     const { themedStyle, selectedPet } = this.props;
-    const childContainerStyle = (item.selected)?
+    const childContainerStyle = (item.selected || item.qty>0)?
                                   themedStyle.imgContChildSel:
                                   themedStyle.imgContChild;
                                   
@@ -114,6 +114,20 @@ class _ServicePetComponent extends React.Component {
       return qty;
   }
 
+  getSelectedStatus = () => {
+    
+    const { data } = this.props;
+    let status = false;
+    _.forEach(data, (i)=>{
+       if (i && i.selected){
+        status = true;
+       }
+    })
+
+    return status;
+    
+  }
+
 
   render() {
     const { data, themedStyle } = this.props;
@@ -140,7 +154,8 @@ class _ServicePetComponent extends React.Component {
       data={data}
       renderItem={this.renderItem}
     />
-     <View style={themedStyle.petQuantityCont}>
+    {this.getSelectedStatus() && (
+       <View style={themedStyle.petQuantityCont}>
         <View style={themedStyle.petQuantitySbContainer}>
               {/* <Text style={themedStyle.petQtyLabel}>{this.state.qty}</Text> */}
               <TouchableOpacity style={themedStyle.petQtyBtn} 
@@ -157,8 +172,13 @@ class _ServicePetComponent extends React.Component {
 
               </TouchableOpacity>
         </View>
+        {/* <View style={themedStyle.petQuantitySbContainer}>
+              
+              <Text style={themedStyle.petQtyLabel}>Add </Text>
+           
+        </View> */}
       </View> 
-    
+    )}
     </View>);
   }
 }
@@ -208,9 +228,10 @@ export const ServicePetComponent = withStyles(_ServicePetComponent, theme => ({
         paddingHorizontal: 20
       },
       petQuantityCont: {
+        flexDirection:"row",
+        justifyContent:"center",
         backgroundColor:"#455272",
         paddingHorizontal: 20,
-        paddingVertical:10,
       },
       petQuantitySbContainer:{
         flexDirection:"row",
@@ -219,13 +240,15 @@ export const ServicePetComponent = withStyles(_ServicePetComponent, theme => ({
         borderRadius: 15,
         width: 100,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        margin: 5,
       },
       petQtyLabel:{
         color:"#FFF"
       },
       petQtyBtn:{
         color:"#FFF",
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        paddingVertical: 2,
       }
 }));
