@@ -432,7 +432,7 @@ class ServiceDetailsComponent extends React.Component {
               textStyle={themedStyle.detailContainer.noteTextAreaText}
               style={themedStyle.detailContainer.noteTextArea}
               multiline={true}
-              textStyle={{ minHeight: 80 }}
+              // textStyle={{ minHeight: 80, color:"#FFF" }}
               placeholder='Add Notes'
               value={this.state.notes}
               onChangeText={(value) => this.onNotesInputTextChange(value)}
@@ -464,7 +464,6 @@ class ServiceDetailsComponent extends React.Component {
               textStyle={styles.whiteFont}
               size="giant"
               status='info'
-              // disabled={!this.validator()}
               onPress={this.onContinueButtonPress}
 
             >
@@ -623,7 +622,8 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
     },
     noteTextAreaText: {
       color: "white",
-      fontSize: 10,
+      fontSize: 15,
+      minHeight: 80
     }
   }
 }));

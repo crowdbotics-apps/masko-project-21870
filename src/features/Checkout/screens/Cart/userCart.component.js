@@ -132,24 +132,45 @@ class UserCartComponent extends React.Component {
 
           <View style={[themedStyle.summary.headRowContainer]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
-            <Text style={themedStyle.summary.heading}  >#123323</Text>
+           
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelTextHead} >#123323</Text>
+
+            </View>
+            
           </View>
           <View style={[themedStyle.summary.rowContainer]}   >
             <Text style={themedStyle.summary.label} >{translate('OrderSubTotalLabel')}</Text>
-            <Text style={themedStyle.summary.label} >${cart.subTotalPrice}</Text>
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
+
+            </View>
+            
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
-            <Text style={themedStyle.summary.label} >${cart.shipping}</Text>
+            {/* <Text style={themedStyle.summary.label} >${cart.shipping}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.shipping}</Text>
+
+            </View>
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
-            <Text style={themedStyle.summary.label}  >${cart.taxes}</Text>
+            {/* <Text style={themedStyle.summary.label}  >${cart.taxes}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.taxes}</Text>
+
+            </View>
           </View>
 
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
-            <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text>
+            {/* <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelTextHead} >${cart.totalPrice}</Text>
+
+            </View>
           </View>
 
           <Button
@@ -272,7 +293,26 @@ export const UserCart = withStyles(UserCartComponent, theme => ({
       fontFamily: "Montserrat",
       fontSize: 14,
       color: "#FFF",
+    },
+    labelContainer:{
+      flex: 3,
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+      justifyContent: 'flex-end'
+    },
+    labelText:{
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+    },
+    labelTextHead:{
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+      fontWeight: "bold"
     }
+
   }
 
 }));
