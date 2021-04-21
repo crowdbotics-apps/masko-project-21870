@@ -70,6 +70,7 @@
     "ServiceCategoriesGetErrorMsg":"Can't get service categories",
     "ServiceListtNavTitle":"Service List",
     "AddToCartBtn": "Add to Cart",
+    "SaveChangesBtn": "Save Changes",
     "SelectPetLabel": "Select Pet",
     "UpdateProfileNavTitle": "User Account",
     "FullNameLabel": "Full Name",

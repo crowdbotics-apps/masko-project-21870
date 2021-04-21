@@ -10,10 +10,20 @@ import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
 
 
+
 export class _ServiceDetailsContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    const { category } = navigation.state.params;
+    let category = null;
+    // if (navigation.state.params && navigation.state.params.category){
+    //   category = navigation.state.params.category
+    // }
+
+    
+
+
+    
+
     titleText = translate('ServiceDetailsNavTitle');
     if (category){
       titleText = category.getName();
@@ -24,7 +34,7 @@ export class _ServiceDetailsContainer extends React.Component {
                 headerLeft: (<BackIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<RightIcon navigation={navigation} />)
           }
   };
   navigationKey = 'ServiceDetailsContainer';
@@ -48,6 +58,14 @@ export class _ServiceDetailsContainer extends React.Component {
   
   render() {
     const { navigation } = this.props;
+
+    let userSelection = null;
+    let userSelectedPets = null;
+    
+    if (navigation.state.params && navigation.state.params.item){
+      userSelection = navigation.state.params.item.userSelection
+      userSelectedPets =navigation.state.params.item.pets
+    }
     return (
       <ServiceDetails
         errorMsg={this.props.signInErrors}
@@ -59,6 +77,8 @@ export class _ServiceDetailsContainer extends React.Component {
         onAddButtonPress={this.onAddButtonPress}
         onSelectPetPress={this.onSelectPetPress}
         addItemToCartLoading={this.props.addItemToCartLoading}
+        userSelection={userSelection}
+        userSelectedPets={userSelectedPets}
         
        />
     );

@@ -40,6 +40,7 @@ import { translate } from 'src/utils/translation';
 
 import { PetComponent } from 'src/components/common';
 import { ServicePetComponent } from '../../components/common';
+import * as utils from 'src/utils/general';
 
 import * as _ from 'lodash';
 
@@ -75,8 +76,6 @@ class ServiceDetailsComponent extends React.Component {
   state = {
     timeOptionValue: undefined,
     timeOptionLabel: undefined,
-    dateOptionValue: undefined,
-    
     dayTimeOptionValue: undefined,
     dayTimeOptionLabel: undefined,
     notes: undefined,
@@ -93,10 +92,23 @@ class ServiceDetailsComponent extends React.Component {
   constructor(props){
     super(props)
     this.state.pets = this.setPetInfo();
+
+    if(this.props.userSelection){
+      
+      const { userSelection, userSelectedPets } = this.props;
+      this.state.notes =  userSelection.notes;
+      this.state.bookingDate =  userSelection.bookingDate;
+      this.state.timeOptionLabel =  userSelection.timeOptionLabel;
+      this.state.timeOptionValue =  userSelection.timeOptionValue;
+      this.state.dayTimeOptionValue =  userSelection.dayTimeOptionValue;
+      this.state.dayTimeOptionLabel =  userSelection.dayTimeOptionLabel;
+      this.state.showDatePicker =  userSelection.showDatePicker;
+      this.state.showTimePicker =  userSelection.showTimePicker;
+      this.state.pets = this.setPetData(userSelectedPets);
+    }
   }
 
  
-
 
   renderSpinner = () => {
     const { addItemToCartLoading } = this.props;
@@ -145,7 +157,11 @@ class ServiceDetailsComponent extends React.Component {
           notes: this.state.notes,
           bookingDate: this.state.bookingDate, 
           timeOptionLabel: this.state.timeOptionLabel,
-          dayTimeOptionLabel: this.state.dayTimeOptionLabel
+          timeOptionValue: this.state.timeOptionValue,
+          dayTimeOptionValue: this.state.dayTimeOptionValue,
+          dayTimeOptionLabel: this.state.dayTimeOptionLabel,
+          showDatePicker: this.state.showDatePicker,
+          showTimePicker: this.state.showTimePicker,
 
 
         }
@@ -178,7 +194,7 @@ class ServiceDetailsComponent extends React.Component {
   }
 
   toggleDateModal = () => {
-    // alert("TOGGLE")
+
     const { showDatePicker } = this.state;
 
     let status = false;
@@ -193,6 +209,27 @@ class ServiceDetailsComponent extends React.Component {
 
   toggleTimePicker = () => {
     this.setState({ showTimePicker: !this.state.showTimePicker })
+  }
+
+  setPetData = (pets) => {
+    const { userPets } = this.props;
+    let list = []
+    _.forEach(userPets, (i) => {
+      var userIn = _.find(pets, { id: i.id });
+      if (userIn){
+        list.push({
+          ...i,
+          qty: userIn.qty
+        })
+      }else{
+        list.push({
+          ...i,
+          qty: 0
+        })
+      }
+         
+    });
+    return list;
   }
 
   setPetInfo = () => {
@@ -265,7 +302,7 @@ class ServiceDetailsComponent extends React.Component {
     return (
             (petQty>0) &&
             (    timeOptionLabel == 'ASAP' || 
-                (timeOptionLabel=="Schedule" && dayTimeOptionLabel != null) 
+                (timeOptionLabel == "Schedule" && dayTimeOptionLabel != null) 
             )
     ) 
     
@@ -277,6 +314,7 @@ class ServiceDetailsComponent extends React.Component {
       themedStyle,
       navigation,
       selectedPet,
+      userSelection
     } = this.props;
 
     const { service } = navigation.state.params;
@@ -287,6 +325,10 @@ class ServiceDetailsComponent extends React.Component {
       bookingDate
     } = this.state
 
+    let nexBtnLabel = translate("AddToCartBtn");
+    if(userSelection){
+      nexBtnLabel = translate("SaveChangesBtn"); 
+    }
 
 
 
@@ -415,7 +457,7 @@ class ServiceDetailsComponent extends React.Component {
               onPress={this.onAddButtonPress}
 
             >
-              {translate("AddToCartBtn")}
+              {nexBtnLabel}
             </Button>
             <Button
               style={styles.yellowButton}

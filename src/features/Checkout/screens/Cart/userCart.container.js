@@ -9,6 +9,8 @@ import appConfig from 'src/config/app';
 import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
 
+import { NavigationActions } from "react-navigation";
+
 
 export class _UserCartContainer extends React.Component {
 
@@ -50,6 +52,34 @@ export class _UserCartContainer extends React.Component {
     actions.updateQuantity(item, pet, quantity)
     
   }
+
+  onItemPress = (item) => {
+    // this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ServiceDetails ,{
+    //   category: item.source.category,
+    //   service: item 
+    // })
+
+    // this.props.navigation.navigate(
+    //     'Service', 
+    //     {}, 
+    //     NavigationActions.navigate({ 
+    //         routeName: appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
+    //         params: {
+    //           category: null,
+    //           service: item.source,
+    //           item: item
+    //         }
+    //     })
+    // )
+    this.props.navigation.navigate(
+                                appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
+                                    {
+                                      category: null,
+                                      service: item.source,
+                                      item: item
+                                    }
+    )
+  }
   
   render() {
     const { navigation } = this.props;
@@ -63,6 +93,7 @@ export class _UserCartContainer extends React.Component {
           updateCartLoading={this.props.updateCartLoading}
           onPressQtyAdd={this.onPressQtyAdd}
           onPressQtySubtract={this.onPressQtySubtract}
+          onItemPress={this.onItemPress}
         
        />
     );

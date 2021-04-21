@@ -93,6 +93,9 @@ class UserCartComponent extends React.Component {
   }
 
  
+  onItemPress = (item) => {
+    this.props.onItemPress(item);
+  }
 
   render() {
 
@@ -124,6 +127,7 @@ class UserCartComponent extends React.Component {
               data={cart.items}
               onPressQtyAdd={this.onPressQtyAdd}
               onPressQtySubtract={this.onPressQtySubtract}
+              onItemPress={this.onItemPress}
           />
 
           <View style={[themedStyle.summary.headRowContainer]}  >

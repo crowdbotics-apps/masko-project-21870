@@ -60,6 +60,9 @@ class _CartItemsComponent extends React.Component {
 
   }
     
+  onItemPress = (item) => {
+      this.props.onItemPress(item)
+  }
 
 
   renderItem = ({ item, index, separators }) => {
@@ -67,7 +70,11 @@ class _CartItemsComponent extends React.Component {
     const timeOption = item.userSelection.timeOptionLabel
     const bookingDate = item.userSelection.bookingDate.display
     const { themedStyle } = this.props;
-    return (<View style={themedStyle.itemContainer}>
+    return (
+      <TouchableOpacity
+      onPress={() => this.onItemPress(item) }
+  >
+    <View style={themedStyle.itemContainer}>
       <View style={themedStyle.itemSubContainer}>
         <Avatar 
             size="giant"
@@ -120,7 +127,8 @@ class _CartItemsComponent extends React.Component {
       })}
     
      
-  </View>);
+  </View>
+  </TouchableOpacity>);
   }
 
   render() {
