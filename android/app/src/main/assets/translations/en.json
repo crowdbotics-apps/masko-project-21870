@@ -110,7 +110,9 @@
     "OrderTaxLabel": "Tax",
     "OrderTotalLabel": "Total",
     "EmptyCartMessage": "Your cart is empty",
-    "ContinueShoppingBtn": "Continue Shopping"
+    "ContinueShoppingBtn": "Continue Shopping",
+    "SideMenuSignout": "Sign out",
+    "SideMenuHead": "MENU"
 
 
 
