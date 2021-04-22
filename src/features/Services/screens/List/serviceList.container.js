@@ -34,12 +34,6 @@ export class _ServiceListContainer extends React.Component {
       searchKeyword: '',
     }
 
-    // const didFocusSubscription = props.navigation.addListener(
-    //   'didFocus',
-    //   payload => {
-    //     // this.getServices();
-    //   }
-    // );
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){

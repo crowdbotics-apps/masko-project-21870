@@ -12,14 +12,21 @@ import appConfig from "src/config/app";
 
 export class _RightIcon extends React.Component {
 
-
+  constructor(props){
+    super(props)
+    const didFocusSubscription = props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.setState({...this.state})
+      }
+    );
+  }
   onPress = () => {
     this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.MyCart )
   }
 
- 
   render() {
-    const { navigation,cart } = this.props;
+    const { navigation, cart } = this.props;
       return (<View style={{flex:1, flexDirection:'row', justifyContent:'flex-end', marginRight: 10}}>
                         <TouchableOpacity onPress={this.onPress}>
                            <CartIcon width={25} style={{marginTop: 5, marginRight: 5}}   />
@@ -72,7 +79,7 @@ const styles = {
 
   },
   cartQtyLabel:{
-
+    fontSize: 12,
     fontFamily: "Montserrat",
     position:'absolute',
     left:8,

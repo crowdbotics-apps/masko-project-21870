@@ -93,7 +93,7 @@ class ServiceDetailsComponent extends React.Component {
     super(props)
     this.state.pets = this.setPetInfo();
 
-    if(this.props.userSelection){
+    if( this.props.userSelection ){
       
       const { userSelection, userSelectedPets } = this.props;
       this.state.notes =  userSelection.notes;
@@ -125,6 +125,8 @@ class ServiceDetailsComponent extends React.Component {
 
     if (value === timeOptions[1].value) {
       newState.showTimePicker = true
+    }else{
+      newState.showTimePicker = false
     }
     newState.timeOptionValue = index;
     newState.timeOptionLabel = value;

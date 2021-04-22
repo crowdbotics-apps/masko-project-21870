@@ -39,9 +39,8 @@ export class _ServiceDetailsContainer extends React.Component {
   };
   navigationKey = 'ServiceDetailsContainer';
 
-  constructor( props ){
+  constructor(props){
     super(props);
-
   }
 
   onAddButtonPress = (data) => {
@@ -61,7 +60,7 @@ export class _ServiceDetailsContainer extends React.Component {
 
     let userSelection = null;
     let userSelectedPets = null;
-    
+
     if (navigation.state.params && navigation.state.params.item){
       userSelection = navigation.state.params.item.userSelection
       userSelectedPets =navigation.state.params.item.pets

@@ -34,11 +34,11 @@ export class _UserCartContainer extends React.Component {
   constructor( props ){
     super(props);
         const didFocusSubscription = props.navigation.addListener(
-      'didFocus',
-      payload => {
-        this.setState({...this.state})
-      }
-    );
+            'didFocus',
+            payload => {
+              this.setState({...this.state})
+            }
+          );
 
   }
 
