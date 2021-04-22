@@ -100,9 +100,6 @@ function* handleLogin(action) {
       });
 
 
-      setTimeout(()=>{
-        showSuccessAlert(translate('LoginSuccessMsg'))
-      },500);
      
        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount );
     } else {
