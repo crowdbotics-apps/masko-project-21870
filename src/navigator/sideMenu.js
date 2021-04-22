@@ -52,7 +52,7 @@ class _SideMenu extends React.Component {
       <View style={styles.content}>
         <View style={styles.content}>
           <Text category="s1" style={styles.text}>
-            {item.human_name}
+            {translate(item.human_name)}
           </Text>
         </View>
       </View>
