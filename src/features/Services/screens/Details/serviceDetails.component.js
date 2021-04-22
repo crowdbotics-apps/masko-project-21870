@@ -340,7 +340,10 @@ class ServiceDetailsComponent extends React.Component {
         <PetComponent
           navigation={navigation}
         />
-        <ScrollView style={styles.scrollView} >
+        <ScrollView 
+          style={styles.scrollView}
+          contentContainerStyle={{ paddingBottom: 150 }}
+        >
           <View style={themedStyle.serviceItem.container} >
             <Image
               source={{

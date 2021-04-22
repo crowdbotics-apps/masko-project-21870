@@ -122,7 +122,9 @@ class UserCartComponent extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
-        <ScrollView style={themedStyle.scrollView} >
+        <ScrollView style={themedStyle.scrollView}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        >
           <CartItems
               data={cart.items}
               onPressQtyAdd={this.onPressQtyAdd}

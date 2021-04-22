@@ -100,7 +100,8 @@ class ServiceListComponent extends React.Component {
         />
         <Text style={themedStyle.categoryHead}>{category.getName()}</Text>
         <AdComponent />
-        <ScrollView style={styles.scrollView} >
+        <ScrollView style={styles.scrollView} 
+        contentContainerStyle={{ paddingBottom: 150 }} >
           
         { this.props.services.length == 0 && (
           <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
