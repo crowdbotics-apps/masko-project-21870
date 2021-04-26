@@ -67,6 +67,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    
     AddPet: (accessToken, pet) => {
       dispatch( userAccountActions.addPet( accessToken, pet ) );
     },

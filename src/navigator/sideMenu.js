@@ -19,6 +19,7 @@ import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import * as EmailAuthActions from 'src/features/EmailAuth/redux/actions';
 import * as NavigationService from './NavigationService';
 import { NavigationActions } from "react-navigation";
+import { translate } from 'src/utils/translation';
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
@@ -51,7 +52,7 @@ class _SideMenu extends React.Component {
       <View style={styles.content}>
         <View style={styles.content}>
           <Text category="s1" style={styles.text}>
-            {item.human_name}
+            {translate(item.human_name)}
           </Text>
         </View>
       </View>
@@ -68,7 +69,7 @@ class _SideMenu extends React.Component {
           ]}>
           {this.renderIcon()}
           <Text category="h6" style={styles.text}>
-            MENU
+          {translate('SideMenuHead')}
           </Text>
         </View>
         {this.renderMenu()}
@@ -80,7 +81,7 @@ class _SideMenu extends React.Component {
       <View style={styles.content}>
         <View style={styles.content}>
           <Text category="s1" style={styles.text}>
-            Signout
+             {translate('SideMenuSignout')}
           </Text>
         </View>
       </View>

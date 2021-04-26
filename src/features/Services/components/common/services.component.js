@@ -30,11 +30,7 @@ class _ServicesComponent extends React.Component {
 
   renderItem = ({ item, index, separators }) => {
     const { themedStyle } = this.props;
-    return (<TouchableOpacity
-      key={item.key}
-      onPress={() => this._onPress(item)}
-      onShowUnderlay={separators.highlight}
-      onHideUnderlay={separators.unhighlight}>
+    return (
       <View style={themedStyle.container} >
    
         <Image  
@@ -50,13 +46,14 @@ class _ServicesComponent extends React.Component {
               textStyle={themedStyle.yellowBtnText}
               status='primary'
               style={themedStyle.yellowBtn}
+              onPress={() => this._onPress(item)}
               >{translate('AddToCartBtn')} - ${item.price}
+              
             </Button>
         </View>
        
         
-      </View>
-    </TouchableOpacity>);
+      </View>);
   }
 
   render() {

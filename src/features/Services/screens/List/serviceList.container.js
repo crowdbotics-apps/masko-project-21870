@@ -23,7 +23,7 @@ export class _ServiceListContainer extends React.Component {
                 headerLeft: (<BackHomeIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<RightIcon navigation={navigation} />)
           }
   };
   navigationKey = 'ServiceListContainer';
@@ -34,12 +34,6 @@ export class _ServiceListContainer extends React.Component {
       searchKeyword: '',
     }
 
-    // const didFocusSubscription = props.navigation.addListener(
-    //   'didFocus',
-    //   payload => {
-    //     // this.getServices();
-    //   }
-    // );
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
@@ -63,7 +57,7 @@ export class _ServiceListContainer extends React.Component {
 
   onPressServiceItem = (item) => {
     const { navigation  } = this.props;
-    this.props.navigation.navigate("ServiceDetails",{
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ServiceDetails ,{
       category: navigation.state.params.category,
       service: item 
     })

@@ -1,13 +1,17 @@
 import * as actions from "./constants";
 
-export const getServices = ( accessToken, category, keyword )  => ({
-  type: actions.SERVICE_GET_REQUEST,
-  accessToken,
-  category,
-  keyword
+export const addItemToCart = ( type, item, pets, userSelection )  => ({
+  type: actions.CHECKOUT_CART_ADD_ITEM_REQUEST,
+  cartType: type,
+  item,
+  pets,
+  userSelection
 });
 
-export const getServiceCategories = accessToken => ({
-  type: actions.SERVICE_CATEGORY_GET_REQUEST,
-  accessToken
+export const updateItemToCart = ( item, pet, quantity ) => ({
+  type: actions.CHECKOUT_CART_UPDATE_ITEM_REQUEST,
+  item,
+  pet,
+  quantity
 });
+

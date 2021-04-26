@@ -3,11 +3,13 @@ import React from 'react';
 import { UserCart } from './userCart.component';
 
 import { connect } from 'react-redux';
-import * as ServiceActions from '../../redux/actions';
+import * as CheckoutActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 
 import { BackIcon, RightIcon, HamBurgerIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
+
+import { NavigationActions } from "react-navigation";
 
 
 export class _UserCartContainer extends React.Component {
@@ -31,20 +33,67 @@ export class _UserCartContainer extends React.Component {
 
   constructor( props ){
     super(props);
+        const didFocusSubscription = props.navigation.addListener(
+            'didFocus',
+            payload => {
+              this.setState({...this.state})
+            }
+          );
 
   }
 
- 
-  
+  onPressQtyAdd = (item, pet, quantity) => {
+    const { actions } = this.props;
+    actions.updateQuantity(item, pet, quantity)
+  }
+
+  onPressQtySubtract = (item, pet, quantity) => {
+    const { actions } = this.props;
+    actions.updateQuantity(item, pet, quantity)
+    
+  }
+
+  onItemPress = (item) => {
+    // this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ServiceDetails ,{
+    //   category: item.source.category,
+    //   service: item 
+    // })
+
+    // this.props.navigation.navigate(
+    //     'Service', 
+    //     {}, 
+    //     NavigationActions.navigate({ 
+    //         routeName: appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
+    //         params: {
+    //           category: null,
+    //           service: item.source,
+    //           item: item
+    //         }
+    //     })
+    // )
+    this.props.navigation.navigate(
+                                appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
+                                    {
+                                      category: null,
+                                      service: item.source,
+                                      item: item
+                                    }
+    )
+  }
   
   render() {
     const { navigation } = this.props;
     return (
       <UserCart
-        errorMsg={this.props.signInErrors}
-        navigation={navigation}
-        services={this.props.services}
-        getServiceLoading={this.props.getServiceLoading}
+          errorMsg={this.props.signInErrors}
+          navigation={navigation}
+          services={this.props.services}
+          cart={this.props.cart}
+          getServiceLoading={this.props.getServiceLoading}
+          updateCartLoading={this.props.updateCartLoading}
+          onPressQtyAdd={this.onPressQtyAdd}
+          onPressQtySubtract={this.onPressQtySubtract}
+          onItemPress={this.onItemPress}
         
        />
     );
@@ -54,13 +103,15 @@ export class _UserCartContainer extends React.Component {
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
   services: state.Service.services,
-  getServiceLoading: state.Service.GetService
+  getServiceLoading: state.Service.GetService,
+  cart: state.Checkout.cart,
+  updateCartLoading: state.Checkout.loaders.UpdateItemToCart
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getServices: (accessToken, category) => {
-      dispatch(ServiceActions.getServices( accessToken, category ));
+    updateQuantity: ( item, pet, quantity ) => {
+      dispatch(CheckoutActions.updateItemToCart( item, pet, quantity ));
     },
   },
 });

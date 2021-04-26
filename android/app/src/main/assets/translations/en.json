@@ -70,6 +70,7 @@
     "ServiceCategoriesGetErrorMsg":"Can't get service categories",
     "ServiceListtNavTitle":"Service List",
     "AddToCartBtn": "Add to Cart",
+    "SaveChangesBtn": "Save Changes",
     "SelectPetLabel": "Select Pet",
     "UpdateProfileNavTitle": "User Account",
     "FullNameLabel": "Full Name",
@@ -108,6 +109,14 @@
     "OrderShippingLabel": "Shipping",
     "OrderTaxLabel": "Tax",
     "OrderTotalLabel": "Total",
+    "EmptyCartMessage": "Your cart is empty",
+    "ContinueShoppingBtn": "Continue Shopping",
+    "SideMenuHome": "Home",
+    "SideMenuMyAccount": "My account",
+    "SideMenuMyOrders": "My orders",
+    "SideMenuRecurringOrders": "Recurring Orders",
+    "SideMenuSignout": "Sign out",
+    "SideMenuHead": "MENU"
 
 
 

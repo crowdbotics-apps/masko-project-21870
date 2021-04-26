@@ -3,12 +3,10 @@ import * as NavigationService from '../../../navigator/NavigationService';
 import * as utils from '../utils/general';
 
 import { 
-   SERVICE_CATEGORY_GET_ERROR,
-   SERVICE_CATEGORY_GET_REQUEST,
-   SERVICE_CATEGORY_GET_SUCCESS,
-   SERVICE_GET_ERROR,
-   SERVICE_GET_REQUEST,
-   SERVICE_GET_SUCCESS
+  CHECKOUT_CART_ADD_ITEM_REQUEST,
+  CHECKOUT_CART_ADD_ITEM_SUCCESS,
+  CHECKOUT_CART_UPDATE_ITEM_REQUEST,
+  CHECKOUT_CART_UPDATE_ITEM_SUCCESS,
    } from './constants';
 
 import appConfig from "src/config/app";
@@ -17,76 +15,46 @@ import { showErrorAlert, showSuccessAlert } from "../../../utils/alertUtil";
 import compileErrorMessage  from '../../../utils/errorMessageCompile';
 
 import { translate }  from 'src/utils/translation';
-import ApiConstants from 'src/api/ApiConstants';
-import getServices from 'src/api/methods/service';
-import getServiceCategories from 'src/api/methods/serviceCategory';
 
-
-function* handleGetServices(action) {
+function* handleAddItemToCart(action) {
   const {
-    accessToken,
-    category,
-    keyword
+    cartType,
+    item,
+    pets,
+    userSelection
   } = action;
-  try {
-    const {status, data, error} = yield call( getServices, accessToken,category,keyword );
+  
+        yield put({
+          type: CHECKOUT_CART_ADD_ITEM_SUCCESS,
+          data: utils.formatCartItem( cartType, item, pets, userSelection )
+        });
 
-      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
-        yield put({
-          type: SERVICE_GET_SUCCESS,
-          services: utils.formatServices(data),
-        });
-       
-      } else {
-        let msg = compileErrorMessage(error,data)
-        yield put({
-          type: SERVICE_GET_ERROR,
-          error: msg,
-        });
-      
-      }
-  } catch (error) {
-    // todo add errors with similar structure in backend
-    yield put({
-      type: SERVICE_GET_ERROR,
-      error: translate('ServiceGetErrorMsg'),
-    });
-  }
+        NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.MyCart );
+   
+  
 }
 
-function* handleGetServiceCategories(action) {
-  const {
-    accessToken
-  } = action;
-  try {
-    const {status, data, error} = yield call( getServiceCategories, accessToken );
 
-      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+function* handleUpdateItemToCart(action) {
+  const {
+    item,
+    pet,
+    quantity
+  } = action;
+  
         yield put({
-          type: SERVICE_CATEGORY_GET_SUCCESS,
-          categories: utils.formatServiceCategories(data),
+          type: CHECKOUT_CART_UPDATE_ITEM_SUCCESS,
+          item,
+          pet,
+          quantity
         });
-       
-      } else {
-        let msg = compileErrorMessage(error,data)
-        yield put({
-          type: SERVICE_CATEGORY_GET_ERROR,
-          error: msg,
-        });
-      
-      }
-  } catch (error) {
-    // todo add errors with similar structure in backend
-    yield put({
-      type: SERVICE_CATEGORY_GET_ERROR,
-      error: translate('ServiceCategoriesGetErrorMsg'),
-    });
-  }
+   
+  
 }
 
 
 export default all([
-  takeLatest(SERVICE_CATEGORY_GET_REQUEST, handleGetServiceCategories),
-  takeLatest(SERVICE_GET_REQUEST, handleGetServices),
+  takeLatest(CHECKOUT_CART_ADD_ITEM_REQUEST, handleAddItemToCart),
+  takeLatest(CHECKOUT_CART_UPDATE_ITEM_REQUEST, handleUpdateItemToCart),
   
 ]);

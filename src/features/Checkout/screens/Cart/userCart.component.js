@@ -21,27 +21,23 @@ import {
 } from 'react-native-ui-kitten';
 
 
-import {
-  textStyle,
-} from '../../components/common';
-
 import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
 
-import RNPickerSelect from 'react-native-picker-select';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
 
 
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 
-import { PetComponent } from 'src/components/common';
+import { CartItems } from '../../components/common';
 
 
-import TrashIcon from 'src/assets/icons/trash-icon.svg';
 
 const moment = require('moment');
 
@@ -65,8 +61,8 @@ class UserCartComponent extends React.Component {
   }
 
   renderSpinner = () => {
-    const { getServiceLoading } = this.props;
-    if (getServiceLoading) {
+    const { updateCartLoading } = this.props;
+    if (updateCartLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -83,117 +79,100 @@ class UserCartComponent extends React.Component {
     this.props.navigation.pop();
   }
 
+   onPressContinue = () => {
+     this.props.navigation.navigate( AppConfig.NAVIGATOR_ROUTE.UserHome )
+   } 
 
+   onPressQtyAdd = (item, pet) => {
+      this.props.onPressQtyAdd(item, pet, (pet.qty+1) );
+   }
+
+   onPressQtySubtract = (item, pet) => {
+    this.props.onPressQtySubtract(item, pet, (pet.qty-1));
+     
+  }
 
  
+  onItemPress = (item) => {
+    this.props.onItemPress(item);
+  }
 
   render() {
 
-    const { themedStyle, navigation } = this.props;
-    // const { service } = navigation.state.params; 
-    const { showDatePicker, showTimePicker,  bookingDate } = this.state
+    const { themedStyle, cart, navigation } = this.props;
 
-    
+    if(cart.items.length==0){
+      return (
+        <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPadWrap,{justifyContent:'center', alignItems:'center'}]}>
+             <EmptyRecordContainer emptyText={translate('EmptyCartMessage')} />
+             <Button
+                            style={styles.yellowButton}
+                            textStyle={styles.whiteFont}
+                            size="giant"
+                            status='primary'
+                            onPress={this.onPressContinue}
+
+                          >
+                            {translate("ContinueShoppingBtn")}
+                        </Button>
+        </LinearGradient>)
+    }
 
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
-        <ScrollView style={themedStyle.scrollView} >
-          <View style={themedStyle.itemContainer}>
-              <View style={themedStyle.itemSubContainer}>
-                <Image 
-                    size="giant"
-                  source={require('src/assets/images/services-1.png')} />
-                 <View style={themedStyle.itemDetailContainer}>
-                   <Text style={themedStyle.itemHeading} >Service Name</Text>
-                   <Text style={themedStyle.itemLabel}>Scheduled</Text>
-                   <Text style={themedStyle.itemLabel}>01/26/21</Text>
-                  </View> 
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-           
-         
-          </View>
-
-
-
-
-          <View style={themedStyle.itemContainer}>
-              <View style={themedStyle.itemSubContainer}>
-                <Image 
-                    size="giant"
-                  source={require('src/assets/images/services-1.png')} />
-                 <View style={themedStyle.itemDetailContainer}>
-                   <Text style={themedStyle.itemHeading} >Product Name</Text>
-                   <Text style={themedStyle.itemLabel}>Weight</Text>
-                   <Text style={themedStyle.itemLabel}>Brand</Text>
-                  </View> 
-              </View>
-              <View style={themedStyle.itemPetContainer}>
-                <Avatar 
-                  source={require('src/assets/images/services-1.png')}
-                   />
-                
-                <View style={themedStyle.itemQtyContainer}>
-                    <TrashIcon style={{marginHorizontal: 10}}  />
-                    <Text style={themedStyle.itemQtyLabel}>1</Text>
-                </View>
-                <View style={themedStyle.itemPriceContainer}>
-                     <Text style={themedStyle.itemPriceLabel}>$45.00</Text>
-                </View>
-
-              </View>
-          </View>
-
+        <ScrollView style={themedStyle.scrollView}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        >
+          <CartItems
+              data={cart.items}
+              onPressQtyAdd={this.onPressQtyAdd}
+              onPressQtySubtract={this.onPressQtySubtract}
+              onItemPress={this.onItemPress}
+          />
 
           <View style={[themedStyle.summary.headRowContainer]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
-            <Text style={themedStyle.summary.heading}  >#123323</Text>
+           
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelTextHead} >#123323</Text>
+
+            </View>
+            
           </View>
           <View style={[themedStyle.summary.rowContainer]}   >
             <Text style={themedStyle.summary.label} >{translate('OrderSubTotalLabel')}</Text>
-            <Text style={themedStyle.summary.label} >$135.00</Text>
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
+
+            </View>
+            
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
-            <Text style={themedStyle.summary.label} >$10.00</Text>
+            {/* <Text style={themedStyle.summary.label} >${cart.shipping}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.shipping}</Text>
+
+            </View>
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
-            <Text style={themedStyle.summary.label}  >0</Text>
+            {/* <Text style={themedStyle.summary.label}  >${cart.taxes}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelText} >${cart.taxes}</Text>
+
+            </View>
           </View>
 
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
-            <Text style={themedStyle.summary.heading}  >$145.00</Text>
+            {/* <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text> */}
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelTextHead} >${cart.totalPrice}</Text>
+
+            </View>
           </View>
 
           <Button
@@ -201,8 +180,6 @@ class UserCartComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
-                            // disabled={!this.validator()}
-                            // onPress={this.onAddButtonPress}
 
                           >
                             {translate("CheckoutBtn")}
@@ -318,7 +295,26 @@ export const UserCart = withStyles(UserCartComponent, theme => ({
       fontFamily: "Montserrat",
       fontSize: 14,
       color: "#FFF",
+    },
+    labelContainer:{
+      flex: 3,
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+      justifyContent: 'flex-end'
+    },
+    labelText:{
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+    },
+    labelTextHead:{
+      fontFamily: "Montserrat",
+      fontSize: 14,
+      color: "#FFF",
+      fontWeight: "bold"
     }
+
   }
 
 }));

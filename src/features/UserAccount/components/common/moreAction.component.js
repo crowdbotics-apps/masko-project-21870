@@ -34,7 +34,11 @@ export class _MoreActionPetComponent extends React.Component {
     }
 
     confirmDeletePet = () => {
-        const { pet, accessToken, actions } = this.props;
+        const { pet, selectedPet, accessToken, actions } = this.props;
+
+        if(pet.id == selectedPet.id){
+            actions.selectPet(null);
+        }
         actions.deletePet(accessToken, pet);
         
     }
@@ -74,15 +78,17 @@ const mapStateToProps = state => ({
     accessToken: state.EmailAuth.accessToken,
     user: state.EmailAuth.user,
     updateLoading: state.UserAccount.loaders.UpdatePet,
+    selectedPet: state.UserAccount.selectedPet,
   });
   
   const mapDispatchToProps = dispatch => ({
     actions: {
      selectPet: ( pet) => {
             dispatch(userAccountActions.setPet(pet));
-          },
+        },
       deletePet: (accessToken, pet) => {
         dispatch(userAccountActions.deletePet(accessToken, pet));
+        
       },
     },
   });
