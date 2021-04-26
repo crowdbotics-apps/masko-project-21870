@@ -80,7 +80,7 @@ class HomeComponent extends React.Component {
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithOutPad}>
-           <ScrollView style={styles.scrollView} >
+           <ScrollView style={styles.scrollView} contentContainerStyle={{ paddingBottom: 150 }} >
              <PetComponent 
                   navigation={navigation}
               />

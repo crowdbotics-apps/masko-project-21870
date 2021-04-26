@@ -102,6 +102,15 @@ class __PetComponent extends React.Component {
       return (<View/>);
     }
 
+    if(userPets && userPets.length==0){
+      return (
+        <View style={mainContainer}  >
+            <Text style={themedStyle.headLabel} >{translate('SelectPetLabel')}</Text>
+           {this.renderAddPetBtn({})}
+        </View>
+        );
+    }
+
     return (
     <View style={mainContainer}  >
         
@@ -109,17 +118,7 @@ class __PetComponent extends React.Component {
         <FlatList
           style={{margin:5}}
           horizontal={true}
-          // ItemSeparatorComponent={
-          //   Platform.OS !== 'android' &&
-          //   (({ highlighted }) => (
-          //     <View
-          //       style={[
-          //         // style.separator,
-          //         highlighted && { marginLeft: 0 }
-          //       ]}
-          //     />
-          //   ))
-          // }
+      
           data={userPets}
           renderItem={this.renderItem}
         />

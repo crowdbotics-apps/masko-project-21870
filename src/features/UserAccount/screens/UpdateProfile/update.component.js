@@ -172,8 +172,10 @@ class _UpdateProfileComponent extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         {this.renderSpinner()}
-        <ScrollView>
-           <ScrollableAvoidKeyboard style={themedStyle.container}>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 100 }}
+          >
+           <ScrollableAvoidKeyboard style={themedStyle.container}  >
             <View>
               <PetComponent navigation={navigation}
                               data={userPets}
@@ -219,9 +221,10 @@ class _UpdateProfileComponent extends React.Component {
             onPress={this.onCancelButtonPress}
 
           >
-            {translate("CancelButtonLabel")}
-        </Button>
-       
+              {translate("CancelButtonLabel")}
+          </Button>
+         
+        
 
         </ScrollableAvoidKeyboard>
         </ScrollView>          
@@ -234,6 +237,7 @@ export const UpdateProfile = withStyles(_UpdateProfileComponent, theme => ({
   container: {
     flex: 1,
     padding: 10,
+    
     // flexDirection:"column"
   },
   

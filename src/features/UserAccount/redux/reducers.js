@@ -59,6 +59,7 @@ export default UserAccountReducer = (state = initialState, action) => {
       return {
         ...state,
         pets: utils.appendPet(state.pets, action.pet),
+        selectedPet: utils.formatPet(action.pet),
         errors: {
           ...state.errors,
           AddPet: null
