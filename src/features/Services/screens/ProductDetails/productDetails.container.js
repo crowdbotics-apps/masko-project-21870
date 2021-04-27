@@ -19,15 +19,11 @@ export class _ProductDetailsContainer extends React.Component {
     //   category = navigation.state.params.category
     // }
 
-    
-
-
-    
-
-    titleText = translate('ServiceDetailsNavTitle');
+    titleText = translate('ProductDetailsNavTitle');
     if (category){
       titleText = category.getName();
     }
+    
     return {
                 title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
@@ -37,7 +33,7 @@ export class _ProductDetailsContainer extends React.Component {
                 headerRight: (<RightIcon navigation={navigation} />)
           }
   };
-  navigationKey = 'ServiceDetailsContainer';
+  navigationKey = 'ProductDetailsContainer';
 
   constructor(props){
     super(props);
@@ -66,10 +62,10 @@ export class _ProductDetailsContainer extends React.Component {
       userSelectedPets =navigation.state.params.item.pets
     }
     return (
-      <ServiceDetails
+      <ProductDetails
         errorMsg={this.props.signInErrors}
         navigation={navigation}
-        services={this.props.services}
+        product={this.props.product}
         getServiceLoading={this.props.getServiceLoading}
         userPets={this.props.userPets}
         selectedPet={this.props.selectedPet}

@@ -25,27 +25,32 @@ import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
-
-
-
-
 import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
-
-
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
+import { OrderItems } from '../../components/common';
 
-import { CartItems } from '../../components/common';
 
+import RNPickerSelect from 'react-native-picker-select';
+import MicroLogo from 'src/assets/images/masko-logo-micro.svg';
 
 
 const moment = require('moment');
 
-class UserCartComponent extends React.Component {
+const paymentMethods = [
+  {
+    value: 'card', label: "Card"
+  },
+  {
+    value: 'cash', label: "Cash"
+  }
+];
+
+class ConfirmOrderComponent extends React.Component {
 
   state = {
-    timeOptionValue: undefined,
-    timeOptionLabel: undefined,
+    payMethodValue: undefined,
+    payMethodLabel: undefined,
     dateOptionValue: undefined,
     dateOptionLabel: undefined,
     dayTimeOptionValue: undefined,
@@ -97,9 +102,18 @@ class UserCartComponent extends React.Component {
     this.props.onItemPress(item);
   }
 
-  onCheckoutPress = () =>{
-    this.props.onCheckoutPress();
+  
+  onPaymentMethod = (value, index) => {
+
+    let newState = { ...this.state }
+
+    newState.payMethodValue = index;
+    newState.payMethodLabel = value;
+
+
+    this.setState(newState);
   }
+
 
   render() {
 
@@ -108,7 +122,7 @@ class UserCartComponent extends React.Component {
     if(cart.items.length==0){
       return (
         <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPadWrap,{justifyContent:'center', alignItems:'center'}]}>
-             <EmptyRecordContainer emptyText={translate('EmptyCartMessage')} />
+             <EmptyRecordContainer emptyText={ translate('EmptyCartMessage') } />
              <Button
                             style={styles.yellowButton}
                             textStyle={styles.whiteFont}
@@ -129,14 +143,12 @@ class UserCartComponent extends React.Component {
         <ScrollView style={themedStyle.scrollView}
         contentContainerStyle={{ paddingBottom: 100 }}
         >
-          <CartItems
-              data={cart.items}
-              onPressQtyAdd={this.onPressQtyAdd}
-              onPressQtySubtract={this.onPressQtySubtract}
-              onItemPress={this.onItemPress}
-          />
+           
+            <View style={themedStyle.headerLogo}>
+                <MicroLogo size={20} />
+            </View>
 
-          <View style={[themedStyle.summary.headRowContainer]}  >
+            <View style={[themedStyle.summary.headRowContainer]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
            
             <View style={themedStyle.labelContainer} >
@@ -145,17 +157,22 @@ class UserCartComponent extends React.Component {
             </View>
             
           </View>
-          <View style={[themedStyle.summary.rowContainer]}   >
-            <Text style={themedStyle.summary.label} >{translate('OrderSubTotalLabel')}</Text>
+          <OrderItems
+              data={cart.items}
+              onPressQtyAdd={this.onPressQtyAdd}
+              onPressQtySubtract={this.onPressQtySubtract}
+              onItemPress={this.onItemPress}
+          />
+
+          <View style={[themedStyle.summary.rowContainer, themedStyle.summary.topBorder ]}   >
+            <Text style={themedStyle.summary.label} >{translate('OrderOneTimeLabel')}</Text>
             <View style={themedStyle.labelContainer} >
                 <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
-
             </View>
             
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
-            {/* <Text style={themedStyle.summary.label} >${cart.shipping}</Text> */}
             <View style={themedStyle.labelContainer} >
                 <Text style={themedStyle.summary.labelText} >${cart.shipping}</Text>
 
@@ -163,7 +180,6 @@ class UserCartComponent extends React.Component {
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
-            {/* <Text style={themedStyle.summary.label}  >${cart.taxes}</Text> */}
             <View style={themedStyle.labelContainer} >
                 <Text style={themedStyle.summary.labelText} >${cart.taxes}</Text>
 
@@ -172,22 +188,42 @@ class UserCartComponent extends React.Component {
 
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
-            {/* <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text> */}
             <View style={themedStyle.labelContainer} >
                 <Text style={themedStyle.summary.labelTextHead} >${cart.totalPrice}</Text>
 
             </View>
           </View>
 
+          <View style={themedStyle.detailContainer.pickerContainer} >
+              <RNPickerSelect
+                style={pickerSelectStyles}
+
+                onValueChange={(value, index) => {
+                  if (value != '0') {
+                    this.onPaymentMethod(value, index)
+
+                  }
+
+                }
+                }
+                placeholder={{ label: translate('ChooseCardLabel'), value: '0' }}
+                items={paymentMethods}
+                value={this.state.payMethodLabel}
+              >
+                <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ConfirmOrderPayUsingLabel')}</Text>
+                <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.payMethodLabel}</Text>
+              </RNPickerSelect>
+            </View>
+
+
           <Button
                             style={styles.yellowButton}
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
-                            onPress={this.onCheckoutPress}
 
                           >
-                            {translate("CheckoutBtn")}
+                            {translate("ConfirmOrderBtn")}
                         </Button>
 
         </ScrollView>
@@ -196,12 +232,37 @@ class UserCartComponent extends React.Component {
   }
 }
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 14,
+    marginBottom: 12,
+    color: '#FFF',
+    fontFamily: "Montserrat",
+
+  },
+  inputAndroid: {
+    fontSize: 10,
+    padding: 0,
+    margin: 0,
+    color: '#FFF',
+    fontFamily: "Montserrat",
+
+  },
+});
 
 
-
-export const UserCart = withStyles(UserCartComponent, theme => ({
+export const ConfirmOrder = withStyles( ConfirmOrderComponent, theme => ({
   scrollView:{
     padding: 10,
+  },
+  headerLogo:{ 
+    alignSelf:'center',
+    alignItems:'center',
+    justifyContent:"center",
+    width:90,
+    height:90,
+    borderRadius: 45,
+    backgroundColor:"#38A7E5"
   },
   itemContainer:{
     flexDirection: "column",
@@ -280,6 +341,7 @@ export const UserCart = withStyles(UserCartComponent, theme => ({
     },
     headRowContainer:{
       flexDirection: "row",
+      // paddingHorizontal: 10,
       marginHorizontal: 10,
       marginBottom: 20,
       paddingBottom:10,
@@ -317,8 +379,67 @@ export const UserCart = withStyles(UserCartComponent, theme => ({
       fontSize: 14,
       color: "#FFF",
       fontWeight: "bold"
+    },
+    topBorder:{
+      borderTopColor: '#A0B0DC',
+      borderTopWidth: 1,
+      paddingTop: 10,
+    },
+    bottomBorder:{
+      borderBottomColor: '#A0B0DC',
+      borderBottomWidth: 1,
+      paddingBottom: 10,
     }
 
+  },
+  detailContainer: {
+    container: {
+      flexDirection: "column",
+      padding: 20,
+
+    },
+
+    placeHolderText: {
+      color: "#9BB2EF",
+      fontSize: 12,
+    },
+    valueText: {
+      color: "#FFFF",
+      fontSize: 15,
+      marginBottom: 20,
+    },
+    pickerContainer: {
+      borderBottomColor: "#A0B0DC",
+      borderBottomWidth: 1,
+      margin: 10,
+      // paddingHorizontal: 10,
+    },
+    inputContainerHalf: {
+      flexDirection: 'row'
+    },
+    pickerContainer2: {
+      borderBottomColor: "#A0B0DC",
+      borderBottomWidth: 1,
+      marginBottom: 10,
+      flex: 3,
+    },
+    valueTextWithOutMargin: {
+      color: "#FFFF",
+      fontSize: 15,
+      marginBottom: 10,
+    },
+    noteTextArea: {
+      color: "white",
+      borderColor: "#FFF",
+      backgroundColor: null,
+
+      marginBottom: 20,
+    },
+    noteTextAreaText: {
+      color: "white",
+      fontSize: 15,
+      minHeight: 80
+    }
   }
 
 }));

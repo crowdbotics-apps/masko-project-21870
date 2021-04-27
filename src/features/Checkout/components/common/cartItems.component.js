@@ -259,7 +259,8 @@ export const CartItems = withStyles(_CartItemsComponent, theme => ({
   },
   itemLabel:{
     fontFamily: "Montserrat",
-    fontSize: 12,
+    fontSize: 11,
+    color: "#6C84C1"
 
   },
   itemPetContainer:{

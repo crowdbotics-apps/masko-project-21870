@@ -203,6 +203,7 @@ onPressProductItem = (item) => {
           onPressQtyAdd={this.onPressQtyAdd}
           onPressQtySubtract={this.onPressQtySubtract}
           onAddButtonPress={this.onAddButtonPress}
+          onPressProductItem={this.onPressProductItem}
           // userPets={this.props.userPets}
 
         />

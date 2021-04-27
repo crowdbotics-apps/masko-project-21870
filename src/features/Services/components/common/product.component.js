@@ -49,7 +49,11 @@ class _ProductsComponent extends React.Component {
 
     const { themedStyle } = this.props;
     return (
-      <View style={themedStyle.container} >
+      <TouchableOpacity style={themedStyle.container}
+        onPress={()=>{
+          this.props.onPressProductItem(item)
+        }}
+      >
    
         <Image  
          source={{
@@ -101,7 +105,7 @@ class _ProductsComponent extends React.Component {
         </View>
        
         
-      </View>);
+      </TouchableOpacity>);
   }
 
   render() {

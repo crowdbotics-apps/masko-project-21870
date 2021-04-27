@@ -39,6 +39,7 @@ export default appConfig = {
     "ServiceDetails": "ServiceDetails",
     "ProductList": "ProductList",
     "ProductDetails": "ProductDetails",
+    "ConfirmOrder": "ConfirmOrder",
     
     "MyCart": "MyCart"
   },

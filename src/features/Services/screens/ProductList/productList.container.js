@@ -62,9 +62,10 @@ export class _ProductListContainer extends React.Component {
 
   onPressProductItem = (item) => {
     const { navigation  } = this.props;
+
     this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ProductDetails ,{
       category: navigation.state.params.category,
-      service: item 
+      product: item 
     })
   }
   
@@ -82,6 +83,7 @@ export class _ProductListContainer extends React.Component {
         selectedPet={this.props.selectedPet}
         userPets={this.props.userPets}
         onAddButtonPress={this.onAddButtonPress}
+        onPressProductItem={this.onPressProductItem}
         
        />
     );

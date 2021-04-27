@@ -149,11 +149,11 @@ class ProductDetailsComponent extends React.Component {
         navigation,
       } = this.props;
 
-      const { service } = navigation.state.params;
+      const { product } = navigation.state.params;
 
       this.props.onAddButtonPress({
-        type: AppConfig.ITEM_TYPES.SERVICES,
-        item: service,
+        type: AppConfig.ITEM_TYPES.PRODUCT,
+        item: product,
         pets: this.getPetsForCart(),
         userSelection: {
           notes: this.state.notes,
@@ -302,10 +302,7 @@ class ProductDetailsComponent extends React.Component {
     const { timeOptionLabel, dayTimeOptionLabel } = this.state;
 
     return (
-            (petQty>0) &&
-            (    timeOptionLabel == 'ASAP' || 
-                (timeOptionLabel == "Schedule" && dayTimeOptionLabel != null) 
-            )
+            (petQty>0)
     ) 
     
   }
@@ -319,7 +316,7 @@ class ProductDetailsComponent extends React.Component {
       userSelection
     } = this.props;
 
-    const { service } = navigation.state.params;
+    const { product } = navigation.state.params;
 
     const {
       showDatePicker,
@@ -347,101 +344,27 @@ class ProductDetailsComponent extends React.Component {
           <View style={themedStyle.serviceItem.container} >
             <Image
               source={{
-                uri: service.photo,
+                uri: product.photo,
               }}
               style={themedStyle.serviceItem.imageStyle}
             />
             <View style={themedStyle.serviceItem.textContainer} >
-              <Text style={themedStyle.serviceItem.textTitle}  >{service.name_en}</Text>
-              <Text style={themedStyle.serviceItem.textDescription}  >{service.description_es}</Text>
+              <Text style={themedStyle.serviceItem.textTitle}  >{product.name_en}</Text>
+              <Text style={themedStyle.serviceItem.textDesc2}  >Brand: {product.brand_en}</Text>
+              <Text style={themedStyle.serviceItem.textDesc2}  >Weight: {product.weight}</Text>
             </View>
 
 
           </View>
 
           <View style={themedStyle.detailContainer.container}>
+          <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailDescLabel')}</Text>
+           <Text style={themedStyle.detailContainer.valueText}>{product.description_en}</Text>
+           
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailPriceLabel')}</Text>
-            <Text style={themedStyle.detailContainer.valueText}>${service.price}</Text>
-            <View style={themedStyle.detailContainer.pickerContainer} >
-              <RNPickerSelect
-                style={pickerSelectStyles}
-
-                onValueChange={(value, index) => {
-                  if (value != '0') {
-                    this.onTimeInputTextChange(value, index)
-
-                  }
-
-                }
-                }
-                placeholder={{ label: translate('ChooseTimeLabel'), value: '0' }}
-                items={timeOptions}
-                value={this.state.timeOptionLabel}
-              >
-                <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailTimeLabel')}</Text>
-                <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.timeOptionLabel}</Text>
-              </RNPickerSelect>
-            </View>
-
-            {showTimePicker && (
-              <View style={themedStyle.detailContainer.inputContainerHalf}>
-                <TouchableOpacity style={themedStyle.detailContainer.pickerContainer2}
-                  onPress={this.toggleDateModal}
-                >
-                  <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDateLabel')}</Text>
-                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{bookingDate.display}</Text>
-
-
-                </TouchableOpacity>
-                <View style={{ width: 20 }} ></View>
-                <View style={themedStyle.detailContainer.pickerContainer2} >
-
-                  <RNPickerSelect
-                    style={pickerSelectStyles}
-
-                    onValueChange={(value, index) => {
-                      if (value != '0')
-                        this.onDayTimeInputTextChange(value, index)
-                    }
-                    }
-                    placeholder={{ label: translate('ChooseDayTimeLabel'), value: '0' }}
-                    items={dayTimeOption}
-                    value={this.state.timeOptionLabel}
-                  >
-                    <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDayTimeLabel')}</Text>
-                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>
-                  </RNPickerSelect>
-                </View>
-              </View>
-            )}
-            {showTimePicker && showDatePicker && (
-              <DateTimePicker
-                value={bookingDate.value}
-                mode={'date'}
-                style={{ color: "#FFF" }}
-                textColor={'#FFF'}
-                onChange={this.handleBookingDateChange}
-                onConfirm={this.handleBookingDateChange}
-                onCancel={this.toggleDateModal}
-              />
-            )}
-
-
-
-
-            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
-            <Text style={themedStyle.detailContainer.valueText}>4505  Melody Lane, Reston, Virginia</Text>
-
-            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailNoteLabel')}</Text>
-            <Input
-              textStyle={themedStyle.detailContainer.noteTextAreaText}
-              style={themedStyle.detailContainer.noteTextArea}
-              multiline={true}
-              // textStyle={{ minHeight: 80, color:"#FFF" }}
-              placeholder='Add Notes'
-              value={this.state.notes}
-              onChangeText={(value) => this.onNotesInputTextChange(value)}
-            />
+            <Text style={themedStyle.detailContainer.valueText}>${product.price}</Text>
+ 
+         
           </View>
           <ServicePetComponent
             navigation={navigation}
@@ -576,6 +499,12 @@ export const ProductDetails = withStyles(ProductDetailsComponent, theme => ({
       fontFamily: "Montserrat",
       fontWeight: 'bold',
       fontSize: 14,
+    },
+    textDesc2: {
+      fontFamily: "Montserrat",
+      fontSize: 11,
+      fontWeight: "bold",
+      color: "#6C84C1"
     },
     textDescription: {
       fontFamily: "Montserrat",
