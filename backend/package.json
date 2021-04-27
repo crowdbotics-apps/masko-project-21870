@@ -1,0 +1,17 @@
+{
+  "name": "masko_project_21870-backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+   "set-environ": "pipenv shell",
+   "install-packages": "pipenv install",
+   "getMyIp": "./machine-ip.bash",
+   "server": "myIp=$(./machine-ip.bash) && python manage.py runserver $myIp:8000"
+  },
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+   
+  }
+}

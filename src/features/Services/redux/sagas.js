@@ -8,7 +8,10 @@ import {
    SERVICE_CATEGORY_GET_SUCCESS,
    SERVICE_GET_ERROR,
    SERVICE_GET_REQUEST,
-   SERVICE_GET_SUCCESS
+   SERVICE_GET_SUCCESS,
+   SERVICE_PRODUCT_GET_ERROR,
+   SERVICE_PRODUCT_GET_REQUEST,
+   SERVICE_PRODUCT_GET_SUCCESS
    } from './constants';
 
 import appConfig from "src/config/app";
@@ -19,6 +22,7 @@ import compileErrorMessage  from '../../../utils/errorMessageCompile';
 import { translate }  from 'src/utils/translation';
 import ApiConstants from 'src/api/ApiConstants';
 import getServices from 'src/api/methods/service';
+import getProducts from 'src/api/methods/product';
 import getServiceCategories from 'src/api/methods/serviceCategory';
 
 
@@ -50,6 +54,41 @@ function* handleGetServices(action) {
     yield put({
       type: SERVICE_GET_ERROR,
       error: translate('ServiceGetErrorMsg'),
+    });
+  }
+}
+
+function* handleGetProducts(action) {
+  const {
+    accessToken,
+    category,
+    keyword,
+    petType,
+    price,
+    sort
+  } = action;
+  try {
+    const {status, data, error} = yield call( getProducts, accessToken, category, keyword, petType, price, sort );
+
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: SERVICE_PRODUCT_GET_SUCCESS,
+          products: utils.formatProducts(data.results),
+        });
+       
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: SERVICE_PRODUCT_GET_ERROR,
+          error: msg,
+        });
+      
+      }
+  } catch (error) {
+    // todo add errors with similar structure in backend
+    yield put({
+      type: SERVICE_PRODUCT_GET_ERROR,
+      error: translate('ProductsGetErrorMsg'),
     });
   }
 }
@@ -88,5 +127,6 @@ function* handleGetServiceCategories(action) {
 export default all([
   takeLatest(SERVICE_CATEGORY_GET_REQUEST, handleGetServiceCategories),
   takeLatest(SERVICE_GET_REQUEST, handleGetServices),
+  takeLatest(SERVICE_PRODUCT_GET_REQUEST, handleGetProducts),
   
 ]);

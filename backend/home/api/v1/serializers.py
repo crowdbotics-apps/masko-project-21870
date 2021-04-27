@@ -11,7 +11,7 @@ from rest_auth.serializers import PasswordResetSerializer
 from home.models import HomePage, CustomText
 
 from pet.models import Pet, PetType, BreedType
-from service.models import Service, Category
+from service.models import Service, Category, Product
 
 
 import boto3
@@ -97,6 +97,12 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = "__all__"
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
+
 
 class HomePageSerializer(serializers.ModelSerializer):
     class Meta:

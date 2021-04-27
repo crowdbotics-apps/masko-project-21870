@@ -68,7 +68,7 @@
     "PetMoreActionDeletePet": "Delete pet",
     "ServiceGetErrorMsg":"Can't get services",
     "ServiceCategoriesGetErrorMsg":"Can't get service categories",
-    "ServiceListtNavTitle":"Service List",
+    "ServiceListNavTitle":"Service List",
     "AddToCartBtn": "Add to Cart",
     "SaveChangesBtn": "Save Changes",
     "SelectPetLabel": "Select Pet",
@@ -116,7 +116,9 @@
     "SideMenuMyOrders": "My orders",
     "SideMenuRecurringOrders": "Recurring Orders",
     "SideMenuSignout": "Sign out",
-    "SideMenuHead": "MENU"
+    "SideMenuHead": "MENU",
+    "ProductsGetErrorMsg": "Can't get products",
+    "ProductListtNavTitle": "Product List",
 
 
 

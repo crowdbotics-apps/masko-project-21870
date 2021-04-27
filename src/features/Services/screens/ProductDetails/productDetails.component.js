@@ -71,7 +71,7 @@ const dayTimeOption = [
   }
 ];
 
-class ServiceDetailsComponent extends React.Component {
+class ProductDetailsComponent extends React.Component {
 
   state = {
     timeOptionValue: undefined,
@@ -506,7 +506,7 @@ const pickerSelectStyles = StyleSheet.create({
 
 
 
-export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
+export const ProductDetails = withStyles(ProductDetailsComponent, theme => ({
   container: {
     flex: 1,
   },

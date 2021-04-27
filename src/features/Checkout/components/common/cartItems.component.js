@@ -21,6 +21,8 @@ import {
 const width = Dimensions.get('screen').width
 import { translate } from 'src/utils/translation';
 
+import appConfig from 'src/config/app';
+
 
 
 import TrashIcon from 'src/assets/icons/trash-icon.svg';
@@ -65,8 +67,8 @@ class _CartItemsComponent extends React.Component {
   }
 
 
-  renderItem = ({ item, index, separators }) => {
-    const name = (item.source)?item.source.getName():'';
+  renderServiceItem = ({ item, index, separators }) => {
+    const name = (item.source)?item.source.name_en:'';
     const timeOption = item.userSelection.timeOptionLabel
     const bookingDate = item.userSelection.bookingDate.display
     const { themedStyle } = this.props;
@@ -129,6 +131,83 @@ class _CartItemsComponent extends React.Component {
      
   </View>
   </TouchableOpacity>);
+  
+
+  }
+
+  renderProductItem = ({ item, index, separators }) => {
+    const name = (item.source)?item.source.name_en:'';
+    const brand = (item.source)?item.source.brand_en:'';
+    const weight = (item.source)?item.source.weight:'';
+    const { themedStyle } = this.props;
+    return (
+      <TouchableOpacity
+      onPress={() => this.onItemPress(item) }
+  >
+    <View style={themedStyle.itemContainer}>
+      <View style={themedStyle.itemSubContainer}>
+        <Avatar 
+            size="giant"
+          style={{width: 100,height: 100}}
+          source={{uri: item.source.photo}} />
+         <View style={themedStyle.itemDetailContainer}>
+           <Text style={themedStyle.itemHeading} >{name}</Text>
+           <Text style={themedStyle.itemLabel}>Brand: {brand}</Text>
+           <Text style={themedStyle.itemLabel}>Weight: {weight}</Text>
+          </View> 
+      </View>
+      {item.pets.map( (pet,i) => {
+        // this.renderPets( pet, item.source )
+
+        const price = parseFloat(item.source.price * pet.qty);
+        return (<View style={themedStyle.itemPetContainer}>
+          <Avatar 
+            source={{uri:pet.photo}}
+             />
+          
+          <View style={themedStyle.itemQtyContainer}>
+             <TouchableOpacity style={themedStyle.petQtyBtn} 
+                  onPress={ () => this._onPressQtySubtract(item,pet) }
+              >
+                {pet.qty>1 && (
+                  <Text style={themedStyle.petQtyLabel}>-</Text>
+                )}
+
+                {pet.qty==1 && (
+                  <TrashIcon  />
+                )}
+                      
+
+              </TouchableOpacity>
+              <Text style={themedStyle.petQtyLabel}>{pet.qty}</Text>
+              <TouchableOpacity style={themedStyle.petQtyBtn} 
+                  onPress={() => this._onPressQtyAdd(item,pet) }
+              >
+                      <Text style={themedStyle.petQtyLabel}>+</Text>
+
+              </TouchableOpacity>
+              {/* <TrashIcon style={{marginHorizontal: 10}}  />
+              <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
+          </View>
+          <View style={themedStyle.itemPriceContainer}>
+               <Text style={themedStyle.itemPriceLabel}>${price}</Text>
+          </View>
+    
+        </View>);
+      })}
+    
+     
+  </View>
+  </TouchableOpacity>);
+  }
+
+  renderItem = ({ item, index, separators }) => {
+          if(item.type == appConfig.ITEM_TYPES.SERVICES)
+            return this.renderServiceItem({ item, index, separators })  
+          else
+            return this.renderProductItem({ item, index, separators })  
+          
+
   }
 
   render() {

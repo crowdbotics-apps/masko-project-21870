@@ -1,18 +1,20 @@
 import React from 'react';
 
-import { ServiceList } from './serviceList.component';
+import { ProductList } from './productList.component';
 import {connect} from 'react-redux';
 import * as ServiceActions from '../../redux/actions';
+import * as CheckoutActions from 'src/features/Checkout/redux/actions';
+
 import appConfig from 'src/config/app';
 
 import { BackHomeIcon, RightIcon, LogoIcon } from 'src/components/HeaderBar';
 import { translate }  from 'src/utils/translation';
 
-export class _ServiceListContainer extends React.Component {
+export class _ProductListContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     const { category } = navigation.state.params;
-    titleText = translate('ServiceListNavTitle');
+    titleText = translate('ProductListtNavTitle');
     if (category){
       titleText = category.name_en;
     }
@@ -23,10 +25,10 @@ export class _ServiceListContainer extends React.Component {
                 headerLeft: (<BackHomeIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon />)
+                headerRight: (<RightIcon navigation={navigation} />)
           }
   };
-  navigationKey = 'ServiceListContainer';
+  navigationKey = 'ProductListContainer';
 
   constructor( props ){
     super(props);
@@ -34,36 +36,33 @@ export class _ServiceListContainer extends React.Component {
       searchKeyword: '',
     }
 
-    // const didFocusSubscription = props.navigation.addListener(
-    //   'didFocus',
-    //   payload => {
-    //     // this.getServices();
-    //   }
-    // );
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
       if(this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
-        this.getServices();
+        this.getProducts();
           
       }
   }
 
 
   componentDidMount(){
-      this.getServices();
+      this.getProducts();
   }
 
-  getServices = (keyword) => {
+  getProducts = (keyword) => {
     const { accessToken, actions, navigation } = this.props;
-    actions.getServices( accessToken, navigation.state.params.category, keyword );
+    actions.getProducts( accessToken, navigation.state.params.category, keyword );
   }
 
-  
+  onAddButtonPress = (data) => {
+    const { actions } = this.props;
+    actions.addItemToCart(data)
+  }
 
-  onPressServiceItem = (item) => {
+  onPressProductItem = (item) => {
     const { navigation  } = this.props;
-    this.props.navigation.navigate("ServiceDetails",{
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ProductDetails ,{
       category: navigation.state.params.category,
       service: item 
     })
@@ -72,13 +71,17 @@ export class _ServiceListContainer extends React.Component {
   render() {
     const { navigation } = this.props;
     return (
-      <ServiceList
+      <ProductList
+        
         errorMsg={this.props.signInErrors}
         navigation={navigation}
-        services={this.props.services}
-        getServiceLoading={this.props.getServiceLoading}
+        products={this.props.products}
+        getProductsLoading={this.props.getProductsLoading}
         onPressServiceItem={this.onPressServiceItem}
-        getServicesCb={this.getServices}
+        getProductsCb={this.getProducts}
+        selectedPet={this.props.selectedPet}
+        userPets={this.props.userPets}
+        onAddButtonPress={this.onAddButtonPress}
         
        />
     );
@@ -87,19 +90,24 @@ export class _ServiceListContainer extends React.Component {
 
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
-  services: state.Service.services,
-  getServiceLoading: state.Service.GetService
+  products: state.Service.products,
+  userPets: state.UserAccount.pets,
+  selectedPet: state.UserAccount.selectedPet,
+  getProductsLoading: state.Service.GetProducts
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getServices: (accessToken, category, keyword) => {
-      dispatch(ServiceActions.getServices( accessToken, category, keyword ));
+    getProducts: (accessToken, category, keyword, type, price, sort ) => {
+      dispatch( ServiceActions.getProducts( accessToken, category, keyword, type, price, sort ) );
+    },
+    addItemToCart: ({type, item, pets, userSelection}) => {
+      dispatch( CheckoutActions.addItemToCart( type, item, pets, userSelection ));
     },
   },
 });
 
-export const ServiceListContainer =  connect(
+export const ProductListContainer =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(_ServiceListContainer);
+)(_ProductListContainer);
