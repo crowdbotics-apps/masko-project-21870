@@ -7,9 +7,12 @@ export {
 } from './services.component';
 
 export {
+  ProductsComponent
+} from './product.component';
+
+export {
   ServicePetComponent
 } from './servicesPet.component';
-
 
 
 

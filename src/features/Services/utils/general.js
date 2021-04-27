@@ -1,8 +1,16 @@
 import * as _ from 'lodash';
-import { ServiceModel as Service, ServiceCategoryModel as ServiceCategory } from '../models';
+import {
+        ServiceModel as Service,
+        ServiceCategoryModel as ServiceCategory, 
+        ProductModel as Product
+       } from '../models';
 
 export function formatService(input){
     return new Service(input);
+}
+
+export function formatProduct(input){
+  return new Product(input);
 }
 
 export function formatServiceCategory(input){
@@ -26,6 +34,14 @@ export function formatServices(results){
         list.push(formatService(i));
       })
       return list;
+}
+
+export function formatProducts(results){
+  let list = [];
+  _.forEach(results, (i) => {
+    list.push(formatProduct(i));
+  })
+  return list;
 }
 
 export function formatServiceCategories(results){

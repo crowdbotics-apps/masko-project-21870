@@ -20,7 +20,8 @@ from home.api.v1.serializers import (
     PetTypeSerializer,
     BreedTypeSerializer,
     ServiceSerializer,
-    ServiceCategorySerializer
+    ServiceCategorySerializer,
+    ProductSerializer
 )
 
 from payment_stripe.serializers import ( CardSerializer )
@@ -28,7 +29,7 @@ from payment_stripe.models import ( Card )
 
 from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
-from service.models import Service, Category as ServiceCategory
+from service.models import Service, Category as ServiceCategory, Product
 
 
 class SignupViewSet(ModelViewSet):
@@ -92,10 +93,10 @@ class ServiceViewSet(ModelViewSet):
         if keyword is not None:
 
             queryset = queryset.filter(
-                                        Q(name_en__contains=keyword) |
-                                        Q(name_es__contains=keyword) |
-                                        Q(description_en__contains=keyword) |
-                                        Q(description_es__contains=keyword) 
+                                        Q(name_en__icontains=keyword) |
+                                        Q(name_es__icontains=keyword) |
+                                        Q(description_en__icontains=keyword) |
+                                        Q(description_es__icontains=keyword) 
                                       )
 
         return queryset.order_by('-sort')
@@ -104,7 +105,66 @@ class ServiceViewSet(ModelViewSet):
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
 
-    
+
+class ProductViewSet(ModelViewSet):
+    serializer_class = ProductSerializer
+
+
+    def getPriceRange( self, index):
+        priceRange = [{
+            'start': 0,
+            'end': 9,
+        },{
+            'start': 10,
+            'end': 99,
+        },{
+            'start': 100,
+            'end': 999,
+        }]
+
+        return priceRange[int(index)-1]
+
+    def get_queryset( self ):
+        queryset = Product.objects.all()
+        category = self.request.query_params.get('category')
+        petType = self.request.query_params.get('petType')
+        keyword = self.request.query_params.get('keyword')
+        priceIndex = self.request.query_params.get('price')
+        sortOrder = self.request.query_params.get('sort')
+        
+        if category is not None:
+            queryset = queryset.filter(category=category)
+     
+        if keyword is not None:
+            queryset = queryset.filter(
+                                        Q(name_en__icontains=keyword) |
+                                        Q(name_es__icontains=keyword) |
+                                        Q(description_en__icontains=keyword) |
+                                        Q(description_es__icontains=keyword) | 
+                                        Q(brand_en__icontains=keyword) |
+                                        Q(brand_es__icontains=keyword) 
+                                      )
+
+        if petType is not None:
+            queryset = queryset.filter( petType_id = petType ) 
+
+        if priceIndex is not None: 
+            priceRange = self.getPriceRange( priceIndex )
+            queryset = queryset.filter( price__range = ( priceRange['start'], priceRange['end'] ) )
+
+
+        if sortOrder is not None:
+            queryset = queryset.order_by(sortOrder)
+        else:
+            queryset = queryset.order_by('-sort')
+
+        return queryset
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    pagination_class = StandardResultsSetPagination
+    http_method_names = ["get"]
+
+       
 
 class PetViewSet(ModelViewSet):
     serializer_class = PetSerializer

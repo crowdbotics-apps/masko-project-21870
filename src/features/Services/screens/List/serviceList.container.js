@@ -11,11 +11,16 @@ import { translate }  from 'src/utils/translation';
 export class _ServiceListContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    const { category } = navigation.state.params;
-    titleText = translate('ServiceListtNavTitle');
-    if (category){
-      titleText = category.name_en;
-    }
+    // let category = null;
+
+    // if(navigation.state.params && navigation.state.params.category){
+    //   category = navigation.state.params.category
+    // }
+    
+    titleText = translate('ServiceListNavTitle');
+    // if (category){
+    //   titleText = category.name_en;
+    // }
     return {
                 // title: titleText,
                 headerTitle: (<LogoIcon navigation={navigation} />),

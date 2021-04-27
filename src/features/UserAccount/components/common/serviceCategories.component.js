@@ -95,7 +95,6 @@ export const ServicesCatComponent = withStyles(_ServicesCatComponent, theme => (
     borderTopRadius: 10,
     width: width*0.9,
     height: 120,
-    resizeMode: 'cover',
   },
   textContainer:{
     padding: 10

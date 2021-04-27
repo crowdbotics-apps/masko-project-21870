@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { UserCart } from './userCart.component';
+import { ConfirmOrder } from './confirmOrder.component';
 
 import { connect } from 'react-redux';
 import * as CheckoutActions from '../../redux/actions';
@@ -12,24 +12,24 @@ import { translate }  from 'src/utils/translation';
 import { NavigationActions } from "react-navigation";
 
 
-export class _UserCartContainer extends React.Component {
+export class _ConfirmOrderContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     // const { category } = navigation.state.params;
-    titleText = translate('MyCartNavTitle');
+    titleText = translate('ConfirmOrderNavTitle');
     // if (category){
     //   titleText = category.getName();
     // }
     return {
                 title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
-                headerLeft: (<HamBurgerIcon navigation={navigation} />),
+                headerLeft: (<BackIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
                 // headerRight: (<RightIcon />)
           }
   };
-  navigationKey = 'UserCartContainer';
+  navigationKey = 'ConfirmOrderContainer';
 
   constructor( props ){
     super(props);
@@ -53,13 +53,9 @@ export class _UserCartContainer extends React.Component {
     
   }
 
-  onCheckoutPress = () => {
-    
-    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ConfirmOrder );
-  }
-
   onItemPress = (item) => {
    
+
     if( item.type == appConfig.ITEM_TYPES.SERVICES ){
 
       this.props.navigation.navigate(
@@ -89,7 +85,7 @@ export class _UserCartContainer extends React.Component {
   render() {
     const { navigation } = this.props;
     return (
-      <UserCart
+      <ConfirmOrder
           errorMsg={this.props.signInErrors}
           navigation={navigation}
           services={this.props.services}
@@ -99,7 +95,6 @@ export class _UserCartContainer extends React.Component {
           onPressQtyAdd={this.onPressQtyAdd}
           onPressQtySubtract={this.onPressQtySubtract}
           onItemPress={this.onItemPress}
-          onCheckoutPress={this.onCheckoutPress}
         
        />
     );
@@ -122,7 +117,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export const UserCartContainer =  connect(
+export const ConfirmOrderContainer =  connect(
   mapStateToProps,
   mapDispatchToProps,
-)(_UserCartContainer);
+)(_ConfirmOrderContainer);

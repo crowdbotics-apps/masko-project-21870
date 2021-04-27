@@ -1,4 +1,5 @@
 import BaseModel from "../../../models/base.model";
+import * as _ from 'lodash';
 
 export default class CartItemModel extends BaseModel {
 
@@ -14,6 +15,15 @@ export default class CartItemModel extends BaseModel {
           this.source = input.source;
           this.pets = input.pets;
           this.userSelection = input.userSelection;
+    }
+
+    getItemPrice(){
+        totalCost = 0;
+        _.forEach(this.pets, (i)=>{
+            if(i.qty>0)
+                totalCost += parseFloat(i.qty)*parseFloat(this.source.price)
+        })
+        return totalCost
     }
 
 }
