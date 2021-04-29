@@ -10,7 +10,14 @@ from rest_framework.response import Response
 from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 from django.db.models import Q
+from django.db import transaction 
+
 from rest_framework.generics import CreateAPIView
+from payment_stripe.utils import (
+        create_stripe_order,
+        prepare_items_4m_orderColect,
+        create_stripe_charge
+    )
 
 from home.api.v1.serializers import (
     SignupSerializer,
@@ -217,7 +224,8 @@ class CardViewSet(ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
     http_method_names = ["get", "post", "put", "patch", "delete"]
-    
+
+   
 
 class AddOrderViewSet(CreateAPIView):
 
@@ -258,6 +266,7 @@ class AddOrderViewSet(CreateAPIView):
                                     pet_id = item['pet'],
                                     unit_price = service.price,
                                     quantity = item['quantity'],
+                                    timeOption = item['timeOption'],
                                     date = item['scheduleDate'],
                                     time = item['time'] if 'time' in item else '',
                                     notes = item['notes'],
@@ -270,13 +279,11 @@ class AddOrderViewSet(CreateAPIView):
         return response    
 
 
-
-
-
     def create(self, request, *args, **kwargs):
 
+        sid = transaction.savepoint() 
         try:
-
+            
             # response = super().create(request, *args, **kwargs)   
             if 'items' in request.data:
                 order = Order( owner = request.user, is_recurring = False)
@@ -298,6 +305,20 @@ class AddOrderViewSet(CreateAPIView):
                 order.ship_price = 0
                 order.tax_price = 0
                 order.total_price = ( order.subtotal_price + order.ship_price + order.tax_price )
+                
+                # Create Stripe Order
+                # stripeItems = prepare_items_from_orderCollection( itemCollectionForEmail )
+                # stripe_order = create_stripe_order(stripeItems, request.user)
+                # order.stripe_order_id = stripe_order.id
+                # ##
+
+                ## Create Stripe Charge
+                if 'payment_method' in request.data and str(request.data['payment_method']).lower()=='card':
+                    charge = create_stripe_charge( itemCollectionForEmail, request.user, order )
+                    order.stripe_order_id = charge.id
+                    order.status = Order.PAID
+                ##
+                
                 order.save() 
 
 
@@ -318,21 +339,22 @@ class AddOrderViewSet(CreateAPIView):
                 msg = EmailMultiAlternatives(subject, msg_plain, from_email, [to])
                 msg.attach_alternative(msg_html, "text/html")
                 msg.send()
-
+                transaction.savepoint_commit(sid)
                 return Response({
                     'status': 201,
                     'message': 'Order has been successfully created',
-                    # 'data': OrderSerializer(order).data
+                    'data': OrderSerializer(order).data
                 }, status=201)
 
             else:    
+                transaction.savepoint_rollback(sid)
                 return Response({
                     'status': 400,
                     'message': 'Data is Missing, Items, Payment Method',
                     'data': ''
                 },status=400)
         except Exception as e:
-            print(e) 
+            transaction.savepoint_rollback(sid)
             return Response({
                 'status': 400,
                 'message': 'Bad Request',

@@ -8,6 +8,7 @@ export default appConfig = {
   pubSubscribeKey: 'sub-c-6b1bee04-ba9f-11e9-8753-ce76e7dc5905',
   backgroundColor: ['#556897', '#6E87C6'],
   dateFormat: "DD/MM/YYYY",
+  dateFormatDb: "YYYY-MM-DD",
   
   headerStyle: {
     alignItems: 'center',

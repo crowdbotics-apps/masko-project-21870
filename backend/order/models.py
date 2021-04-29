@@ -2,6 +2,12 @@ from django.db import models
 
 # Order Model
 class Order(models.Model):
+    PENDING = 'PN'
+    PAID = 'PD'
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (PAID, 'Paid'),
+    ]
 
     address = models.CharField(
         null=True,
@@ -47,6 +53,12 @@ class Order(models.Model):
         auto_now=True,
     )
     is_recurring = models.BooleanField(default=False)
+    
+    status = models.CharField(
+        max_length=2,
+        choices=STATUS_CHOICES,
+        default=PENDING,
+    )
 
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True, default=None)
 
@@ -82,6 +94,8 @@ class Product(models.Model):
         max_length=255,
     )
 
+
+
     date = models.DateTimeField(
         null=True,
         blank=True,
@@ -99,6 +113,12 @@ class Product(models.Model):
         max_length=255,
     )
 
+    stripe_order_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
@@ -108,5 +128,5 @@ class Product(models.Model):
     )
 
     def __str__ (self):
-        return '{} - {}'.format( self.product_id if self.product_id is not None else self.service_id,
+        return '{}'.format( 
                                 'Product' if self.product_id is not None else 'Service'  )
