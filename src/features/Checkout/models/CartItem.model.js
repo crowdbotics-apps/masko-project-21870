@@ -1,5 +1,8 @@
 import BaseModel from "../../../models/base.model";
+import AppConfig from 'src/config/app';
 import * as _ from 'lodash';
+
+const moment = require('moment');
 
 export default class CartItemModel extends BaseModel {
 
@@ -25,5 +28,48 @@ export default class CartItemModel extends BaseModel {
         })
         return totalCost
     }
+
+    getItemForOrder(){
+        let response = [];
+        _.forEach(this.pets, (i) => {
+            if ( this.type == AppConfig.ITEM_TYPES.SERVICES ){
+                response.push( this.getServiceItemForOrder( i ) )
+            }else{
+                response.push( this.getProductItemForOrder( i ) )
+            }
+        });
+
+        return response
+    }
+
+
+
+    getServiceItemForOrder( pet ){
+        return {
+            type: 'service', 
+            id: this.source.id,
+            quantity: pet.qty,
+            pet: pet.id,
+            timeOption: this.userSelection.timeOptionLabel,
+            scheduleDate: moment( this.userSelection.bookingDate.value ).format( AppConfig.dateFormatDb ),
+            time: this.userSelection.dayTimeOptionLabel ,
+            notes: this.userSelection.notes
+
+
+        }
+    }
+
+    getProductItemForOrder( pet ){
+        return {
+            type: 'product', 
+            id: this.source.id,
+            quantity: pet.qty,
+            pet: pet.id,
+           
+        }
+    }
+
+
+
 
 }

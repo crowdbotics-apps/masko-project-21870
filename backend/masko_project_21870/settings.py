@@ -58,8 +58,10 @@ LOCAL_APPS = [
     "users.apps.UsersConfig",
     "pet",
     "service",
-    "payment_stripe"
+    "payment_stripe",
+    "order"
 ]
+
 THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",

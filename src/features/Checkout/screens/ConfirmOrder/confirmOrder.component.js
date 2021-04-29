@@ -51,23 +51,12 @@ class ConfirmOrderComponent extends React.Component {
   state = {
     payMethodValue: undefined,
     payMethodLabel: undefined,
-    dateOptionValue: undefined,
-    dateOptionLabel: undefined,
-    dayTimeOptionValue: undefined,
-    dayTimeOptionLabel: undefined,
-    notes: undefined,
-    bookingDate: {
-      display: moment().format(AppConfig.dateFormat),
-      value: new Date()
-    },
-    showDatePicker: false,
-    showTimePicker: false,
-
+   
   }
 
   renderSpinner = () => {
-    const { updateCartLoading } = this.props;
-    if (updateCartLoading) {
+    const { addOrderLoading } = this.props;
+    if (addOrderLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -112,6 +101,19 @@ class ConfirmOrderComponent extends React.Component {
 
 
     this.setState(newState);
+  }
+
+  validator = () => {
+    const { payMethodLabel } = this.state
+
+    return (payMethodLabel)
+  }
+
+  onPressConfirmBtn = () => {
+    const { payMethodLabel, payMethodValue } = this.state
+    this.props.onConfirmOrder({
+      paymentMethod: payMethodLabel
+    })
   }
 
 
@@ -221,6 +223,8 @@ class ConfirmOrderComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
+                            onPress={this.onPressConfirmBtn}
+                            disabled={!this.validator()}
 
                           >
                             {translate("ConfirmOrderBtn")}

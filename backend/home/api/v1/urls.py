@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .viewsets import HomePageViewSet, CustomTextViewSet
+from django.views.decorators.csrf import csrf_exempt
 
 from home.api.v1.viewsets import (
     SignupViewSet,
@@ -13,7 +14,8 @@ from home.api.v1.viewsets import (
     PetTypeViewSet,
     BreedTypeViewSet,
     CardViewSet, 
-    ProductViewSet
+    ProductViewSet,
+    AddOrderViewSet
 )
 
 router = DefaultRouter()
@@ -32,4 +34,5 @@ router.register("homepage", HomePageViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path('order', csrf_exempt(AddOrderViewSet.as_view()), name='add-order'),
 ]

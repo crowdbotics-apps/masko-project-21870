@@ -126,6 +126,8 @@
     "ConfirmOrderPayUsingLabel": "Pay using",
     "ChooseCardLabel": "Please Choose Card",
     "ConfirmOrderBtn": "Confirm Order",
+    "OrderCreateSuccess": "Your Order has been successfully created.",
+    "AddOrderError": "Can't create Order",
     
 
 

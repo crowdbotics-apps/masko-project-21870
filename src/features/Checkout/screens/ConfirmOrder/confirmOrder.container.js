@@ -23,7 +23,7 @@ export class _ConfirmOrderContainer extends React.Component {
     return {
                 title: titleText,
                 // headerBack: (<BackHomeIcon navigation={navigation}),
-                headerLeft: (<BackIcon navigation={navigation} />),
+                headerLeft: (<HamBurgerIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
                 headerStyle: appConfig.headerStyle,
                 // headerRight: (<RightIcon />)
@@ -42,44 +42,13 @@ export class _ConfirmOrderContainer extends React.Component {
 
   }
 
-  onPressQtyAdd = (item, pet, quantity) => {
-    const { actions } = this.props;
-    actions.updateQuantity(item, pet, quantity)
-  }
+ 
 
-  onPressQtySubtract = (item, pet, quantity) => {
-    const { actions } = this.props;
-    actions.updateQuantity(item, pet, quantity)
-    
-  }
+  onConfirmOrder = (data) => {
+      const { actions, accessToken, cart } = this.props;
+      actions.addOrder( accessToken, cart, data.paymentMethod )
 
-  onItemPress = (item) => {
-   
 
-    if( item.type == appConfig.ITEM_TYPES.SERVICES ){
-
-      this.props.navigation.navigate(
-        appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
-            {
-              category: null,
-              service: item.source,
-              item: item
-            }
-      )
-
-    }else{
-
-      this.props.navigation.navigate(
-        appConfig.NAVIGATOR_ROUTE.ProductDetails ,
-            {
-              category: null,
-              product: item.source,
-              item: item
-            }
-      )
-
-    }
-    
   }
   
   render() {
@@ -90,11 +59,8 @@ export class _ConfirmOrderContainer extends React.Component {
           navigation={navigation}
           services={this.props.services}
           cart={this.props.cart}
-          getServiceLoading={this.props.getServiceLoading}
-          updateCartLoading={this.props.updateCartLoading}
-          onPressQtyAdd={this.onPressQtyAdd}
-          onPressQtySubtract={this.onPressQtySubtract}
-          onItemPress={this.onItemPress}
+          addOrderLoading={this.props.addOrderLoading}
+          onConfirmOrder={this.onConfirmOrder}
         
        />
     );
@@ -106,13 +72,13 @@ const mapStateToProps = state => ({
   services: state.Service.services,
   getServiceLoading: state.Service.GetService,
   cart: state.Checkout.cart,
-  updateCartLoading: state.Checkout.loaders.UpdateItemToCart
+  addOrderLoading: state.Checkout.loaders.AddOrder
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    updateQuantity: ( item, pet, quantity ) => {
-      dispatch(CheckoutActions.updateItemToCart( item, pet, quantity ));
+    addOrder: (  accessToken, cart, paymentMethod ) => {
+      dispatch( CheckoutActions.submitOrder( accessToken, cart, paymentMethod ) );
     },
   },
 });

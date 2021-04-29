@@ -3,13 +3,14 @@ from rest_framework import authentication
 from .serializers import HomePageSerializer, CustomTextSerializer
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 from django.db.models import Q
+from rest_framework.generics import CreateAPIView
 
 from home.api.v1.serializers import (
     SignupSerializer,
@@ -21,7 +22,8 @@ from home.api.v1.serializers import (
     BreedTypeSerializer,
     ServiceSerializer,
     ServiceCategorySerializer,
-    ProductSerializer
+    ProductSerializer,
+    OrderSerializer
 )
 
 from payment_stripe.serializers import ( CardSerializer )
@@ -30,7 +32,13 @@ from payment_stripe.models import ( Card )
 from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category as ServiceCategory, Product
+from order.models import Order, Product as OrderProduct
 
+from django.core.mail import BadHeaderError, send_mail
+from django.core.mail import EmailMultiAlternatives
+
+from django.template.loader import render_to_string
+from masko_project_21870.settings import DEFAULT_FROM_EMAIL
 
 class SignupViewSet(ModelViewSet):
     serializer_class = SignupSerializer
@@ -210,6 +218,128 @@ class CardViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     http_method_names = ["get", "post", "put", "patch", "delete"]
     
+
+class AddOrderViewSet(CreateAPIView):
+
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
+    def getProductItem(self, item, orderId, pets):
+        response = None
+        
+        if item['type'] == "product":
+            product = Product.objects.get( pk=item['id'] )
+            response = {
+                        'item': OrderProduct( 
+                                pType = item['type'],
+                                product_id = item['id'],
+                                order_id = orderId, 
+                                pet_id = item['pet'],
+                                unit_price = product.price,
+                                quantity = item['quantity']
+                            ),
+                         'source': product,
+                         'pet': next((x for x in pets if x.id == item['pet']), None),
+                         'totalPrice': product.price*item['quantity']
+            }   
+        else:
+            service = Service.objects.get( pk=item['id'] )
+            
+            response = {
+                        'item': OrderProduct( 
+                                    pType = item['type'],
+                                    service_id = item['id'],
+                                    order_id = orderId, 
+                                    pet_id = item['pet'],
+                                    unit_price = service.price,
+                                    quantity = item['quantity'],
+                                    date = item['scheduleDate'],
+                                    time = item['time'] if 'time' in item else '',
+                                    notes = item['notes'],
+                                ),
+                         'source': service,
+                         'pet': next((x for x in pets if x.id == item['pet']), None),
+                         'totalPrice': service.price*item['quantity']
+            }   
+
+        return response    
+
+
+
+
+
+    def create(self, request, *args, **kwargs):
+
+        try:
+
+            # response = super().create(request, *args, **kwargs)   
+            if 'items' in request.data:
+                order = Order( owner = request.user, is_recurring = False)
+                order.save()
+
+                productCollection = []
+                itemCollectionForEmail = []
+                subTotal = 0
+                userPets = Pet.objects.filter( owner = request.user )    
+                for item in request.data['items']:
+                    pProduct = self.getProductItem( item, order.id, userPets)
+                    subTotal += ( pProduct['item'].unit_price * pProduct['item'].quantity )
+                    productCollection.append( pProduct['item'] )
+                    itemCollectionForEmail.append( pProduct )
+
+                OrderProduct.objects.bulk_create( productCollection )    
+
+                order.subtotal_price = subTotal
+                order.ship_price = 0
+                order.tax_price = 0
+                order.total_price = ( order.subtotal_price + order.ship_price + order.tax_price )
+                order.save() 
+
+
+                subject, from_email, to = 'Masko App - Order # {}'.format(order.id), DEFAULT_FROM_EMAIL, 'usama149@gmail.com'
+                user = request.user
+
+                templateVars = {
+                    'order': order,
+                    'purchases': itemCollectionForEmail,
+                    'user': user
+                } 
+                    
+
+                msg_plain = render_to_string('order/email/order_summary.txt', templateVars)
+                    
+                msg_html = render_to_string('order/email/order_summary.html', templateVars)
+                    
+                msg = EmailMultiAlternatives(subject, msg_plain, from_email, [to])
+                msg.attach_alternative(msg_html, "text/html")
+                msg.send()
+
+                return Response({
+                    'status': 201,
+                    'message': 'Order has been successfully created',
+                    # 'data': OrderSerializer(order).data
+                }, status=201)
+
+            else:    
+                return Response({
+                    'status': 400,
+                    'message': 'Data is Missing, Items, Payment Method',
+                    'data': ''
+                },status=400)
+        except Exception as e:
+            print(e) 
+            return Response({
+                'status': 400,
+                'message': 'Bad Request',
+                'data': str(e)
+            },status=400)   
+
+
 
 
 
