@@ -125,7 +125,6 @@ DATABASES = {
 if env.str("DATABASE_URL", default=None):
     dbDefault = env.db()
     dbDefault['ATOMIC_REQUESTS'] = True
-    # print(dbDefault)
     DATABASES = {"default": dbDefault}
 
 
