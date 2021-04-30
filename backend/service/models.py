@@ -107,6 +107,97 @@ class Service(models.Model):
         auto_now=True,
     )
     
+    ### Handle Before Save Of a Service 
+    def save(self, *args, **kwargs):
+
+        oldService = None
+        try:
+            oldService = Service.objects.get( pk=self.id )
+        except Service.DoesNotExist:
+            pass
+
+        super(Service, self).save(*args, **kwargs)
+
+        # Stripe Product Creation Only Available for Recurring Products
+        if self.stripe_id is None and self.is_recurring is True: 
+            stripe_obj = self.create_stripe_product()
+            self.stripe_id = stripe_obj.id
+            self.create_product_prices(oldService)
+        elif self.is_recurring is True:
+            self.update_stripe_product()
+            
+            self.create_product_prices(oldService)
+        ### 
+        super(Service, self).save(*args, **kwargs)   
+
+   
+    ### Create Stripe Product
+    def create_stripe_product(self):
+        try:
+            stripe_obj = stripe.Product.create(
+                                                name = 'SERVICE - {}'.format(self.name_en),
+                                                description = self.description_en,
+                                                metadata = {
+                                                    'type': 'service',
+                                                    'masko_service_id': self.id,
+                                                    'start_price': self.price, 
+                                                    'current_price': self.price, 
+                                                    'category': self.category.name_en,
+
+                                                }
+
+                                            )
+
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+
+
+    ### Update Stripe Product
+    def update_stripe_product(self):
+        try:
+            stripe_obj = stripe.Product.modify(
+                                                self.stripe_id,
+                                                name = 'SERVICE - {}'.format(self.name_en),
+                                                description = self.description_en,
+                                                metadata = {
+                                                    'current_price': self.price, 
+                                                    'category': self.category.name_en,
+
+                                                }
+
+                                            )
+
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+    
+    ### Create Stripe Product Prices
+    def create_product_prices(self, oldService):
+        try:
+            if oldService is None or ( oldService is not None and oldService.price != self.price ) :
+                item = ProductPrices(
+                        service = self, 
+                        price = self.price, 
+
+                )
+                item.save()
+                return item
+            else: 
+                return None    
+            
+                   
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+
 
     def __str__ (self):
         return self.name_es
@@ -194,10 +285,19 @@ class Product(models.Model):
         auto_now=True,
     )
 
+
+
     ### Handle Before Save Of a Product 
     def save(self, *args, **kwargs):
-        oldProduct = Product.objects.get( pk=self.id )
+
+        oldProduct = None
+        try:
+            oldProduct = Product.objects.get( pk=self.id )
+        except Product.DoesNotExist:
+            pass
+
         super(Product, self).save(*args, **kwargs)
+
         # Stripe Product Creation Only Available for Recurring Products
         if self.stripe_id is None and self.is_recurring is True: 
             stripe_obj = self.create_stripe_product()
@@ -207,42 +307,47 @@ class Product(models.Model):
             self.update_stripe_product()
             self.create_product_prices(oldProduct)
         ###    
+        super(Product, self).save(*args, **kwargs)
+
+    ### Handle Delete Of a Product
+    def delete(self):
+        self.purge()
+        super(Product, self).delete()    
+
+    def purge(self):
+        self.disable_stripe_product()
 
 
-       
-
-     ### Create Product Prices
-    def create_product_prices(self, oldProduct):
+    ### Disabled Stripe Product
+    def disable_stripe_product(self):
         try:
-            if oldProduct.price != self.price:
-                item = ProductPrices(
-                        product = self, 
-                        price = self.price, 
-
-                )
-                item.save()
-                return item
-            else: 
-                return None    
+            stripe_obj = stripe.Product.modify(
+                                               self.stripe_id,
+                                               active =  False,
+                                               name = '(Deleted) - {}'.format(self.name_en),
+                                               metadata = {
+                                                   'notes': "Product has been deleted on Masko App"
+                                               }
+                                            )
             
-                   
+            return stripe_obj   
+        except stripe.error.InvalidRequestError as e:
+            if smart_str(e).startswith("No such product"):    
+                pass         
         except Exception as e:
             raise NameError(e)
 
         return None    
-  
-
-     ### Create Stripe Prices
-    
-    
+      
 
     ### Create Stripe Product
     def create_stripe_product(self):
         try:
             stripe_obj = stripe.Product.create(
-                                                name = self.name_en,
+                                                name = 'PRODUCT - {}'.format(self.name_en),
                                                 description = self.description_en,
                                                 metadata = {
+                                                    'type': 'product',
                                                     'masko_product_id': self.id,
                                                     'brand': self.brand_en,
                                                     'weight': self.weight,
@@ -262,15 +367,13 @@ class Product(models.Model):
 
         return None    
   
-
-     ### Create Stripe Prices
-    
+ 
     ### Update Stripe Product
     def update_stripe_product(self):
         try:
             stripe_obj = stripe.Product.modify(
                                                 self.stripe_id,
-                                                name = self.name_en,
+                                                name = 'PRODUCT - {}'.format(self.name_en),
                                                 description = self.description_en,
                                                 metadata = {
                                                     'brand': self.brand_en,
@@ -289,7 +392,30 @@ class Product(models.Model):
             raise NameError(e)
 
         return None    
+    
+    ### Create Stripe Product Prices
+    def create_product_prices(self, oldProduct):
+        try:
+            if oldProduct is None or ( oldProduct is not None and oldProduct.price != self.price):
+                item = ProductPrices(
+                        product = self, 
+                        price = self.price, 
+
+                )
+                item.save()
+                return item
+            else: 
+                return None    
+            
+                   
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
   
+
+     
+    
 
     def __str__ (self):
         return self.name_es

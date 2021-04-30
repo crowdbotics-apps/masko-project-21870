@@ -195,7 +195,10 @@ class Card(models.Model):
 # Product Model
 class ProductPrices(models.Model):
 
-    product = models.ForeignKey('service.Product', on_delete=models.CASCADE)  
+    product = models.ForeignKey('service.Product', on_delete=models.CASCADE,null=True,
+        blank=True)  
+    service = models.ForeignKey('service.Service', on_delete=models.CASCADE,null=True,
+        blank=True)  
 
     stripe_id = models.CharField(
         null=True,
@@ -220,7 +223,9 @@ class ProductPrices(models.Model):
 
     ### Handle Before Save Of a Product Prices
     def save(self, *args, **kwargs):
-        if self.stripe_id is None and self.product.stripe_id is not None: 
+        object_ref = self.product.stripe_id if self.product else self.service.stripe_id
+            
+        if self.stripe_id is None and object_ref is not None: 
             stripe_obj = self.create_stripe_price()
             self.stripe_id = stripe_obj.id
 
@@ -229,11 +234,12 @@ class ProductPrices(models.Model):
     ### Create Stripe Prices
     def create_stripe_price(self):
         try:
+            object_ref = self.product.stripe_id if self.product else self.service.stripe_id
             stripe_obj = stripe.Price.create(
                                         unit_amount= int( self.price * 100 ),
                                         currency= "usd",
                                         recurring= {"interval": "month"},
-                                        product= self.product.stripe_id ,
+                                        product= object_ref ,
                         )
             return stripe_obj            
         except Exception as e:
@@ -241,12 +247,13 @@ class ProductPrices(models.Model):
 
         return None    
   
-    ### Handle Before Save Of a User
+    ### Handle Delete Of a Product Prices
     def delete(self):
         self.purge()
         super(ProductPrices, self).delete()    
 
     def __str__ (self):
-        return '{} - {}'.format( self.product.name_en, self.stripe_id )
+        object_ref = self.product if self.product else self.service
+        return '{} - {}'.format( object_ref.name_en if object_ref else '', self.stripe_id )
 
   
