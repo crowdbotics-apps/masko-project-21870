@@ -184,9 +184,28 @@ class Service(models.Model):
                 item = ProductPrices(
                         service = self, 
                         price = self.price, 
+                        recurring_interval = 'day' 
 
                 )
                 item.save()
+
+                item = ProductPrices(
+                        product = self, 
+                        price = self.price,
+                        recurring_interval = 'week' 
+
+                )
+                item.save()
+
+                item = ProductPrices(
+                        product = self, 
+                        price = self.price,
+                        recurring_interval = 'month' 
+
+                )
+                item.save()
+
+                
                 return item
             else: 
                 return None    
@@ -399,10 +418,28 @@ class Product(models.Model):
             if oldProduct is None or ( oldProduct is not None and oldProduct.price != self.price):
                 item = ProductPrices(
                         product = self, 
-                        price = self.price, 
+                        price = self.price,
+                        recurring_interval = 'day' 
 
                 )
                 item.save()
+
+                item = ProductPrices(
+                        product = self, 
+                        price = self.price,
+                        recurring_interval = 'week' 
+
+                )
+                item.save()
+
+                item = ProductPrices(
+                        product = self, 
+                        price = self.price,
+                        recurring_interval = 'month' 
+
+                )
+                item.save()
+
                 return item
             else: 
                 return None    

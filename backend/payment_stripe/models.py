@@ -219,6 +219,12 @@ class ProductPrices(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+    recurring_interval = models.CharField(
+        null=True,
+        default='month',
+        blank=True,
+        max_length=255,
+    )
     
 
     ### Handle Before Save Of a Product Prices
@@ -238,7 +244,7 @@ class ProductPrices(models.Model):
             stripe_obj = stripe.Price.create(
                                         unit_amount= int( self.price * 100 ),
                                         currency= "usd",
-                                        recurring= {"interval": "month"},
+                                        recurring= {"interval": self.recurring_interval },
                                         product= object_ref ,
                         )
             return stripe_obj            
