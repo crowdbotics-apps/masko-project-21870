@@ -50,14 +50,14 @@ class ServiceAdmin(admin.ModelAdmin):
     form = MyServiceAdminForm
     fields = ('name_en', 'name_es', 'description_en','description_es','category','price','photo','sort','is_recurring')
     list_display = ('name_en',  'description_en', 'price' , 'sort')
-
+    readonly_fields = ( 'is_recurring', )
 
 # Product Admin.
 class ProductAdmin(admin.ModelAdmin):
     form = MyProductAdminForm
     fields = ('name_en', 'name_es', 'description_en','description_es','brand_en', 'brand_es', 'category','petType','price','weight','size','photo','sort','is_recurring')
     list_display = ('name_en','brand_en',  'description_en', 'price' , 'size' , 'sort')
-
+    # readonly_fields = ( 'is_recurring', )
 
       
  

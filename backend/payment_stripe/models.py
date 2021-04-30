@@ -1,8 +1,12 @@
 from django.db import models
+
 import stripe
 from masko_project_21870.settings import STRIPE_API_KEY
 stripe.api_key = STRIPE_API_KEY
 from django.utils.encoding import smart_str
+
+
+
 # from users.models import User
 
 # Payment Cards Model
@@ -186,3 +190,63 @@ class Card(models.Model):
 
     def __str__ (self):
         return '{} {} - ({})'.format(self.name, self.brand , self.last4 )
+
+
+# Product Model
+class ProductPrices(models.Model):
+
+    product = models.ForeignKey('service.Product', on_delete=models.CASCADE)  
+
+    stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00
+    )
+    
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+    
+
+    ### Handle Before Save Of a Product Prices
+    def save(self, *args, **kwargs):
+        if self.stripe_id is None and self.product.stripe_id is not None: 
+            stripe_obj = self.create_stripe_price()
+            self.stripe_id = stripe_obj.id
+
+        super(ProductPrices, self).save(*args, **kwargs)
+
+    ### Create Stripe Prices
+    def create_stripe_price(self):
+        try:
+            stripe_obj = stripe.Price.create(
+                                        unit_amount= int( self.price * 100 ),
+                                        currency= "usd",
+                                        recurring= {"interval": "month"},
+                                        product= self.product.stripe_id ,
+                        )
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+    ### Handle Before Save Of a User
+    def delete(self):
+        self.purge()
+        super(ProductPrices, self).delete()    
+
+    def __str__ (self):
+        return '{} - {}'.format( self.product.name_en, self.stripe_id )
+
+  
