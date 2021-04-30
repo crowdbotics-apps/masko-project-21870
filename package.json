@@ -7,7 +7,7 @@
     "clean:android": "cd android;./gradlew cleanBuildCache;",
     "android:build:release": "npm run clean:android && ENVFILE=.env react-native run-android --variant=release",
     "ios": "ENVFILE=.env react-native run-ios --simulator='iPhone X'",
-    "postinstall": "npx jetify && rndebugger-open",
+    "postinstall": "npx jetify && rndebugger-open && patch-package",
     "lint": "eslint .",
     "start": "ENVFILE=.env react-native start",
     "test": "jest"
@@ -18,7 +18,7 @@
   "dependencies": {
     "@eva-design/eva": "1.0.1",
     "@react-native-community/async-storage": "^1.12.1",
-    "@react-native-community/datetimepicker": "2.6.0",
+    "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/slider": "^3.0.3",
     "@react-native-picker/picker": "^1.14.0",
     "@ui-kitten/eva-icons": "4.3.2",
@@ -27,6 +27,7 @@
     "lodash": "^4.17.21",
     "lodash.memoize": "^4.1.2",
     "moment": "2.27.0",
+    "patch-package": "^6.4.7",
     "react": "16.11.0",
     "react-native": "0.62.0",
     "react-native-actionsheet": "^2.4.2",

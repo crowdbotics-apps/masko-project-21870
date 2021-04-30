@@ -12,7 +12,7 @@ export class _ServiceListContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     const { category } = navigation.state.params;
-    titleText = translate('ServiceListtNavTitle');
+    titleText = translate('ServiceListNavTitle');
     if (category){
       titleText = category.name_en;
     }

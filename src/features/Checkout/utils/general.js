@@ -49,10 +49,11 @@ export function updateCartItemQty ( storeCart, action ){
       if( i.source.id !== action.item.source.id ){
         list.push(i);
       }else{
-        let pets = []
+        let pets = [];
         _.forEach(i.pets,(j)=>{
             if(j.id == action.pet.id){
               if(action.quantity>0){ // Add Only Items Quantity gte Zero
+
                 pets.push({
                   ...j,
                   qty: action.quantity
@@ -62,8 +63,10 @@ export function updateCartItemQty ( storeCart, action ){
               pets.push(j)
             }
         });
+
         if(getPetsTotalQty(pets)){
-          list.push({...i,pets: pets});
+          let item = formatCartItem(i.type, i.source, pets, i.userSelection)
+          list.push(item);
         }
          
       }
@@ -71,7 +74,6 @@ export function updateCartItemQty ( storeCart, action ){
    });
 
    storeCart.updateCartItems(list);
-
    return storeCart; 
 }
 

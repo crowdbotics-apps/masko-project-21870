@@ -416,6 +416,7 @@ class ServiceDetailsComponent extends React.Component {
             )}
             {showTimePicker && showDatePicker && (
               <DateTimePicker
+                display="spinner"
                 value={bookingDate.value}
                 mode={'date'}
                 style={{ color: "#FFF" }}
@@ -568,7 +569,6 @@ export const ServiceDetails = withStyles(ServiceDetailsComponent, theme => ({
       borderTopRadius: 10,
       width: width,
       height: 180,
-      resizeMode: 'cover',
     },
     textContainer: {
       padding: 20

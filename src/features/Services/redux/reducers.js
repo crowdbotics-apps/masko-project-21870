@@ -3,13 +3,15 @@ import * as AuthActions from 'src/features/EmailAuth/redux/constants';
 
 const initialState = {
   services: [],
+  products: [],
   categories: [],
-  errors: { GetService: null, GetCategories: null},
-  loaders: { GetService: null, GetCategories: null }
+  errors: { GetService: null, GetProducts: null, GetCategories: null},
+  loaders: { GetService: null, GetProducts: null,  GetCategories: null }
 };
 
 export default ServiceReducer = (state = initialState, action) => {
   switch (action.type) {
+    
     case actions.SERVICE_CATEGORY_GET_REQUEST:
       return {
         ...state,
@@ -81,7 +83,7 @@ export default ServiceReducer = (state = initialState, action) => {
   
           }
         };
-    case actions.SERVICE_CATEGORY_GET_ERROR:
+    case actions.SERVICE_GET_ERROR:
         return {
           ...state,
           errors: {
@@ -95,7 +97,50 @@ export default ServiceReducer = (state = initialState, action) => {
           }
         };
   
+    case actions.SERVICE_PRODUCT_GET_REQUEST:
+          return {
+            ...state,
+            products: [],
+            errors: {
+              ...state.errors,
+              GetProducts: null
+            },
+            loaders: {
+              ...state.loaders,
+              GetProducts: true
     
+            }
+    
+          };
+    case actions.SERVICE_PRODUCT_GET_SUCCESS:
+          return {
+            ...state,
+            products: action.products,
+            errors: {
+              ...state.errors,
+              GetProducts: null
+            },
+            loaders: {
+              ...state.loaders,
+              GetProducts: null
+    
+            }
+          };
+    case actions.SERVICE_PRODUCT_GET_ERROR:
+          return {
+            ...state,
+            errors: {
+              ...state.errors,
+              GetProducts: action.error
+            },
+            loaders: {
+              ...state.loaders,
+              GetProducts: null
+    
+            }
+          };
+    
+      
 
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;

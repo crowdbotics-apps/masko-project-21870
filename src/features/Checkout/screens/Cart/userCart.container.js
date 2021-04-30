@@ -53,32 +53,37 @@ export class _UserCartContainer extends React.Component {
     
   }
 
-  onItemPress = (item) => {
-    // this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ServiceDetails ,{
-    //   category: item.source.category,
-    //   service: item 
-    // })
+  onCheckoutPress = () => {
+    
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ConfirmOrder );
+  }
 
-    // this.props.navigation.navigate(
-    //     'Service', 
-    //     {}, 
-    //     NavigationActions.navigate({ 
-    //         routeName: appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
-    //         params: {
-    //           category: null,
-    //           service: item.source,
-    //           item: item
-    //         }
-    //     })
-    // )
-    this.props.navigation.navigate(
-                                appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
-                                    {
-                                      category: null,
-                                      service: item.source,
-                                      item: item
-                                    }
-    )
+  onItemPress = (item) => {
+   
+    if( item.type == appConfig.ITEM_TYPES.SERVICES ){
+
+      this.props.navigation.navigate(
+        appConfig.NAVIGATOR_ROUTE.ServiceDetails ,
+            {
+              category: null,
+              service: item.source,
+              item: item
+            }
+      )
+
+    }else{
+
+      this.props.navigation.navigate(
+        appConfig.NAVIGATOR_ROUTE.ProductDetails ,
+            {
+              category: null,
+              product: item.source,
+              item: item
+            }
+      )
+
+    }
+    
   }
   
   render() {
@@ -94,6 +99,7 @@ export class _UserCartContainer extends React.Component {
           onPressQtyAdd={this.onPressQtyAdd}
           onPressQtySubtract={this.onPressQtySubtract}
           onItemPress={this.onItemPress}
+          onCheckoutPress={this.onCheckoutPress}
         
        />
     );

@@ -1,3 +1,5 @@
+
+
 import BaseModel from "../../../models/base.model";
 
 export default class ServiceModel extends BaseModel {

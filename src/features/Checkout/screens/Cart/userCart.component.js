@@ -97,6 +97,10 @@ class UserCartComponent extends React.Component {
     this.props.onItemPress(item);
   }
 
+  onCheckoutPress = () =>{
+    this.props.onCheckoutPress();
+  }
+
   render() {
 
     const { themedStyle, cart, navigation } = this.props;
@@ -136,7 +140,7 @@ class UserCartComponent extends React.Component {
             <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
            
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >#123323</Text>
+                <Text style={themedStyle.summary.labelTextHead} ></Text>
 
             </View>
             
@@ -180,6 +184,7 @@ class UserCartComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
+                            onPress={this.onCheckoutPress}
 
                           >
                             {translate("CheckoutBtn")}
@@ -275,12 +280,11 @@ export const UserCart = withStyles(UserCartComponent, theme => ({
     },
     headRowContainer:{
       flexDirection: "row",
-      // paddingHorizontal: 10,
       marginHorizontal: 10,
       marginBottom: 20,
       paddingBottom:10,
       borderBottomWidth: 1,
-      borderBottomColor: "#FFF"
+      borderBottomColor: "#A0B0DC"
        
     },
     heading:{

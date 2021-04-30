@@ -58,8 +58,10 @@ LOCAL_APPS = [
     "users.apps.UsersConfig",
     "pet",
     "service",
-    "payment_stripe"
+    "payment_stripe",
+    "order"
 ]
+
 THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
@@ -119,8 +121,11 @@ DATABASES = {
     }
 }
 
+
 if env.str("DATABASE_URL", default=None):
-    DATABASES = {"default": env.db()}
+    dbDefault = env.db()
+    dbDefault['ATOMIC_REQUESTS'] = True
+    DATABASES = {"default": dbDefault}
 
 
 # Password validation
@@ -239,6 +244,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+# ATOMIC_REQUESTS = True
 
 
 # if DEBUG or not (EMAIL_HOST_USER and EMAIL_HOST_PASSWORD):

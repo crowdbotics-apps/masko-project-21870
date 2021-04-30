@@ -1,5 +1,7 @@
 import React from 'react';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
+
+import { NavigationActions } from "react-navigation";
 import { Home } from './home.component';
 import {connect} from 'react-redux';
 import * as userAccountActions from '../../redux/actions';
@@ -42,9 +44,24 @@ export class _HomeContainer extends React.Component {
   }
 
   onPressCategory = ( item ) => {
-    this.props.navigation.navigate("ServiceList",{
-      category: item,
-    })
+    if(item.id == 3){
+
+        this.props.navigation.navigate('Service', 
+        {}, 
+        NavigationActions.navigate({ 
+            routeName: 'ProductList' ,
+            params: {category: item}
+        }));
+
+        // this.props.navigation.navigate("ProductList",{
+        //   category: item,
+        // })
+       
+    }else{
+      this.props.navigation.navigate("ServiceList",{
+        category: item,
+      })
+    }
 
   }
  

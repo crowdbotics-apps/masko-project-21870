@@ -12,5 +12,10 @@ export {
 } from './cartItems.component';
 
 
+export {
+  OrderItems
+} from './orderItems.component';
+
+
 
 export { textStyle } from './style';

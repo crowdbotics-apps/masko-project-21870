@@ -68,7 +68,7 @@
     "PetMoreActionDeletePet": "Delete pet",
     "ServiceGetErrorMsg":"Can't get services",
     "ServiceCategoriesGetErrorMsg":"Can't get service categories",
-    "ServiceListtNavTitle":"Service List",
+    "ServiceListNavTitle":"Service List",
     "AddToCartBtn": "Add to Cart",
     "SaveChangesBtn": "Save Changes",
     "SelectPetLabel": "Select Pet",
@@ -104,9 +104,10 @@
     "ChooseTimeLabel": "Please Choose Time",
     "MyCartNavTitle": "My Cart",
     "CheckoutBtn": "Checkout",
-    "OrderSummaryLabel": "Summary",
+    "OrderSummaryLabel": "Order Summary",
     "OrderSubTotalLabel": "Subtotal",
-    "OrderShippingLabel": "Shipping",
+    "OrderOneTimeLabel": "Onetime",
+    "OrderShippingLabel": "Shipping + handling",
     "OrderTaxLabel": "Tax",
     "OrderTotalLabel": "Total",
     "EmptyCartMessage": "Your cart is empty",
@@ -116,7 +117,18 @@
     "SideMenuMyOrders": "My orders",
     "SideMenuRecurringOrders": "Recurring Orders",
     "SideMenuSignout": "Sign out",
-    "SideMenuHead": "MENU"
+    "SideMenuHead": "MENU",
+    "ProductsGetErrorMsg": "Can't get products",
+    "ProductListtNavTitle": "Product List",
+    "ProductDetailsNavTitle": "Product Detail",
+    "ServiceDetailDescLabel": "Description",
+    "ConfirmOrderNavTitle": "Order Details",
+    "ConfirmOrderPayUsingLabel": "Pay using",
+    "ChooseCardLabel": "Please Choose Card",
+    "ConfirmOrderBtn": "Confirm Order",
+    "OrderCreateSuccess": "Your Order has been successfully created.",
+    "AddOrderError": "Can't create Order",
+    
 
 
 

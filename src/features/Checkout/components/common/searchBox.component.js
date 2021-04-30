@@ -69,7 +69,6 @@ export const SearchBox = withStyles(_SearchComponent, theme => ({
     borderTopRadius: 10,
     width: width*0.9,
     height: 120,
-    resizeMode: 'cover',
   },
   textContainer:{
     padding: 10
