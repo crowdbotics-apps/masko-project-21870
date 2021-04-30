@@ -41,7 +41,6 @@ export class _ProductListContainer extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot){
       if(this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
         this.getProducts();
-          
       }
   }
 
