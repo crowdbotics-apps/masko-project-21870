@@ -60,6 +60,18 @@ export default class CartItemModel extends BaseModel {
     }
 
     getProductItemForOrder( pet ){
+        if( this.source.is_recurring ){
+            return {
+                type: 'product', 
+                id: this.source.id,
+                quantity: pet.qty,
+                pet: pet.id,
+                scheduleDate: moment( this.userSelection.bookingDate.value ).format( AppConfig.dateFormatDb ),
+                orderEvery: this.userSelection.orderEveryOptionsLabel
+               
+            }
+
+        }
         return {
             type: 'product', 
             id: this.source.id,

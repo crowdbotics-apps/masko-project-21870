@@ -4,6 +4,19 @@ stripe.api_key = STRIPE_API_KEY
 
 from .models import Card
 
+def create_stripe_subscription(data):
+        try:
+            print("** create_stripe_subscription")
+            print(data['items'])
+            subscription = stripe.Subscription.create(
+                customer=data['customer'],
+                items=data['items'],
+            )
+            return subscription
+        except Exception as e:
+            print('Stripe Subscription Create error - {}'.format(str(e)))
+            return None
+
 def create_stripe_charge(items,customer, order):
     cards = customer.default_card
     charge = stripe.Charge.create(
@@ -57,4 +70,25 @@ def prepare_items_4m_orderColect(items):
         })   
 
     return stripeItems     
+
+
+def prepare_item_4_subscriptions(items):
+    print("** prepare_item_4_subscriptions")
+    # print(items)
+    response = []
+    for item in items:
+        exists = next(((index) for index, x in enumerate(response) if x['price']==item['productPrice'].stripe_id), -1)
+        if exists is -1:
+             response.append({
+                'quantity': item['item'].quantity,
+                'price': item['productPrice'].stripe_id
+
+            })
+        else:
+            response[exists]['quantity'] += item['item'].quantity
+            
+
+
+       
+    return response    
 

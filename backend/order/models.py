@@ -107,6 +107,12 @@ class Product(models.Model):
         max_length=255,
     )
 
+    order_every = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
     notes = models.CharField(
         null=True,
         blank=True,

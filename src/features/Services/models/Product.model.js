@@ -38,6 +38,7 @@ export default class ProductModel extends BaseModel {
         this.price = input.price || 0;
         this.weight = input.weight || 0;
         this.sort = input.sort;
+        this.is_recurring = input.is_recurring;
    }
 
    getName(){

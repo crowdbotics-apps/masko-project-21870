@@ -80,10 +80,12 @@ class _CartItemsComponent extends React.Component {
       <View style={themedStyle.itemSubContainer}>
         <Avatar 
             size="giant"
-          style={{width: 100,height: 100}}
+          style={{width: width*0.2 ,height: 100}}
           source={{uri: item.source.photo}} />
          <View style={themedStyle.itemDetailContainer}>
-           <Text style={themedStyle.itemHeading} >{name}</Text>
+          <View style={{flexDirection:'row',flexWrap: 'wrap', width:width*0.7}}>
+                <Text style={themedStyle.itemHeading} >{name}</Text>
+          </View>
            <Text style={themedStyle.itemLabel}>{timeOption}</Text>
            <Text style={themedStyle.itemLabel}>{bookingDate}</Text>
           </View> 
@@ -139,6 +141,8 @@ class _CartItemsComponent extends React.Component {
     const name = (item.source)?item.source.name_en:'';
     const brand = (item.source)?item.source.brand_en:'';
     const weight = (item.source)?item.source.weight:'';
+    const bookingDate = ( item.source && item.source.is_recurring )?item.userSelection.bookingDate.display:'';
+    const orderEveryOptionsLabel = (item.source && item.source.is_recurring )?item.userSelection.orderEveryOptionsLabel:'';
     const { themedStyle } = this.props;
     return (
       <TouchableOpacity
@@ -148,12 +152,21 @@ class _CartItemsComponent extends React.Component {
       <View style={themedStyle.itemSubContainer}>
         <Avatar 
             size="giant"
-          style={{width: 100,height: 100}}
+          style={{width: width*0.2,height: 100}}
           source={{uri: item.source.photo}} />
          <View style={themedStyle.itemDetailContainer}>
-           <Text style={themedStyle.itemHeading} >{name}</Text>
-           <Text style={themedStyle.itemLabel}>Brand: {brand}</Text>
-           <Text style={themedStyle.itemLabel}>Weight: {weight}</Text>
+          <View style={{flexDirection:'row',flexWrap: 'wrap', width:width*0.7}}>
+              <Text style={themedStyle.itemHeading} >{name}</Text>
+          </View>
+           
+           <Text style={themedStyle.itemLabel}>{translate('CartItemBrandLabel')}: {brand}</Text>
+           <Text style={themedStyle.itemLabel}>{translate('CartItemWeightLabel')}: {weight}</Text>
+           {item.source.is_recurring && (
+             <Text style={themedStyle.itemLabel}>{translate('CartItemOrderEvertLabel')}: {orderEveryOptionsLabel}</Text>
+           )}
+           {item.source.is_recurring && (
+             <Text style={themedStyle.itemLabel}>{translate('CartItemStartingDate')}: {bookingDate}</Text>
+           )}
           </View> 
       </View>
       {item.pets.map( (pet,i) => {
@@ -249,13 +262,15 @@ export const CartItems = withStyles(_CartItemsComponent, theme => ({
   },
   itemDetailContainer:{
     flexDirection:"column",
-    margin: 10
+    margin: 10,
+    
+    
   },
   itemHeading:{
     fontWeight: "bold",
     fontFamily: "Montserrat",
-    fontSize: 13,
-
+    fontSize: 13
+    
   },
   itemLabel:{
     fontFamily: "Montserrat",

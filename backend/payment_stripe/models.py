@@ -195,12 +195,25 @@ class Card(models.Model):
 # Product Model
 class ProductPrices(models.Model):
 
+    MONTHLY_RECURRING = 'month'
+    
+    NICKNAME_DAILY = 'Day'
+    NICKNAME_WEEK = 'Week'
+    NICKNAME_BI_MONTH = 'Bi-Monthly'
+    NICKNAME_MONTH = 'Month'
+
     product = models.ForeignKey('service.Product', on_delete=models.CASCADE,null=True,
         blank=True)  
     service = models.ForeignKey('service.Service', on_delete=models.CASCADE,null=True,
         blank=True)  
 
     stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
+    nickname = models.CharField(
         null=True,
         blank=True,
         max_length=255,
@@ -221,11 +234,11 @@ class ProductPrices(models.Model):
     )
     recurring_interval = models.CharField(
         null=True,
-        default='month',
+        default= MONTHLY_RECURRING ,
         blank=True,
         max_length=255,
     )
-    
+
 
     ### Handle Before Save Of a Product Prices
     def save(self, *args, **kwargs):
@@ -246,6 +259,7 @@ class ProductPrices(models.Model):
                                         currency= "usd",
                                         recurring= {"interval": self.recurring_interval },
                                         product= object_ref ,
+                                        nickname= self.nickname
                         )
             return stripe_obj            
         except Exception as e:
@@ -261,5 +275,31 @@ class ProductPrices(models.Model):
     def __str__ (self):
         object_ref = self.product if self.product else self.service
         return '{} - {}'.format( object_ref.name_en if object_ref else '', self.stripe_id )
+
+
+# Subscription Model
+class Subscription(models.Model):
+
+    order = models.ForeignKey('order.Order', on_delete=models.CASCADE,null=True,
+        blank=True)
+
+    stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )      
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+
+   
+
+
+
 
   

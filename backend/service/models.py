@@ -125,7 +125,6 @@ class Service(models.Model):
             self.create_product_prices(oldService)
         elif self.is_recurring is True:
             self.update_stripe_product()
-            
             self.create_product_prices(oldService)
         ### 
         super(Service, self).save(*args, **kwargs)   
@@ -181,29 +180,50 @@ class Service(models.Model):
     def create_product_prices(self, oldService):
         try:
             if oldService is None or ( oldService is not None and oldService.price != self.price ) :
+              
+                ### Daily Recurrence
                 item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_DAILY,
                         service = self, 
-                        price = self.price, 
-                        recurring_interval = 'day' 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_DAILY ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
 
                 )
                 item.save()
+                ###
 
+                ### Weekly Recurrence
                 item = ProductPrices(
-                        product = self, 
-                        price = self.price,
-                        recurring_interval = 'week' 
+                        nickname= ProductPrices.NICKNAME_WEEK,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_WEEK ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING 
 
                 )
                 item.save()
+                ###
 
+                ### Bi-Monthly Recurrence
                 item = ProductPrices(
-                        product = self, 
-                        price = self.price,
-                        recurring_interval = 'month' 
+                        nickname= ProductPrices.NICKNAME_BI_MONTH,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_BI_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
 
                 )
                 item.save()
+                ###
+
+                ### Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_MONTH,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
 
                 
                 return item
@@ -215,9 +235,31 @@ class Service(models.Model):
             raise NameError(e)
 
         return None    
-  
-
-
+    
+    @classmethod
+    def get_recurring_price( self, item, orderOptions ):
+        priceList = [
+            {
+                'key': ProductPrices.NICKNAME_DAILY, 
+                'factor': 30
+            },
+            {
+                'key': ProductPrices.NICKNAME_WEEK, 
+                'factor': 4
+            },
+            {
+                'key': ProductPrices.NICKNAME_BI_MONTH, 
+                'factor': 2
+            },
+            {
+                'key': ProductPrices.NICKNAME_MONTH, 
+                'factor': 1
+            },
+        ]
+        price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
+        return item.price * price['factor']
+        
+   
     def __str__ (self):
         return self.name_es
 
@@ -416,29 +458,50 @@ class Product(models.Model):
     def create_product_prices(self, oldProduct):
         try:
             if oldProduct is None or ( oldProduct is not None and oldProduct.price != self.price):
+                
+                ### Daily Recurrence
                 item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_DAILY,
                         product = self, 
-                        price = self.price,
-                        recurring_interval = 'day' 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_DAILY ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
 
                 )
                 item.save()
+                ###
 
+                ### Weekly Recurrence
                 item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_WEEK,
                         product = self, 
-                        price = self.price,
-                        recurring_interval = 'week' 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_WEEK ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING 
 
                 )
                 item.save()
+                ###
 
+                ### Bi-Monthly Recurrence
                 item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_BI_MONTH,
                         product = self, 
-                        price = self.price,
-                        recurring_interval = 'month' 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_BI_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
 
                 )
                 item.save()
+                ###
+
+                ### Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_MONTH,
+                        product = self, 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
 
                 return item
             else: 
@@ -450,11 +513,81 @@ class Product(models.Model):
 
         return None    
   
-
-     
-    
-
+   
+    @classmethod
+    def get_recurring_price(self, item, orderOptions):
+        priceList = [
+            {
+                'key': ProductPrices.NICKNAME_DAILY, 
+                'factor': 30
+            },
+            {
+                'key': ProductPrices.NICKNAME_WEEK, 
+                'factor': 4
+            },
+            {
+                'key': ProductPrices.NICKNAME_BI_MONTH, 
+                'factor': 2
+            },
+            {
+                'key': ProductPrices.NICKNAME_MONTH, 
+                'factor': 1
+            },
+        ]
+        price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
+        return item.price * price['factor']
+        
+        
     def __str__ (self):
         return self.name_es
 
-  
+
+#   stripe.Subscription.create(
+#   customer="cus_JHzRAu80GRPLFV",
+#   items=[
+#     {
+#     'metadata':{
+#         'name':'john',
+#          'description': 'adsa',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1IlrRkES1Wz3F8fhwQ1G5oOf'
+#     },
+
+#     {
+#     'metadata':{
+#         'name':'PRODUCT - WHISKAS 1+ Can Fish/Chicken Selection',
+#          'description': 'Each can contains 390g wet food for your cat while a healthy 4kg adult cat required at least 300g to 400g balanced diet daily depending on cat’s activity level. It contains no artificial flavors, preservatives or colors but made of real fresh meat. Furthermore, each tin contains perfect amount of zinc to ensure healthy skin and coat.',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1InzHVES1Wz3F8fhiU37zgYs'
+#     },
+#   ],
+# )
+
+# sub_JOi5yufjuIA4Ti
+
+
+# stripe.Subscription.create(
+#   customer="cus_JHzRAu80GRPLFV",
+#   items=[
+#     {
+#     'metadata':{
+#         'name':'john',
+#          'description': 'adsa',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1IlrRlES1Wz3F8fhEJdwPEqj'
+#     },
+
+#     {
+#     'metadata':{
+#         'name':'PRODUCT - WHISKAS 1+ Can Fish/Chicken Selection',
+#          'description': 'Each can contains 390g wet food for your cat while a healthy 4kg adult cat required at least 300g to 400g balanced diet daily depending on cat’s activity level. It contains no artificial flavors, preservatives or colors but made of real fresh meat. Furthermore, each tin contains perfect amount of zinc to ensure healthy skin and coat.',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1InzHVES1Wz3F8fhiU37zgYs'
+#     },
+#   ],
+# )
+#sub_JQr8LaGohjcM8F
