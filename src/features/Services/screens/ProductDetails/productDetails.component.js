@@ -55,16 +55,16 @@ const payUsing = [
 
 const orderEveryOptions = [
   {
-    value: 'Day', label: "Day",
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_DAILY , label: AppConfig.ORDER_EVERY_LIST.RECUR_DAILY,
   },
   {
-    value: 'Week', label: "Week",
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_WEEK, label: AppConfig.ORDER_EVERY_LIST.RECUR_WEEK,
   },
   {
-    value: 'Bi-Monthly', label: "Bi-Monthly",
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_BI_MONTH, label: AppConfig.ORDER_EVERY_LIST.RECUR_BI_MONTH,
   },
   {
-    value: 'Month', label: "Month"
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_MONTH, label: AppConfig.ORDER_EVERY_LIST.RECUR_MONTH
   }
   
 ];

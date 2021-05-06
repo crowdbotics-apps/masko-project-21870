@@ -25,11 +25,7 @@ export default class CartModel extends BaseModel {
    }
 
    calculateItemTotalPrice(item){
-     qty = 0
-     _.forEach(item.pets, (i) => {
-          qty = parseInt(qty)+parseInt(i.qty)
-     })
-     return parseFloat(item.source.price) * qty
+     return item.getItemPrice()
    }
 
    updateCartItems(items){

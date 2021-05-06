@@ -238,24 +238,7 @@ class Service(models.Model):
     
     @classmethod
     def get_recurring_price( self, item, orderOptions ):
-        priceList = [
-            {
-                'key': ProductPrices.NICKNAME_DAILY, 
-                'factor': 30
-            },
-            {
-                'key': ProductPrices.NICKNAME_WEEK, 
-                'factor': 4
-            },
-            {
-                'key': ProductPrices.NICKNAME_BI_MONTH, 
-                'factor': 2
-            },
-            {
-                'key': ProductPrices.NICKNAME_MONTH, 
-                'factor': 1
-            },
-        ]
+        priceList = ProductPrices.PRICE_LIST
         price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
         return item.price * price['factor']
         
@@ -516,24 +499,7 @@ class Product(models.Model):
    
     @classmethod
     def get_recurring_price(self, item, orderOptions):
-        priceList = [
-            {
-                'key': ProductPrices.NICKNAME_DAILY, 
-                'factor': 30
-            },
-            {
-                'key': ProductPrices.NICKNAME_WEEK, 
-                'factor': 4
-            },
-            {
-                'key': ProductPrices.NICKNAME_BI_MONTH, 
-                'factor': 2
-            },
-            {
-                'key': ProductPrices.NICKNAME_MONTH, 
-                'factor': 1
-            },
-        ]
+        priceList = ProductPrices.PRICE_LIST
         price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
         return item.price * price['factor']
         

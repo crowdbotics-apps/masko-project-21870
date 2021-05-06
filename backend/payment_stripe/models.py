@@ -196,11 +196,30 @@ class Card(models.Model):
 class ProductPrices(models.Model):
 
     MONTHLY_RECURRING = 'month'
-    
+
     NICKNAME_DAILY = 'Day'
     NICKNAME_WEEK = 'Week'
     NICKNAME_BI_MONTH = 'Bi-Monthly'
     NICKNAME_MONTH = 'Month'
+
+    PRICE_LIST = [
+            {
+                'key': NICKNAME_DAILY, 
+                'factor': 30
+            },
+            {
+                'key': NICKNAME_WEEK, 
+                'factor': 4
+            },
+            {
+                'key': NICKNAME_BI_MONTH, 
+                'factor': 2
+            },
+            {
+                'key': NICKNAME_MONTH, 
+                'factor': 1
+            },
+        ]
 
     product = models.ForeignKey('service.Product', on_delete=models.CASCADE,null=True,
         blank=True)  

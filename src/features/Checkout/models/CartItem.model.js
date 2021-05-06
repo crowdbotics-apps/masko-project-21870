@@ -1,6 +1,7 @@
 import BaseModel from "../../../models/base.model";
 import AppConfig from 'src/config/app';
 import * as _ from 'lodash';
+import * as serviceUtils from 'src/features/Services/utils/general';
 
 const moment = require('moment');
 
@@ -23,10 +24,27 @@ export default class CartItemModel extends BaseModel {
     getItemPrice(){
         totalCost = 0;
         _.forEach(this.pets, (i)=>{
+            let unitPrice = this.source.price
+            if( this.source.is_recurring ){
+                priceFactor = serviceUtils.getProductPriceFactor( this.userSelection.orderEveryOptionsLabel );
+                unitPrice = this.source.price * priceFactor
+            }
+
             if(i.qty>0)
-                totalCost += parseFloat(i.qty)*parseFloat(this.source.price)
+                totalCost += parseFloat(i.qty)*parseFloat( unitPrice )
         })
         return totalCost
+    }
+
+    getItemPetPrice(quantity){
+        if( this.source.is_recurring ){
+            priceFactor = serviceUtils.getProductPriceFactor( this.userSelection.orderEveryOptionsLabel );
+            item = null
+            return parseFloat( ( this.source.price * priceFactor ) * quantity )
+        }else{
+            return parseFloat( this.source.price * quantity )
+        }
+        
     }
 
     getItemForOrder(){

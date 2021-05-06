@@ -47,13 +47,11 @@ export default class ProductModel extends BaseModel {
 
    getBrand(){
     return this.brand_en;
-}
+   }
 
    getDescription(){
        return this.description_en;
    }
-
-   
 
    toObject(){
        return {

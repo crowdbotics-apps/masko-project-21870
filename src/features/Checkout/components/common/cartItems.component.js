@@ -93,7 +93,7 @@ class _CartItemsComponent extends React.Component {
       {item.pets.map( (pet,i) => {
         // this.renderPets( pet, item.source )
 
-        const price = parseFloat(item.source.price * pet.qty);
+        const price = item.getItemPetPrice(pet.qty);
         return (<View style={themedStyle.itemPetContainer}>
           <Avatar 
             source={{uri:pet.photo}}
@@ -124,7 +124,7 @@ class _CartItemsComponent extends React.Component {
               <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
           </View>
           <View style={themedStyle.itemPriceContainer}>
-               <Text style={themedStyle.itemPriceLabel}>${price}</Text>
+               <Text style={themedStyle.itemPriceLabel}>${price}2</Text>
           </View>
     
         </View>);
@@ -172,7 +172,7 @@ class _CartItemsComponent extends React.Component {
       {item.pets.map( (pet,i) => {
         // this.renderPets( pet, item.source )
 
-        const price = parseFloat(item.source.price * pet.qty);
+        const price = item.getItemPetPrice(pet.qty);
         return (<View style={themedStyle.itemPetContainer}>
           <Avatar 
             source={{uri:pet.photo}}
