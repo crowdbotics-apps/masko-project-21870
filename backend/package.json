@@ -6,7 +6,9 @@
    "set-environ": "pipenv shell",
    "install-packages": "pipenv install",
    "getMyIp": "./machine-ip.bash",
-   "server": "myIp=$(./machine-ip.bash) && python manage.py runserver $myIp:8000"
+   "server": "myIp=$(./machine-ip.bash) && python manage.py runserver $myIp:8000",
+   "local-server": "myIp=$(./machine-ip.bash) && python manage.py runserver localhost:8000"
+  
   },
   "dependencies": {
     

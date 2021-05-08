@@ -136,3 +136,4 @@ class Product(models.Model):
     def __str__ (self):
         return '{}'.format( 
                                 'Product' if self.product_id is not None else 'Service'  )
+

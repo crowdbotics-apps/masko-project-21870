@@ -18,9 +18,12 @@ from home.api.v1.viewsets import (
     AddOrderViewSet
 )
 
+from payment_stripe.views import WebHookViewSet
+
 router = DefaultRouter()
 router.register("signup", SignupViewSet, basename="signup")
 router.register("login", LoginViewSet, basename="login")
+
 
 router.register("service", ServiceViewSet, basename="service")
 router.register("product", ProductViewSet, basename="product")
@@ -31,6 +34,7 @@ router.register("pet-type", PetTypeViewSet, basename="pet-type")
 router.register("breed-type", BreedTypeViewSet, basename="breed-type")
 router.register("customtext", CustomTextViewSet)
 router.register("homepage", HomePageViewSet)
+router.register("webhooks", WebHookViewSet, basename="webhooks")
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -41,6 +41,7 @@ urlpatterns = [
     path("home/", include("home.urls")),
     path("api/v1/", include("wallet.api.v1.urls")),
     path("wallet/", include("wallet.urls")),
+    path("wallet/", include("wallet.urls")),
 ]
 
 admin.site.site_header = "Masko Project"

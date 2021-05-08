@@ -196,6 +196,7 @@ class Card(models.Model):
 class ProductPrices(models.Model):
 
     MONTHLY_RECURRING = 'month'
+    MONTHLY_RECURRING = 'day'
 
     NICKNAME_DAILY = 'Day'
     NICKNAME_WEEK = 'Week'
@@ -316,7 +317,63 @@ class Subscription(models.Model):
         auto_now=True,
     )
 
-   
+
+
+# Stripe Events For WebHook
+
+class Events(models.Model):
+    eventType = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+    
+    requestBody = models.TextField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+
+
+# Subscription Payments
+class SubscriptionPayments(models.Model):
+    
+    paymentType = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+    
+    order = models.ForeignKey('order.Order', on_delete=models.CASCADE,null=True,
+        blank=True)
+
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE,null=True,
+        blank=True)   
+    
+    event = models.ForeignKey(Events, on_delete=models.CASCADE,null=True,
+        blank=True)   
+
+    stripe_payment_intent = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )       
 
 
 
