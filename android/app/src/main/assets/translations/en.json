@@ -135,6 +135,12 @@
     "CartItemWeightLabel": "Weight",
     "CartItemOrderEvertLabel": "Order Every",
     "CartItemStartingDate":"Starting",
+    "ProductListSearchFilterType": "Type Of Pet",
+    "ProductListSearchFilterTypeOther": "OTHER",
+    "ProductListSearchFilterPriceRange": "Price Range",
+    "ProductListSearchSortResultBy": "Sort result by",
+    "ProductListSearchSortResultPrice": "Price",
+    "ProductListSearchSortResultSize": "Size",
     
     
 

@@ -19,8 +19,8 @@ export class _ProductListContainer extends React.Component {
       titleText = category.name_en;
     }
     return {
-                // title: titleText,
-                headerTitle: (<LogoIcon navigation={navigation} />),
+                title: titleText,
+                // headerTitle: (<LogoIcon navigation={navigation} />),
                 // headerBack: (<BackHomeIcon navigation={navigation}),
                 headerLeft: (<BackHomeIcon navigation={navigation} />),
                 headerTitleStyle:appConfig.headerTitleStyle,
@@ -49,9 +49,9 @@ export class _ProductListContainer extends React.Component {
       this.getProducts();
   }
 
-  getProducts = (keyword) => {
+  getProducts = (keyword, type, price, sort) => {
     const { accessToken, actions, navigation } = this.props;
-    actions.getProducts( accessToken, navigation.state.params.category, keyword );
+    actions.getProducts( accessToken, navigation.state.params.category, keyword, type, price, sort );
   }
 
   onAddButtonPress = (data) => {
