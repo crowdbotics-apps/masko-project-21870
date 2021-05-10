@@ -47,44 +47,42 @@ import * as _ from 'lodash';
 const moment = require('moment');
 
 
-const timeOptions = [
+const payUsing = [
   {
-    value: 'ASAP', label: "ASAP"
-  },
-  {
-    value: 'Schedule', label: "Schedule"
+    value: 'Card', label: "Card"
   }
 ];
 
-const dayTimeOption = [
+const orderEveryOptions = [
   {
-    value: 'Morning', label: "Morning"
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_DAILY , label: AppConfig.ORDER_EVERY_LIST.RECUR_DAILY,
   },
   {
-    value: 'Mid-Day', label: "Mid-Day"
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_WEEK, label: AppConfig.ORDER_EVERY_LIST.RECUR_WEEK,
   },
   {
-    value: 'Afternoon', label: "Afternoon"
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_BI_MONTH, label: AppConfig.ORDER_EVERY_LIST.RECUR_BI_MONTH,
   },
   {
-    value: 'Evening', label: "Evening"
+    value: AppConfig.ORDER_EVERY_LIST.RECUR_MONTH, label: AppConfig.ORDER_EVERY_LIST.RECUR_MONTH
   }
+  
 ];
+
 
 class ProductDetailsComponent extends React.Component {
 
   state = {
-    timeOptionValue: undefined,
-    timeOptionLabel: undefined,
-    dayTimeOptionValue: undefined,
-    dayTimeOptionLabel: undefined,
+    payUsingLabel: undefined,
+    payUsingValue: undefined,
+    orderEveryOptionsLabel: undefined,
+    orderEveryOptionsValue: undefined,
     notes: undefined,
     bookingDate: {
       display: moment().format(AppConfig.dateFormat),
       value: new Date()
     },
     showDatePicker: false,
-    showTimePicker: false,
     pets: [],
 
   }
@@ -98,12 +96,11 @@ class ProductDetailsComponent extends React.Component {
       const { userSelection, userSelectedPets } = this.props;
       this.state.notes =  userSelection.notes;
       this.state.bookingDate =  userSelection.bookingDate;
-      this.state.timeOptionLabel =  userSelection.timeOptionLabel;
-      this.state.timeOptionValue =  userSelection.timeOptionValue;
-      this.state.dayTimeOptionValue =  userSelection.dayTimeOptionValue;
-      this.state.dayTimeOptionLabel =  userSelection.dayTimeOptionLabel;
+      this.state.payUsingLabel =  userSelection.payUsingLabel;
+      this.state.payUsingValue =  userSelection.payUsingValue;
+      this.state.orderEveryOptionsLabel = userSelection.orderEveryOptionsLabel;
+      this.state.orderEveryOptionsValue = userSelection.orderEveryOptionsValue;
       this.state.showDatePicker =  userSelection.showDatePicker;
-      this.state.showTimePicker =  userSelection.showTimePicker;
       this.state.pets = this.setPetData(userSelectedPets);
     }
   }
@@ -119,30 +116,30 @@ class ProductDetailsComponent extends React.Component {
     }
   };
 
-  onTimeInputTextChange = (value, index) => {
+ 
+  onPayUsingPickerChange = (value, index) => {
 
     let newState = { ...this.state }
 
-    if (value === timeOptions[1].value) {
-      newState.showTimePicker = true
-    }else{
-      newState.showTimePicker = false
-    }
-    newState.timeOptionValue = index;
-    newState.timeOptionLabel = value;
+    newState.payUsingValue = index;
+    newState.payUsingLabel = value;
 
 
     this.setState(newState);
   }
 
+  onOrderEveryPickerChange = (value, index) => {
 
-  onDayTimeInputTextChange = (value, index) => {
-    this.setState({ dayTimeOptionValue: index, dayTimeOptionLabel: value });
+    let newState = { ...this.state }
+
+    newState.orderEveryOptionsValue = index;
+    newState.orderEveryOptionsLabel = value;
+
+
+    this.setState(newState);
   }
 
-  onNotesInputTextChange = (value) => {
-    this.setState({ notes: value });
-  }
+  
 
   onAddButtonPress = () => {
       const {
@@ -155,17 +152,15 @@ class ProductDetailsComponent extends React.Component {
         type: AppConfig.ITEM_TYPES.PRODUCT,
         item: product,
         pets: this.getPetsForCart(),
+        is_recurring: product.is_recurring,
         userSelection: {
           notes: this.state.notes,
           bookingDate: this.state.bookingDate, 
-          timeOptionLabel: this.state.timeOptionLabel,
-          timeOptionValue: this.state.timeOptionValue,
-          dayTimeOptionValue: this.state.dayTimeOptionValue,
-          dayTimeOptionLabel: this.state.dayTimeOptionLabel,
+          payUsingLabel: this.state.payUsingLabel,
+          payUsingValue: this.state.payUsingValue,
+          orderEveryOptionsValue: this.state.orderEveryOptionsValue,
+          orderEveryOptionsLabel: this.state.orderEveryOptionsLabel,
           showDatePicker: this.state.showDatePicker,
-          showTimePicker: this.state.showTimePicker,
-
-
         }
 
       })
@@ -209,9 +204,6 @@ class ProductDetailsComponent extends React.Component {
 
   }
 
-  toggleTimePicker = () => {
-    this.setState({ showTimePicker: !this.state.showTimePicker })
-  }
 
   setPetData = (pets) => {
     const { userPets } = this.props;
@@ -297,13 +289,25 @@ class ProductDetailsComponent extends React.Component {
     })
     return count;
   }
-  validator = () => {
-    let petQty = this.getPetTotalQty();
-    const { timeOptionLabel, dayTimeOptionLabel } = this.state;
 
-    return (
-            (petQty>0)
-    ) 
+  validator = () => {
+    const { product } = this.props.navigation.state.params;
+    let petQty = this.getPetTotalQty();
+    const { orderEveryOptionsLabel, payUsingLabel, bookingDate } = this.state;
+
+    if( product.is_recurring ){
+      return (
+        orderEveryOptionsLabel  &&
+        payUsingLabel &&
+        bookingDate  && 
+        (petQty>0)
+      ) 
+    }else{
+      return (
+        (petQty>0)
+      ) 
+    }    
+    
     
   }
 
@@ -320,7 +324,6 @@ class ProductDetailsComponent extends React.Component {
 
     const {
       showDatePicker,
-      showTimePicker,
       bookingDate
     } = this.state
 
@@ -354,15 +357,85 @@ class ProductDetailsComponent extends React.Component {
               <Text style={themedStyle.serviceItem.textDesc2}  >Weight: {product.weight}</Text>
             </View>
 
+              
 
           </View>
 
           <View style={themedStyle.detailContainer.container}>
-          <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailDescLabel')}</Text>
-           <Text style={themedStyle.detailContainer.valueText}>{product.description_en}</Text>
+            <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailDescLabel')}</Text>
+            <Text style={themedStyle.detailContainer.valueText}>{product.description_en}</Text>
            
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailPriceLabel')}</Text>
             <Text style={themedStyle.detailContainer.valueText}>${product.price}</Text>
+            {product.is_recurring && (
+                <View style={themedStyle.detailContainer.pickerContainer} >
+                <RNPickerSelect
+                  style={pickerSelectStyles}
+  
+                  onValueChange={(value, index) => {
+                    if (value != '0') {
+                      this.onPayUsingPickerChange(value, index)
+  
+                    }
+  
+                  }
+                  }
+                  items={payUsing}
+                  value={this.state.payUsingLabel}
+                >
+                  <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ProductDetailPayUsingLabel')}</Text>
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.payUsingLabel}</Text>
+                </RNPickerSelect>
+              </View>
+  
+            )} 
+
+            {product.is_recurring && (
+                <View style={themedStyle.detailContainer.pickerContainer} >
+                <RNPickerSelect
+                  style={pickerSelectStyles}
+  
+                  onValueChange={(value, index) => {
+                    if (value != '0') {
+                      this.onOrderEveryPickerChange(value, index)
+  
+                    }
+  
+                  }
+                  }
+                  items={orderEveryOptions}
+                  value={this.state.orderEveryOptionsLabel}
+                >
+                  <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ProductDetailOrderEveryLabel')}</Text>
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.orderEveryOptionsLabel}</Text>
+                </RNPickerSelect>
+              </View>
+  
+            )} 
+
+            {product.is_recurring && (
+              <TouchableOpacity style={themedStyle.detailContainer.pickerContainer2}
+                  onPress={this.toggleDateModal}
+                >
+                  <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ProductDetailStartDateLabel')}</Text>
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{bookingDate.display}</Text>
+
+
+                </TouchableOpacity>
+               
+            )}
+            {product.is_recurring && showDatePicker && (
+              <DateTimePicker
+                display="spinner"
+                value={bookingDate.value}
+                mode={'date'}
+                style={{ color: "#FFF" }}
+                textColor={'#FFF'}
+                onChange={this.handleBookingDateChange}
+                onConfirm={this.handleBookingDateChange}
+                onCancel={this.toggleDateModal}
+              />
+            )}
  
          
           </View>

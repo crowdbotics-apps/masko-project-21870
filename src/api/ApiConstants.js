@@ -15,6 +15,7 @@ const ApiConstants = {
     PET_TYPE:"/api/v1/pet-type/",
     PET: "/api/v1/pet/",
     SERVICE: "/api/v1/service/",
+    ORDER: "/api/v1/order",
     PRODUCT: "/api/v1/product/",
     SERVICE_CATEGORY: "/api/v1/service-category/",
     UNDS: "/api/v1/unds/",

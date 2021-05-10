@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from payment_stripe.models import Card
 
 import stripe
+
 from masko_project_21870.settings import STRIPE_API_KEY
 stripe.api_key = STRIPE_API_KEY
 
@@ -45,8 +46,6 @@ class User(AbstractUser):
         max_length=512,
     )
 
-    
-
     default_card = models.ForeignKey(Card, on_delete=models.CASCADE, null=True)
 
     timestamp_created = models.DateTimeField(
@@ -54,11 +53,13 @@ class User(AbstractUser):
         blank=True,
         auto_now_add=True,
     )
+
     last_updated = models.DateTimeField(
         null=True,
         blank=True,
         auto_now=True,
     )
+
     @property
     def stripe_customer(self):
         return stripe.Customer.retrieve(self.stripe_id)

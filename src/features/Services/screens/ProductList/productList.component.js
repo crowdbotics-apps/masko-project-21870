@@ -4,7 +4,8 @@ import {
   TextInput as Input,
   ScrollView,
   Dimensions,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native';
 
 import {
@@ -30,6 +31,11 @@ import { ProductsComponent } from '../../components/common';
 
 import { AdComponent } from 'src/components/Ads/ads.component';
 
+import CatIcon from 'src/assets/icons/cat-filter.svg';
+import CatSelectedIcon from 'src/assets/icons/cat-filter-selected.svg';
+import DogIcon from 'src/assets/icons/dog-filter.svg';
+import DogSelectedIcon from 'src/assets/icons/dog-filter-selected.svg';
+
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
@@ -38,10 +44,63 @@ import * as _ from 'lodash';
 
 import { PetComponent } from 'src/components/common';
 
+
+const PET_TYPES = [
+  {
+    type: 'icon',
+    key: 1, 
+    icon: <DogIcon width={'75'}  />, 
+    selectedIcon: <DogSelectedIcon width={'75'}  />, 
+  },
+  {
+    type: 'icon',
+    key: 2, 
+    icon: <CatIcon width={'75'}  />, 
+    selectedIcon: <CatSelectedIcon width={'75'}  />, 
+  },
+  {
+    type: 'text',
+    key: 3, 
+    value: 'ProductListSearchFilterTypeOther'
+  }
+
+]
+
+const PRICE_RANGES = [
+  {
+    key: 1, 
+    value: '$'
+  },
+  {
+    key: 2, 
+    value: '$$'
+  },
+  {
+    key: 3, 
+    value: '$$$'
+  }
+
+]
+
+const SORT_RESULTS = [
+  {
+    key: 'price', 
+    value: 'ProductListSearchSortResultPrice'
+  },
+  {
+    key: 'size', 
+    value: 'ProductListSearchSortResultSize'
+  }
+]
+
+
 class ProductListComponent extends React.Component {
   state = {
     search: '',
     products: [],
+    petType: null,
+    priceRange: null,
+    sortResult: null
   }
   
   constructor(props){
@@ -61,6 +120,30 @@ class ProductListComponent extends React.Component {
     });
     return list;    
 
+  }
+
+  setPriceIndex = (index) => {
+    const { search, petType, sortResult } = this.state;
+    this.setState({
+      priceRange: index
+    })
+    this.callGetProducts(search, petType, index, sortResult)
+  }
+
+  setPetType = (type) => {
+    const { search, priceRange, sortResult } = this.state;
+    this.setState({
+      petType: type
+    })
+    this.callGetProducts(search, type, priceRange, sortResult)
+  }
+
+  setSortResult = (value) => {
+    const { search, priceRange, petType } = this.state;
+    this.setState({
+      sortResult: value
+    })
+    this.callGetProducts(search, petType, priceRange, value)
   }
 
   renderSpinner = () => {
@@ -89,8 +172,9 @@ class ProductListComponent extends React.Component {
     
   }
 
-  callGetProducts = (text)=>{
-    this.props.getProductsCb(text);
+  callGetProducts = (text, type, price, sort)=>{
+    // const { petType, priceRange, sortResult } = this.state
+    this.props.getProductsCb(text, type, price, sort);
   }
 
   onPressQtyAdd = (sItem) => {
@@ -169,11 +253,32 @@ onPressProductItem = (item) => {
    this.props.onPressProductItem(item);
 }
 
+renderPetTypeFilter = (item)  => {
+    const { petType } = this.state
+    const { themedStyle } = this.props
+    if(item.type=="icon"){
+        if(item.key == petType){
+          return (item.selectedIcon)
+        }else{
+          return (item.icon)
+        }
+      
+    }else{
+      if(item.key == petType){
+        return (<Text style={themedStyle.searchFilterLabelSel}>{translate(item.value)}</Text>)
+      }else{
+        return (<Text style={themedStyle.searchFilterLabel}>{translate(item.value)}</Text>)
+      }
+      
+    }
+
+}
+ 
   render() {
 
     const { navigation, themedStyle } = this.props;
-    const { search, products } = this.state;
-    let category = navigation.state.params.category
+    const { search, products, priceRange, petType, sortResult } = this.state;
+    let category = navigation.state.params.category;
 
 
 
@@ -188,7 +293,74 @@ onPressProductItem = (item) => {
               onSearchInputTextChange={this.onSearchInputTextChange} 
               search={search}
         />
-        <Text style={themedStyle.categoryHead}>{category.getName()}</Text>
+      
+        <View style={themedStyle.searchFilterContainer}>
+         <TouchableOpacity onPress={()=>this.setPetType(null)} > 
+           <Text style={[themedStyle.searchFilterHead]}>{translate('ProductListSearchFilterType')}</Text>
+        </TouchableOpacity>
+          <View style={themedStyle.searchFilterSubContainer}>
+          {PET_TYPES.map( (i) => {
+
+                return (
+                  <TouchableOpacity onPress={()=>this.setPetType(i.key)} >  
+                      {this.renderPetTypeFilter(i)}
+                  </TouchableOpacity>
+                )
+
+
+            }
+
+
+          )}
+        
+          {/* <DogIcon width={'75'}  />
+          <Text style={themedStyle.searchFilterLabel}>{translate('ProductListSearchFilterTypeOther')}</Text> */}
+          </View>
+        </View>
+       
+        <View style={themedStyle.searchFilterContainer}>
+        <TouchableOpacity onPress={()=>this.setPriceIndex(null)} >
+          <Text style={[themedStyle.searchFilterHead]}>{translate('ProductListSearchFilterPriceRange')}</Text>
+        </TouchableOpacity>
+          <View style={themedStyle.searchFilterSubContainer}>
+            {PRICE_RANGES.map( (i) => {
+                    return (
+                      <TouchableOpacity onPress={()=>this.setPriceIndex(i.key)} >
+                      {( priceRange == i.key ) &&
+                      (<Text style={[themedStyle.searchFilterLabel3Sel]}>{i.value}</Text>)}
+      
+                    {( priceRange != i.key ) &&
+                      (<Text style={[themedStyle.searchFilterLabel3]}>{i.value}</Text>)}
+                      
+                  </TouchableOpacity>
+                    ) 
+                   }
+             )}
+           
+            
+          </View>
+        </View>
+        <View style={themedStyle.searchFilterSortContainer}>
+          <TouchableOpacity onPress={()=>this.setSortResult(null)} >
+            <Text style={[themedStyle.searchFilterHead]}>{translate('ProductListSearchSortResultBy')}</Text>
+          </TouchableOpacity> 
+          <View style={themedStyle.searchFilterSubContainer}>
+          {SORT_RESULTS.map( (i) =>{
+
+                return (
+                  <TouchableOpacity onPress={()=>this.setSortResult(i.key)} >
+                    {( sortResult == i.key ) && (<Text style={themedStyle.searchFilterLabel2Sel}>{translate(i.value)}</Text>)}
+                    {( sortResult != i.key ) && (<Text style={themedStyle.searchFilterLabel2}>{translate(i.value)}</Text>)}
+                </TouchableOpacity> 
+                )
+             }
+
+
+          )}
+          </View>
+        </View>
+
+        {/* <Text style={themedStyle.categoryHead}>{category.getName()}</Text> */}
         <ScrollView style={styles.scrollView} 
         contentContainerStyle={{ paddingBottom: 150 }} >
           
@@ -273,6 +445,85 @@ export const ProductList = withStyles(ProductListComponent, theme => ({
     textTransform: 'uppercase',
     alignSelf: 'flex-start',
     padding: 15
+  },
+  searchFilterLabel: {
+    color: "#FFF",
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    padding: 15,
+  },
+  searchFilterLabelSel: {
+    color: "#FFCD3E",
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    padding: 15,
+  },
+  searchFilterContainer:{
+    flexDirection:'row',
+    padding: 10,
+    height: 50
+  },
+  searchFilterSortContainer:{
+    flexDirection:'row',
+    padding: 10,
+    height: 60
+  },
+  searchFilterLabel2: {
+    color: "#FFF",
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    textTransform: 'uppercase',
+    padding: 15,
+  },
+  searchFilterLabel2Sel: {
+    color: "#FFCD3E",
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    textTransform: 'uppercase',
+    padding: 15,
+  },
+  
+  searchFilterLabel3: {
+    color: "#FFF",
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    textTransform: 'uppercase',
+    padding: 10,
+    width: 65
+  },
+  searchFilterLabel3Sel: {
+    color: "#FFCD3E",
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    textTransform: 'uppercase',
+    padding: 10,
+    width: 65
+  },
+  searchFilterHead:{
+    flex:3,
+    color: "#FFF",
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Montserrat",
+    alignSelf: 'flex-start',
+    padding: 10,
+  },
+  searchFilterSubContainer:{
+    flex:3,
+    flexDirection:'row',
+    justifyContent:'flex-end'
   },
 
   inputLabelContainer: {

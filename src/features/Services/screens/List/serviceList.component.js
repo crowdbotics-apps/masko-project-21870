@@ -76,15 +76,18 @@ class ServiceListComponent extends React.Component {
 
     const { navigation, themedStyle } = this.props;
     const { search } = this.state;
-    let category = navigation.state.params.category
+    let category = null;
+    let catName = '';
 
-    // if (this.props.services.length == 0) {
-    //   return (
-    //     <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerEmpty}>
-    //       {this.renderSpinner()}
-    //       <EmptyRecordContainer emptyText={translate("NoRecordFoundLabel")} />
-    //     </LinearGradient>);
-    // }
+    
+    if( navigation 
+        && navigation.state 
+        && navigation.state.params 
+        && navigation.state.params.category ){
+      category = navigation.state.params.category
+      catName = category.getName()
+    }
+        
 
 
     return (
@@ -94,11 +97,11 @@ class ServiceListComponent extends React.Component {
                   navigation={navigation}
               />
         <SearchBox 
-              extraTitle={category.getName()}
+              extraTitle={catName}
               onSearchInputTextChange={this.onSearchInputTextChange} 
               search={search}
         />
-        <Text style={themedStyle.categoryHead}>{category.getName()}</Text>
+        <Text style={themedStyle.categoryHead}>{catName}</Text>
         <AdComponent />
         <ScrollView style={styles.scrollView} 
         contentContainerStyle={{ paddingBottom: 150 }} >

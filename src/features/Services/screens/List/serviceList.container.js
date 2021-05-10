@@ -11,16 +11,16 @@ import { translate }  from 'src/utils/translation';
 export class _ServiceListContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    // let category = null;
+    let category = null;
 
-    // if(navigation.state.params && navigation.state.params.category){
-    //   category = navigation.state.params.category
-    // }
+    if(navigation.state.params && navigation.state.params.category){
+      category = navigation.state.params.category
+    }
     
     titleText = translate('ServiceListNavTitle');
-    // if (category){
-    //   titleText = category.name_en;
-    // }
+    if (category){
+      titleText = category.name_en;
+    }
     return {
                 // title: titleText,
                 headerTitle: (<LogoIcon navigation={navigation} />),
@@ -42,7 +42,9 @@ export class _ServiceListContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
-      if(this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
+      if ( !(prevProps.navigation.state) || !(prevProps.navigation.state.params) ){
+        this.getServices();
+      }else if( this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
         this.getServices();
           
       }
@@ -50,7 +52,7 @@ export class _ServiceListContainer extends React.Component {
 
 
   componentDidMount(){
-      this.getServices();
+      // this.getServices();
   }
 
   getServices = (keyword) => {

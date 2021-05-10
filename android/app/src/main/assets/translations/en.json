@@ -121,11 +121,27 @@
     "ProductsGetErrorMsg": "Can't get products",
     "ProductListtNavTitle": "Product List",
     "ProductDetailsNavTitle": "Product Detail",
+    "ProductDetailPayUsingLabel": "Pay Using",
+    "ProductDetailOrderEveryLabel": "Order Every",
+    "ProductDetailStartDateLabel": "Starting",
     "ServiceDetailDescLabel": "Description",
     "ConfirmOrderNavTitle": "Order Details",
     "ConfirmOrderPayUsingLabel": "Pay using",
     "ChooseCardLabel": "Please Choose Card",
     "ConfirmOrderBtn": "Confirm Order",
+    "OrderCreateSuccess": "Your Order has been successfully created.",
+    "AddOrderError": "Can't create Order",
+    "CartItemBrandLabel": "Brand",
+    "CartItemWeightLabel": "Weight",
+    "CartItemOrderEvertLabel": "Order Every",
+    "CartItemStartingDate":"Starting",
+    "ProductListSearchFilterType": "Type Of Pet",
+    "ProductListSearchFilterTypeOther": "OTHER",
+    "ProductListSearchFilterPriceRange": "Price Range",
+    "ProductListSearchSortResultBy": "Sort result by",
+    "ProductListSearchSortResultPrice": "Price",
+    "ProductListSearchSortResultSize": "Size",
+    
     
 
 

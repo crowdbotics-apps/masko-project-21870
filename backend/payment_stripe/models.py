@@ -1,8 +1,12 @@
 from django.db import models
+
 import stripe
 from masko_project_21870.settings import STRIPE_API_KEY
 stripe.api_key = STRIPE_API_KEY
 from django.utils.encoding import smart_str
+
+
+
 # from users.models import User
 
 # Payment Cards Model
@@ -186,3 +190,192 @@ class Card(models.Model):
 
     def __str__ (self):
         return '{} {} - ({})'.format(self.name, self.brand , self.last4 )
+
+
+# Product Model
+class ProductPrices(models.Model):
+
+    MONTHLY_RECURRING = 'month'
+    MONTHLY_RECURRING = 'day'
+
+    NICKNAME_DAILY = 'Day'
+    NICKNAME_WEEK = 'Week'
+    NICKNAME_BI_MONTH = 'Bi-Monthly'
+    NICKNAME_MONTH = 'Month'
+
+    PRICE_LIST = [
+            {
+                'key': NICKNAME_DAILY, 
+                'factor': 30
+            },
+            {
+                'key': NICKNAME_WEEK, 
+                'factor': 4
+            },
+            {
+                'key': NICKNAME_BI_MONTH, 
+                'factor': 2
+            },
+            {
+                'key': NICKNAME_MONTH, 
+                'factor': 1
+            },
+        ]
+
+    product = models.ForeignKey('service.Product', on_delete=models.CASCADE,null=True,
+        blank=True)  
+    service = models.ForeignKey('service.Service', on_delete=models.CASCADE,null=True,
+        blank=True)  
+
+    stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
+    nickname = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00
+    )
+    
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+    recurring_interval = models.CharField(
+        null=True,
+        default= MONTHLY_RECURRING ,
+        blank=True,
+        max_length=255,
+    )
+
+
+    ### Handle Before Save Of a Product Prices
+    def save(self, *args, **kwargs):
+        object_ref = self.product.stripe_id if self.product else self.service.stripe_id
+            
+        if self.stripe_id is None and object_ref is not None: 
+            stripe_obj = self.create_stripe_price()
+            self.stripe_id = stripe_obj.id
+
+        super(ProductPrices, self).save(*args, **kwargs)
+
+    ### Create Stripe Prices
+    def create_stripe_price(self):
+        try:
+            object_ref = self.product.stripe_id if self.product else self.service.stripe_id
+            stripe_obj = stripe.Price.create(
+                                        unit_amount= int( self.price * 100 ),
+                                        currency= "usd",
+                                        recurring= {"interval": self.recurring_interval },
+                                        product= object_ref ,
+                                        nickname= self.nickname
+                        )
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+    ### Handle Delete Of a Product Prices
+    def delete(self):
+        self.purge()
+        super(ProductPrices, self).delete()    
+
+    def __str__ (self):
+        object_ref = self.product if self.product else self.service
+        return '{} - {}'.format( object_ref.name_en if object_ref else '', self.stripe_id )
+
+
+# Subscription Model
+class Subscription(models.Model):
+
+    order = models.ForeignKey('order.Order', on_delete=models.CASCADE,null=True,
+        blank=True)
+
+    stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )      
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+
+
+
+# Stripe Events For WebHook
+
+class Events(models.Model):
+    eventType = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+    
+    requestBody = models.TextField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+
+
+# Subscription Payments
+class SubscriptionPayments(models.Model):
+    
+    paymentType = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+    
+    order = models.ForeignKey('order.Order', on_delete=models.CASCADE,null=True,
+        blank=True)
+
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE,null=True,
+        blank=True)   
+    
+    event = models.ForeignKey(Events, on_delete=models.CASCADE,null=True,
+        blank=True)   
+
+    stripe_payment_intent = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    ) 
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )       
+
+
+
+
+  

@@ -15,3 +15,11 @@ export const updateItemToCart = ( item, pet, quantity ) => ({
   quantity
 });
 
+
+export const submitOrder = ( accessToken, cart, payMethod ) => ({
+  type: actions.CHECKOUT_ORDER_ADD_REQUEST,
+  accessToken,
+  cart,
+  payMethod
+});
+

@@ -12,6 +12,7 @@ from home.models import HomePage, CustomText
 
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category, Product
+from order.models import Order, Product as OrderProduct
 
 
 import boto3
@@ -133,6 +134,11 @@ class PetTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetType
         fields = ["id", "name", "sort"]
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = "__all__"
 
 class PetSerializer(serializers.ModelSerializer):
     
@@ -271,4 +277,4 @@ class PetSerializer(serializers.ModelSerializer):
                     "typeInfo","breed","breedInfo","ownerInfo","pet_image"
                 ]
 
-                
+                  

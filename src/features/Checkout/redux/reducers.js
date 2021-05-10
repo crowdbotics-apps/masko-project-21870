@@ -8,9 +8,19 @@ import { CartModel } from '../models';
 let tempCart = new CartModel();
 
 const initialState = {
-  cart: tempCart,
-  errors: { AddItemToCart: null, UpdateItemToCart: null, GetCategories: null},
-  loaders: { AddItemToCart: null, UpdateItemToCart: null,  GetCategories: null }
+  cart: _.clone( tempCart ),
+  errors: { 
+           AddItemToCart: null,
+           UpdateItemToCart: null,
+           GetCategories: null,
+           AddOrder: null,
+          },
+  loaders: { 
+            AddItemToCart: null,
+            UpdateItemToCart: null,
+            GetCategories: null,
+            AddOrder: null,
+          }
 };
 
 export default CheckoutReducer = (state = initialState, action) => {
@@ -56,7 +66,7 @@ export default CheckoutReducer = (state = initialState, action) => {
 
         }
       };
-      case actions.CHECKOUT_CART_UPDATE_ITEM_REQUEST:
+    case actions.CHECKOUT_CART_UPDATE_ITEM_REQUEST:
         return {
           ...state,
           errors: {
@@ -69,7 +79,6 @@ export default CheckoutReducer = (state = initialState, action) => {
   
           }
         };  
-  
     case actions.CHECKOUT_CART_UPDATE_ITEM_SUCCESS:
         return {
           ...state,
@@ -84,7 +93,50 @@ export default CheckoutReducer = (state = initialState, action) => {
   
           }
         };  
-
+    
+        case actions.CHECKOUT_ORDER_ADD_REQUEST:
+          return {
+            ...state,
+            errors: {
+              ...state.errors,
+              AddOrder: null
+            },
+            loaders: {
+              ...state.loaders,
+              AddOrder: true
+    
+            }
+    
+          };
+        case actions.CHECKOUT_ORDER_ADD_SUCCESS:
+          return {
+            ...state,
+            cart: new CartModel(),
+            errors: {
+              ...state.errors,
+              AddOrder: null
+            },
+            loaders: {
+              ...state.loaders,
+              AddOrder: null
+    
+            }
+          };
+        case actions.CHECKOUT_ORDER_ADD_ERROR:
+          return {
+            ...state,
+            errors: {
+              ...state.errors,
+              AddOrder: action.error
+            },
+            loaders: {
+              ...state.loaders,
+              AddOrder: null
+    
+            }
+          };
+           
+        
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
     default:
