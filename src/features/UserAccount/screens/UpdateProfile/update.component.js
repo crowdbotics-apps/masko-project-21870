@@ -200,6 +200,7 @@ class _UpdateProfileComponent extends React.Component {
                 onCancelPress={this.onCancelButtonPress}
                 onCheckedChange={this.onCheckedChange}
                 addCardLoading={this.props.addCardLoading}
+                addCardError={this.props.addCardError}
              
               />
             <Button
