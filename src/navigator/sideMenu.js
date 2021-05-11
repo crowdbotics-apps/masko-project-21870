@@ -145,7 +145,7 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     logoutAction: _ => {
       dispatch(EmailAuthActions.logout());
-      NavigationService.navigate('SplashScreen');
+      NavigationService.navigate('SignIn4');
     },
   },
 });
