@@ -2,7 +2,6 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
-import SplashScreen from "../features/SplashScreen";
 import SideMenu from './sideMenu';
 //@BlueprintImportInsertion
 
@@ -43,11 +42,11 @@ Service: { screen: ServiceNavigator },
 Checkout: { screen: CheckoutNavigator},
 
     /** new navigators can be added here */
-    SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
-      swipeEnabled: true,
-      gesturesEnabled: true,
-      drawerLockMode: 'locked-closed',
-    })},
+    // SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
+    //   swipeEnabled: true,
+    //   gesturesEnabled: true,
+    //   drawerLockMode: 'locked-closed',
+    // })},
 };
 
 const DrawerAppNavigator = createDrawerNavigator(
@@ -55,7 +54,7 @@ const DrawerAppNavigator = createDrawerNavigator(
     ...AppNavigator,
   },
   {
-    initialRouteName: 'SplashScreen',
+    initialRouteName: 'EmailAuth',
     contentComponent: SideMenu
   },
 );
