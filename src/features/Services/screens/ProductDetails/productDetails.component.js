@@ -384,7 +384,11 @@ class ProductDetailsComponent extends React.Component {
                   value={this.state.payUsingLabel}
                 >
                   <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ProductDetailPayUsingLabel')}</Text>
-                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.payUsingLabel}</Text>
+                  {this.state.payUsingLabel && (
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.payUsingLabel}</Text>)}
+                   {!this.state.payUsingLabel && (
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{translate('ProductDetailPayUsingPlaceHolder')}</Text>)}
+              
                 </RNPickerSelect>
               </View>
   
@@ -407,7 +411,10 @@ class ProductDetailsComponent extends React.Component {
                   value={this.state.orderEveryOptionsLabel}
                 >
                   <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ProductDetailOrderEveryLabel')}</Text>
-                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.orderEveryOptionsLabel}</Text>
+                  {this.state.orderEveryOptionsLabel && (
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.orderEveryOptionsLabel}</Text>)}
+                   {!this.state.orderEveryOptionsLabel && (
+                  <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{translate('ProductDetailOrderEveryPlaceHolder')}</Text>)}
                 </RNPickerSelect>
               </View>
   

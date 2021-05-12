@@ -33,6 +33,7 @@ import { OrderItems } from '../../components/common';
 
 import RNPickerSelect from 'react-native-picker-select';
 import MicroLogo from 'src/assets/images/masko-logo-micro.svg';
+import * as utils from '../../utils/general';
 
 
 const moment = require('moment');
@@ -43,6 +44,12 @@ const paymentMethods = [
   },
   {
     value: 'cash', label: "Cash"
+  }
+];
+
+const paymentMethodsRecurring = [
+  {
+    value: 'card', label: "Card"
   }
 ];
 
@@ -91,6 +98,7 @@ class ConfirmOrderComponent extends React.Component {
     this.props.onItemPress(item);
   }
 
+
   
   onPaymentMethod = (value, index) => {
 
@@ -116,6 +124,11 @@ class ConfirmOrderComponent extends React.Component {
     })
   }
 
+  hasRecurringItems = () => {
+    const { cart } = this.props;
+    let state = utils.hasRecurringItem(cart.items)
+    return state
+  }
 
   render() {
 
@@ -136,6 +149,11 @@ class ConfirmOrderComponent extends React.Component {
                             {translate("ContinueShoppingBtn")}
                         </Button>
         </LinearGradient>)
+    }
+
+    let paymentMethodOptions = paymentMethods;
+    if ( this.hasRecurringItems() ){
+      paymentMethodOptions = paymentMethodsRecurring
     }
 
 
@@ -167,7 +185,12 @@ class ConfirmOrderComponent extends React.Component {
           />
 
           <View style={[themedStyle.summary.rowContainer, themedStyle.summary.topBorder ]}   >
+            {!this.hasRecurringItems() && (
             <Text style={themedStyle.summary.label} >{translate('OrderOneTimeLabel')}</Text>
+            )}
+             {this.hasRecurringItems() && (
+            <Text style={themedStyle.summary.label} >{translate('OrderRecurringLabel')}</Text>
+            )}
             <View style={themedStyle.labelContainer} >
                 <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
             </View>
@@ -208,12 +231,17 @@ class ConfirmOrderComponent extends React.Component {
 
                 }
                 }
-                placeholder={{ label: translate('ChooseCardLabel'), value: '0' }}
-                items={paymentMethods}
+                placeholder={{ label: translate('ChoosePaymentMethodLabel'), value: '0' }}
+                items={paymentMethodOptions}
                 value={this.state.payMethodLabel}
               >
                 <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ConfirmOrderPayUsingLabel')}</Text>
+                {this.state.payMethodLabel && (
                 <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.payMethodLabel}</Text>
+                )}
+                {!this.state.payMethodLabel && (
+                <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{translate('ChoosePaymentMethodLabel')}</Text>
+                )}
               </RNPickerSelect>
             </View>
 

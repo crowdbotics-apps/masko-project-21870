@@ -177,7 +177,7 @@ class ProductListComponent extends React.Component {
     this.props.getProductsCb(text, type, price, sort);
   }
 
-  onPressQtyAdd = (sItem) => {
+onPressQtyAdd = (sItem) => {
     
     if(sItem){
       this.onUpdatePetQtyPress(sItem,(sItem.qty+1)) 
@@ -185,7 +185,7 @@ class ProductListComponent extends React.Component {
     
   }
 
-  onPressQtySubtract = (sItem) => {
+onPressQtySubtract = (sItem) => {
    
     if(sItem && sItem.qty!=0){
       this.onUpdatePetQtyPress(sItem,(sItem.qty-1)) 
@@ -193,7 +193,7 @@ class ProductListComponent extends React.Component {
   }
 
 
-  onUpdatePetQtyPress = ( item , qty ) => {
+onUpdatePetQtyPress = ( item , qty ) => {
     const { products } = this.state;
    
     let list = [];
@@ -207,7 +207,7 @@ class ProductListComponent extends React.Component {
     this.setState({products: list})   
   }
 
-  onAddButtonPress = ( item ) => {
+onAddButtonPress = ( item ) => {
   
     let pet = this.getPetsForCart();
 
@@ -215,7 +215,10 @@ class ProductListComponent extends React.Component {
       alert("Please Select Pet First")
     }else if (item.qty==0){
       alert("Please Select Item Quantity")
+    }else if ( item.is_recurring ){
+      this.props.onPressProductItem(item)
     }else{
+
       pet.qty = item.qty
       this.props.onAddButtonPress({
         type: AppConfig.ITEM_TYPES.PRODUCT,
@@ -371,7 +374,6 @@ renderPetTypeFilter = (item)  => {
         { products.length > 0 && (
           <ProductsComponent
           data={ products }
-          onPressProductItem={this.onPressProductItem}
           onPressQtyAdd={this.onPressQtyAdd}
           onPressQtySubtract={this.onPressQtySubtract}
           onAddButtonPress={this.onAddButtonPress}
