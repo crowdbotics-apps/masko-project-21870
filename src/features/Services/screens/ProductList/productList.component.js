@@ -297,7 +297,7 @@ renderPetTypeFilter = (item)  => {
               search={search}
         />
       
-        <View style={themedStyle.searchFilterContainer}>
+        <View style={themedStyle.searchFilterSortContainer}>
          <TouchableOpacity onPress={()=>this.setPetType(null)} > 
            <Text style={[themedStyle.searchFilterHead]}>{translate('ProductListSearchFilterType')}</Text>
         </TouchableOpacity>
@@ -321,7 +321,7 @@ renderPetTypeFilter = (item)  => {
           </View>
         </View>
        
-        <View style={themedStyle.searchFilterContainer}>
+        <View style={themedStyle.searchFilterSortContainer}>
         <TouchableOpacity onPress={()=>this.setPriceIndex(null)} >
           <Text style={[themedStyle.searchFilterHead]}>{translate('ProductListSearchFilterPriceRange')}</Text>
         </TouchableOpacity>
