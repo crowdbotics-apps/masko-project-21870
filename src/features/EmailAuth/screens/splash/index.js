@@ -6,7 +6,8 @@ const width = Dimensions.get('screen').width
 import LargeLogo from 'src/assets/images/masko-logo-large.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Text} from 'react-native-ui-kitten';
-import { installed_blueprints } from "src/config/installed_blueprints";
+
+import * as emailAuthActions from '../../redux/actions';
 import { styles } from './styles';
 import { translate }  from 'src/utils/translation';
 import {connect} from 'react-redux';
@@ -24,6 +25,7 @@ class _SplashScreen extends Component {
     super(props)
     console.log(storeSettings)
     if(this.props.user != null){
+      this.props.actions.reinitStore()
       this.props.navigation.navigate("UserAccount");
     }
   }
@@ -32,6 +34,7 @@ class _SplashScreen extends Component {
     console.log(storeSettings)
     /*** Verify User Login State */
     if(this.props.user != null){
+      this.props.actions.reinitStore()
       this.props.navigation.navigate("UserAccount");
     }
     /*** */ 
@@ -99,6 +102,9 @@ const mapDispatchToProps = dispatch => ({
     login: ({email, password}) => {
       dispatch(emailAuthActions.login({email, password}));
     },
+    reinitStore: () => {
+      dispatch(emailAuthActions.reInitStore4mSession())
+    }
   },
 });
 

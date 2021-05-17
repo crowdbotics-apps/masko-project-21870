@@ -575,6 +575,11 @@ export default UserAccountReducer = (state = initialState, action) => {
 
     
     
+  case AuthActions.EMAIL_AUTH_REINIT_STORE:
+      return {
+        ...state,
+        
+      };
 
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
