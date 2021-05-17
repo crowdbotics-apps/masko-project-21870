@@ -34,7 +34,7 @@ class _SideMenu extends React.Component {
     const { actions } = this.props;
     actions.logoutAction();
     // this.props.store.dispatch();
-    // this.props.navigation.navigate("SplashScreen");
+    this.props.navigation.navigate("Landing");
   };
 
   renderIcon = () => (

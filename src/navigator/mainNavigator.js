@@ -16,9 +16,24 @@ import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
 import ServiceNavigator from '../features/Services/navigator';
 import CheckoutNavigator from '../features/Checkout/navigator';
+
+
+import { useSelector } from 'react-redux';
+import * as storeSettings from '../store';
 /**
  * new navigators can be imported here
  */
+// alert(storeSettings.persistor.getState().EmailAuth)
+
+console.log("Check Store Object ")
+console.log(storeSettings)
+//  const user = storeSettings().store.getState().EmailAuth.user;
+ 
+ let initialRoute = 'EmailAuth'
+// if(user){
+//   initialRoute = UserAccount
+// }
+
 
 const AppNavigator = {
 
@@ -54,7 +69,7 @@ const DrawerAppNavigator = createDrawerNavigator(
     ...AppNavigator,
   },
   {
-    initialRouteName: 'EmailAuth',
+    initialRouteName: initialRoute,
     contentComponent: SideMenu
   },
 );
