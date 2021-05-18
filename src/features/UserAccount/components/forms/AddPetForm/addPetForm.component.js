@@ -294,8 +294,10 @@ class AddPetFormComponent extends React.Component {
               items={petTypes}
               value={pet}
             >
-            <Text style={formStyles.inputBoxLabelTxt}>{translate('PetTypeLabel')}</Text>
-            <Text style={formStyles.inputBoxValueTxt}>{petTypeName}</Text>
+              <Text style={formStyles.inputBoxLabelTxt}>{translate('PetTypeLabel')}</Text>
+              {petTypeName && (<Text style={formStyles.inputBoxValueTxt}>{petTypeName}</Text>)}
+              {!petTypeName && (<Text style={formStyles.inputBoxValueTxt}>{translate('PetTypePlaceHolder')}</Text>)}
+              
             </RNPickerSelect>
 
           </View>
@@ -318,8 +320,9 @@ class AddPetFormComponent extends React.Component {
               value={breed}
             >
             <Text style={formStyles.inputBoxLabelTxt}>{translate('BreedLabel')}</Text>
-            <Text style={[formStyles.inputBoxValueTxt]}>{breedTypeName}</Text>
-            
+            {breedTypeName && (<Text style={formStyles.inputBoxValueTxt}>{breedTypeName}</Text>)}
+            {!breedTypeName && (<Text style={formStyles.inputBoxValueTxt}>{translate('BreedTypePlaceHolder')}</Text>)}
+        
             </RNPickerSelect>
 
           </View>

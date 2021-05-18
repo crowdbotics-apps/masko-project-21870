@@ -31,8 +31,9 @@ export function updateCartObject ( storeCart, userItem ){
   
   let list = []
   list.push(userItem);
+  let hasRecurItem = hasRecurringItem(storeCart.items)
   
-  if( !userItem.source.is_recurring ){
+  if( !userItem.source.is_recurring  && !hasRecurItem ){
     _.forEach(storeCart.items,(i)=>{
       if( i.source.id !== userItem.source.id )
         list.push(i);
@@ -43,6 +44,16 @@ export function updateCartObject ( storeCart, userItem ){
    storeCart.updateCartItems(list);
 
    return storeCart; 
+}
+
+export function hasRecurringItem( items ){
+  let flag = false
+  _.forEach(items, (i)=>{
+    if(i.source.is_recurring){
+      flag = true
+    }
+  });
+  return flag
 }
 
 

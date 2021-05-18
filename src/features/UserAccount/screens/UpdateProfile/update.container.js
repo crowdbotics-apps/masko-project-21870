@@ -67,6 +67,7 @@ export class _UpdateProfileContainer extends React.Component {
         errorMsg={this.props.signInErrors}
         updateLoading={this.props.updateLoading}
         addCardLoading={this.props.addCardLoading}
+        addCardError={this.props.addCardError}
         
         petTypes={this.props.petTypes}
         breedTypes={this.props.breedTypes}
@@ -87,6 +88,7 @@ const mapStateToProps = state => ({
   unds: state.UserAccount.unds,
   updateLoading: state.UserAccount.loaders.UserProfileUpdate,
   addCardLoading: state.UserAccount.loaders.CardCreate,
+  addCardError: state.UserAccount.errors.CardCreate,
   deleteCardLoading: state.UserAccount.loaders.CardDelete,
   updateCardLoading: state.UserAccount.loaders.CardUpdate,
   userPets: state.UserAccount.pets,

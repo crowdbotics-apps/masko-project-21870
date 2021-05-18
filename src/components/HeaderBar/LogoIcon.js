@@ -10,7 +10,7 @@ const style = {
 
 export default function LogoIcon({ navigation }) {
     return (<View style={style} >
-    <SmallLogo   navigation={navigation} />
+    <SmallLogo width={70}   navigation={navigation} />
     </View>);
   }
 

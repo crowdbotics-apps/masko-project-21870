@@ -52,12 +52,15 @@ export class _ServiceListContainer extends React.Component {
 
 
   componentDidMount(){
-      // this.getServices();
+      this.getServices();
   }
 
   getServices = (keyword) => {
     const { accessToken, actions, navigation } = this.props;
-    actions.getServices( accessToken, navigation.state.params.category, keyword );
+    if( navigation && navigation.state && navigation.state.params && navigation.state.params.category ){
+      actions.getServices( accessToken, navigation.state.params.category, keyword );
+    }
+    
   }
 
   

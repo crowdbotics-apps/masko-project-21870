@@ -140,6 +140,9 @@ export default CheckoutReducer = (state = initialState, action) => {
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
     default:
-      return state;
+      return {
+        ...state,
+        cart:  new CartModel(),
+      };
   }
 };

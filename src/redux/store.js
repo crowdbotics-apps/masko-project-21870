@@ -3,6 +3,9 @@ import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { mainSaga } from "./mainSaga";
 
+import { persistStore, persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-community/async-storage';
+
 const sagaMiddleware = createSagaMiddleware();
 
 /**
@@ -17,6 +20,9 @@ const store = createStore(
   composeEnhancers(applyMiddleware(...middlewares))
 );
 
+const persistor = persistStore(store)
+
+
 sagaMiddleware.run(mainSaga);
 
-export { store };
+export { store , persistor};

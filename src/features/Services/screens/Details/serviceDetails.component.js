@@ -379,7 +379,10 @@ class ServiceDetailsComponent extends React.Component {
                 value={this.state.timeOptionLabel}
               >
                 <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailTimeLabel')}</Text>
-                <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.timeOptionLabel}</Text>
+                {this.state.timeOptionLabel && (
+                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.timeOptionLabel}</Text>)}
+                 {!this.state.timeOptionLabel && (
+                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{translate('ChooseTimeLabel')}</Text>)}     
               </RNPickerSelect>
             </View>
 
@@ -409,8 +412,11 @@ class ServiceDetailsComponent extends React.Component {
                     value={this.state.timeOptionLabel}
                   >
                     <Text style={themedStyle.detailContainer.placeHolderText}>{translate('ServiceDetailDayTimeLabel')}</Text>
-                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>
-                  </RNPickerSelect>
+                      {this.state.dayTimeOptionLabel && (
+                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{this.state.dayTimeOptionLabel}</Text>)}
+                    {!this.state.dayTimeOptionLabel && (
+                    <Text style={themedStyle.detailContainer.valueTextWithOutMargin}>{translate('ChooseDayTimeLabel')}</Text>)}     
+                 </RNPickerSelect>
                 </View>
               </View>
             )}

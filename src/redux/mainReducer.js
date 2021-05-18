@@ -14,6 +14,17 @@ import UserAccountReducer from 'src/features/UserAccount/redux/reducers'
 import ServiceReducer from 'src/features/Services/redux/reducers'
 import CheckoutReducer from 'src/features/Checkout/redux/reducers'
 
+
+const config = {
+  key: "root",
+  storage: AsyncStorage,
+  blacklist: [
+    "netInfo",
+    "toast",
+    "nav",
+  ],
+};
+
 const emailAuthPersistConfig = {
   key: "emailAuth",
   storage : AsyncStorage,
@@ -38,7 +49,7 @@ const checkoutPersistConfig = {
   blacklist: ["errors","loaders"],
 };
 
-export const combinedReducers = combineReducers({
+export const combinedReducers = persistCombineReducers(config,{
   blank: (state, action) => {
     if (state == null) state = [];
     return state;

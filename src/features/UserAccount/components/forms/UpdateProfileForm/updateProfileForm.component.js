@@ -14,6 +14,7 @@ import {
   Modal,
   Radio,
   RadioGroup,
+  Button
 } from 'react-native-ui-kitten';
 
 
@@ -47,6 +48,12 @@ class UpdateProfileFormComponent extends React.Component {
 
 
 
+  }
+
+  componentDidUpdate(prevProps,prevStates, snapshot){
+     if(this.props.addCardError != null && prevProps.addCardError != this.props.addCardError){
+        this.toggleModel();
+     }
   }
 
 
@@ -186,7 +193,7 @@ class UpdateProfileFormComponent extends React.Component {
           <Modal
             backdropStyle={themedStyle.backdrop}
             onBackdropPress={() => {this.toggleModel()}}
-            visible={addUndsModal }>
+            visible={addUndsModal}>
              <AddCardForm
                     number={number}
                     expiry={expiry}
@@ -196,6 +203,7 @@ class UpdateProfileFormComponent extends React.Component {
                     onCVVInputTextChange={onCVVInputTextChange}
                     onAddCardPress={()=>this.onAddCardPress()}
                     onCancelPress={() => {this.toggleModel()}}
+                    onCloseModal={()=>{this.toggleModel()}}
                     addCardLoading={this.props.addCardLoading}
                     
              />

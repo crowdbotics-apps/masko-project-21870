@@ -151,8 +151,8 @@ class _CartItemsComponent extends React.Component {
     <View style={themedStyle.itemContainer}>
       <View style={themedStyle.itemSubContainer}>
         <Avatar 
-            size="giant"
-          style={{width: width*0.2,height: 100}}
+            size="small"
+          style={{width: width*0.2,height: 70}}
           source={{uri: item.source.photo}} />
          <View style={themedStyle.itemDetailContainer}>
           <View style={{flexDirection:'row',flexWrap: 'wrap', width:width*0.7}}>

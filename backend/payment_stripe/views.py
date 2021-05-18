@@ -73,7 +73,7 @@ class WebHookViewSet(ViewSet):
                                                                     paymentType = data_object['billing_reason'],
                                                                     order_id=subscription_item.order_id,
                                                                     subscription_id=subscription_item.id,
-                                                                    event = stripe_event.id, 
+                                                                    event_id = stripe_event.id, 
                                                                     stripe_payment_intent = payment_intent_id
                                                                      )
                             subscriptions_payments.save()                                                                     
@@ -91,11 +91,11 @@ class WebHookViewSet(ViewSet):
                         default_payment_method=payment_intent.payment_method
                     )
 
-                print("Default payment method set for subscription:" + payment_intent.payment_method)
+                print("Default payment method set for subscription: {}".format(payment_intent.payment_method))
                 return Response({
                         'status': 200,
                         'message': 'Success - invoice.payment_succeeded',
-                        'data': "Default payment method set for subscription:" + payment_intent.payment_method
+                        'data': "Default payment method set for subscription:" + str(payment_intent.payment_method)
                     }, status=200)
 
 

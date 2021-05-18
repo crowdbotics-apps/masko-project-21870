@@ -102,7 +102,7 @@ class ServiceListComponent extends React.Component {
               search={search}
         />
         <Text style={themedStyle.categoryHead}>{catName}</Text>
-        <AdComponent />
+        {/* <AdComponent /> */}
         <ScrollView style={styles.scrollView} 
         contentContainerStyle={{ paddingBottom: 150 }} >
           
