@@ -1,3 +1,4 @@
+from payment_stripe.models import SubscriptionPayments
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
@@ -139,6 +140,78 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+class OrderProductSerializer(serializers.ModelSerializer):
+
+    refrence_item = serializers.SerializerMethodField()
+
+
+    def get_refrence_item( self, item ):
+        if item.pType == 'product':
+            return ProductSerializer(item.product).data
+        else:
+            return ServiceSerializer(item.service).data    
+
+
+
+    class Meta:
+        model = OrderProduct
+        fields = ('id','pType','quantity','unit_price','timeOption','date','time','order_every','notes','pet','refrence_item')
+
+class OrderProductShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProduct
+        fields = "__all__"          
+
+class SubscriptionPaymentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubscriptionPayments
+        fields = "__all__"                
+
+class RecurringOrderSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField()
+    total_purchases = serializers.SerializerMethodField()
+    
+    def get_products(self, order):
+        items = OrderProduct.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(OrderProductSerializer(item).data)
+        return list
+
+    def get_total_purchases(self, order):
+        items = SubscriptionPayments.objects.filter(order=order)
+        return len(items)
+
+
+    class Meta:
+        model = Order
+        fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','total_purchases')
+
+class RecurringOrderDetailSerializer(serializers.ModelSerializer):
+    
+    products = serializers.SerializerMethodField()
+    purchase = serializers.SerializerMethodField()
+    
+    def get_products(self, order):
+        items = OrderProduct.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(OrderProductSerializer(item).data)
+        return list
+
+    def get_purchase(self, order):
+        items = SubscriptionPayments.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(SubscriptionPaymentsSerializer(item).data)
+        return list
+
+
+    class Meta:
+        model = Order
+        fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','purchase')
+
 
 class PetSerializer(serializers.ModelSerializer):
     

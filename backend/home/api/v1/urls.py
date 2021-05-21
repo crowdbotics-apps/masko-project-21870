@@ -15,7 +15,8 @@ from home.api.v1.viewsets import (
     BreedTypeViewSet,
     CardViewSet, 
     ProductViewSet,
-    AddOrderViewSet
+    AddOrderViewSet,
+    RecurringOrderViewSet
 )
 
 from payment_stripe.views import WebHookViewSet
@@ -35,6 +36,7 @@ router.register("breed-type", BreedTypeViewSet, basename="breed-type")
 router.register("customtext", CustomTextViewSet)
 router.register("homepage", HomePageViewSet)
 router.register("webhooks", WebHookViewSet, basename="webhooks")
+router.register("recurring-orders", RecurringOrderViewSet, basename="recurring-orders")
 
 urlpatterns = [
     path("", include(router.urls)),
