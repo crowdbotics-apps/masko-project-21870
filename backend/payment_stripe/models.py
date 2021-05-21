@@ -317,6 +317,10 @@ class Subscription(models.Model):
         auto_now=True,
     )
 
+    def __str__ (self):
+        return self.stripe_id
+
+
 
 
 # Stripe Events For WebHook
@@ -341,6 +345,8 @@ class Events(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+    def __str__ (self):
+        return '{} - {}'.format( self.id, self.eventType )
 
 
 # Subscription Payments
