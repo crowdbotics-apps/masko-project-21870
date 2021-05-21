@@ -10,10 +10,10 @@ class EventAdmin(admin.ModelAdmin):
 
 # SubscriptionPayments Model Admin.
 class SubscriptionPaymentAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'paymentType', 'order__id','subscription__id','event__id','stripe_payment_intent')
-    fields = ('paymentType','order','subscription','event','stripe_payment_intent','created_at')    
-    list_display = ('paymentType','order','subscription','event','stripe_payment_intent','created_at')    
-    readonly_fields = ('created_at',)
+    search_fields = ('id','stripe_date', 'paymentType', 'order__id','subscription__id','event__id','stripe_payment_intent')
+    fields = ('paymentType','order','subscription','event','stripe_payment_intent','stripe_date')    
+    list_display = ('paymentType','order','subscription','event','stripe_payment_intent','stripe_date')    
+    readonly_fields = ('stripe_date',)
 
 # Subscription Model Admin.
 class SubscriptionAdmin(admin.ModelAdmin):

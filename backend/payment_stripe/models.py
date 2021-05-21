@@ -326,6 +326,13 @@ class Subscription(models.Model):
 # Stripe Events For WebHook
 
 class Events(models.Model):
+
+    stripe_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )    
+
     eventType = models.CharField(
         null=True,
         blank=True,
@@ -346,7 +353,7 @@ class Events(models.Model):
         auto_now=True,
     )
     def __str__ (self):
-        return '{} - {}'.format( self.id, self.eventType )
+        return '{} - {}'.format( self.stripe_id, self.eventType )
 
 
 # Subscription Payments
@@ -372,6 +379,11 @@ class SubscriptionPayments(models.Model):
         blank=True,
         max_length=255,
     ) 
+
+    stripe_date = models.DateTimeField(
+        null=True,
+        blank=True,
+    )    
 
     created_at = models.DateTimeField(
         auto_now_add=True,

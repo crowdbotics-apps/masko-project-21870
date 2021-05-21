@@ -6,6 +6,9 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from datetime import datetime
+
+
 from .models import (
     Subscription, 
     SubscriptionPayments, 
@@ -25,7 +28,7 @@ class WebHookViewSet(ViewSet):
         else: 
             request_data = request.data
         
-        
+        event_id = None
         # print(request_data['data'])
 
         try:
@@ -45,14 +48,19 @@ class WebHookViewSet(ViewSet):
                         'data': str(e)
                     }, status=400)
                 event_type = event['type']
+                event_id = event['id']
             else:
                     data = request_data['data']
                     event_type = request_data['type']
             # print("* DATA")
             # print(event_type)
             data_object = data['object']
+            event_id = request_data['id']
+            stripe_date = int(request_data['created'])
+            print(stripe_date)
+            
 
-            stripe_event = StripeEvents(eventType = event_type, requestBody = request_data)
+            stripe_event = StripeEvents(stripe_id = event_id, eventType = event_type, requestBody = request_data)
             stripe_event.save() 
                
 
@@ -68,14 +76,18 @@ class WebHookViewSet(ViewSet):
                     if subscription_id is not None:
                         subscriptions = Subscription.objects.filter(stripe_id=subscription_id).all()
                         if len(subscriptions) > 0 : 
+                            stripe_date_con = datetime.utcfromtimestamp(stripe_date).strftime('%Y-%m-%dT%H:%M:%SZ')
+                            print(stripe_date_con)
                             subscription_item = subscriptions[0]
                             subscriptions_payments = SubscriptionPayments(
                                                                     paymentType = data_object['billing_reason'],
                                                                     order_id=subscription_item.order_id,
                                                                     subscription_id=subscription_item.id,
                                                                     event_id = stripe_event.id, 
-                                                                    stripe_payment_intent = payment_intent_id
-                                                                     )
+                                                                    stripe_payment_intent = payment_intent_id,
+                                                                    stripe_date = stripe_date_con
+                                                                    )
+                            
                             subscriptions_payments.save()                                                                     
                         
 
