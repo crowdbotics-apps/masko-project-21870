@@ -16,6 +16,7 @@ import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
 import ServiceNavigator from '../features/Services/navigator';
 import CheckoutNavigator from '../features/Checkout/navigator';
+import RecurrOrderNavigator from '../features/RecurringOrders/navigator';
 
 
 import { useSelector } from 'react-redux';
@@ -55,6 +56,7 @@ Maps: { screen: MapsNavigator },
 UserAccount: { screen: UserAccountNavigator},
 Service: { screen: ServiceNavigator },
 Checkout: { screen: CheckoutNavigator},
+RecurringOrder: { screen: RecurrOrderNavigator},
 
     /** new navigators can be added here */
     // SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({

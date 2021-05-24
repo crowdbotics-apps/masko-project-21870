@@ -13,6 +13,7 @@ import EmailAuthReducer from 'src/features/EmailAuth/redux/reducers'
 import UserAccountReducer from 'src/features/UserAccount/redux/reducers'
 import ServiceReducer from 'src/features/Services/redux/reducers'
 import CheckoutReducer from 'src/features/Checkout/redux/reducers'
+import RecurringOrderReducer from 'src/features/RecurringOrders/redux/reducers'
 
 
 const config = {
@@ -49,6 +50,12 @@ const checkoutPersistConfig = {
   blacklist: ["errors","loaders"],
 };
 
+const recurOrderPersistConfig = {
+  key: "recurOrder",
+  storage : AsyncStorage,
+  blacklist: ["errors","loaders"],
+};
+
 export const combinedReducers = persistCombineReducers(config,{
   blank: (state, action) => {
     if (state == null) state = [];
@@ -61,5 +68,6 @@ export const combinedReducers = persistCombineReducers(config,{
   UserAccount: persistReducer( userAccountPersistConfig, UserAccountReducer),
   Service: persistReducer( servicePersistConfig, ServiceReducer),
   Checkout: persistReducer( checkoutPersistConfig, CheckoutReducer),
+  RecurringOrder: persistReducer( recurOrderPersistConfig, RecurringOrderReducer),
 
 });

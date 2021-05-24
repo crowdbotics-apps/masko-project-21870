@@ -171,6 +171,7 @@ class SubscriptionPaymentsSerializer(serializers.ModelSerializer):
 class RecurringOrderSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     total_purchases = serializers.SerializerMethodField()
+    purchases = serializers.SerializerMethodField()
     
     def get_products(self, order):
         items = OrderProduct.objects.filter(order=order)
@@ -183,10 +184,17 @@ class RecurringOrderSerializer(serializers.ModelSerializer):
         items = SubscriptionPayments.objects.filter(order=order)
         return len(items)
 
+    def get_purchases(self, order):
+        items = SubscriptionPayments.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(SubscriptionPaymentsSerializer(item).data)
+        return list 
+
 
     class Meta:
         model = Order
-        fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','total_purchases')
+        fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','total_purchases','purchases')
 
 class RecurringOrderDetailSerializer(serializers.ModelSerializer):
     

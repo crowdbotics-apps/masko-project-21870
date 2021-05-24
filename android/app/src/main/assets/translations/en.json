@@ -144,6 +144,23 @@
     "ProductListSearchSortResultBy": "Sort result by",
     "ProductListSearchSortResultPrice": "Price",
     "ProductListSearchSortResultSize": "Size",
+    "RecurringOrderGetError": "Unable to get recurring orders.",
+    "RecurrOrderListNavTitle":"Recurring Orders",
+    "OrderItemsNumberLabel":"Order #",
+    "OrderItemBrandLabel": "Brand",
+    "OrderItemWeightLabel": "Weight",
+    "OrderItemRecurrEveryLabel": "Recurrent every ",
+    "OrderItemBuyNowBtn": "Buy now",
+    "RecurringOrderFromDateLabel": "From Date",
+    "RecurringOrderToDateLabel": "To Date",
+    "RecurringOrderDetailsNavTitle": "Order Details",
+    "RecurringOrderDetailsIntro": "Order has been received. We will keep you informed on it’s status",
+    "RecurrOrderDetailsRecurrentInfo" : "Recurrent order information",
+    "RecurrOrderDetailsOrderEveryLabel" : "Order Every",
+    "RecurrOrderDetailsStart" : "Starting",
+    "RecurrOrderDetailsPurchasesInfo": "Recurring purchases",
+    "CancelRecurringBtn": "Cancel Recurring Order",
+    
     
     
 

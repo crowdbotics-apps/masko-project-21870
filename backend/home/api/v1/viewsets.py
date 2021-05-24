@@ -11,6 +11,7 @@ from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 from django.db.models import Q
 from django.db import transaction 
+from datetime import datetime
 
 from rest_framework.generics import CreateAPIView
 from payment_stripe.utils import (
@@ -446,8 +447,20 @@ class RecurringOrderViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Order.recurring_objects.filter(owner=user).order_by('-created_at')
-        return queryset
+        fromDate = None
+        toDate = None
+
+        queryset = Order.recurring_objects.filter(owner=user)
+      
+        if 'fromDate' in self.request.GET:
+            fromDate = datetime.strptime(self.request.GET['fromDate'], '%d/%m/%Y')
+            queryset = queryset.filter(created_at__gte = fromDate)
+
+        if 'toDate' in self.request.GET:
+            toDate = datetime.strptime(self.request.GET['toDate'],  '%d/%m/%Y')
+            queryset = queryset.filter(created_at__lt = toDate)
+      
+        return queryset.order_by('-created_at')
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
