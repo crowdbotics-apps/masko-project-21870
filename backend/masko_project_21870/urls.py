@@ -44,9 +44,9 @@ urlpatterns = [
     path("wallet/", include("wallet.urls")),
 ]
 
-admin.site.site_header = "Masko Project"
-admin.site.site_title = "Masko Project Admin Portal"
-admin.site.index_title = "Masko Project Admin"
+admin.site.site_header = "MaskoApp Project"
+admin.site.site_title = "MaskoApp Project Admin Portal"
+admin.site.index_title = "MaskoApp Project Admin"
 
 # swagger
 api_info = openapi.Info(
