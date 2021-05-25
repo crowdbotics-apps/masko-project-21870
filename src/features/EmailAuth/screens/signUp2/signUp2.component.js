@@ -24,6 +24,7 @@ const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles';
 import { translate }  from 'src/utils/translation';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 class SignUp2Component extends React.Component {
@@ -135,7 +136,9 @@ class SignUp2Component extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         {this.renderSpinner()}
-        <ScrollableAvoidKeyboard style={themedStyle.container}>
+        <ScrollableAvoidKeyboard style={themedStyle.container}
+     
+        >
           <View  >
             <LargeLogo width={width} style={{ marginBottom: 10, marginTop: 40 }} />
             <Text style={themedStyle.signInLabel} category="s1" style={styles.signUpHeading} >
@@ -189,8 +192,9 @@ class SignUp2Component extends React.Component {
             <Text style={styles.whiteFont}>{translate('ForgetPasswordText')}</Text> <Text style={styles.yellowFont}>{translate('ResetPasswordText')}</Text>
 
           </Button>
+          
         </ScrollableAvoidKeyboard>
-      </LinearGradient>
+       </LinearGradient>
     );
   }
 }

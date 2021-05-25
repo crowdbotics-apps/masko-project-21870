@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        height: height
+        height: height,
+        paddingBottom: 70
     },
     item: {
         alignItems: 'center',
