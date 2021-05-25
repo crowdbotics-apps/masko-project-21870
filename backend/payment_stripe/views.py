@@ -47,6 +47,7 @@ class WebHookViewSet(ViewSet):
                         'message': 'Error',
                         'data': str(e)
                     }, status=400)
+                print("HERE")    
                 event_type = event['type']
                 event_id = event['id']
             else:
@@ -110,8 +111,19 @@ class WebHookViewSet(ViewSet):
                         'data': "Default payment method set for subscription:" + str(payment_intent.payment_method)
                     }, status=200)
 
+            elif event_type == 'invoice.paid':
+                return Response({
+                        'status': 200,
+                        'message': 'Success - invoice.paid',
+                        'data': 'Invoice payment paid: {}'.format(event_id)
+                    }, status=200)  
 
-
+            elif event_type == 'invoice.updated':
+                return Response({
+                        'status': 200,
+                        'message': 'Success - invoice.updated',
+                        'data': 'Invoice payment updated: {}'.format(event_id)
+                    }, status=200)    
             elif event_type == 'invoice.payment_failed':
                 # If the payment fails or the customer does not have a valid payment method,
                 # an invoice.payment_failed event is sent, the subscription becomes past_due.
@@ -121,7 +133,7 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.payment_failed',
-                        'data': 'Invoice payment failed: {}'.format(event.id)
+                        'data': 'Invoice payment failed: {}'.format(event_id)
                     }, status=200)
                     
 
@@ -132,7 +144,7 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.finalized',
-                        'data': 'Invoice finalized : {}'.format(event.id)
+                        'data': 'Invoice finalized : {}'.format(event_id)
                     }, status=200)
 
             elif event_type == 'customer.subscription.deleted':
@@ -142,13 +154,13 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.subscription.deleted',
-                        'data': 'Subscription canceled: {}'.format(event.id)
+                        'data': 'Subscription canceled: {}'.format(event_id)
                     }, status=200)
 
             return Response({
                         'status': 400,
                         'message': 'Success - No Even Type Handled',
-                        'data': 'Event Obj: {}'.format(event.id)
+                        'data': 'Event Obj: {}'.format(event_id)
                     }, status=400)
         except Exception as e:
             return Response({
