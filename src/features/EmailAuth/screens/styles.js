@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFCD3E',
     },
+
     loginHeading:{
         fontFamily: "Montserrat",
         color: '#FFF',
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     termsModalContainer:{
         flex:1,
         flexDirection:'column',
-        backgroundColor:"#6D84C1",
+        backgroundColor:"#455272",
         height: height*0.9,
         width: width*0.9,
         padding: 10,

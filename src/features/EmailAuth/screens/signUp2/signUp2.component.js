@@ -34,7 +34,8 @@ class SignUp2Component extends React.Component {
     email: undefined,
     password: undefined,
     termsAccepted: false,
-    termsModalStatus: false
+    termsModalStatus: false,
+    privacyModalStatus: false,
   };
 
   onTermsValueChange = termsAccepted => {
@@ -98,16 +99,21 @@ class SignUp2Component extends React.Component {
     const { username, email, password, termsAccepted } = this.state;
 
     return (
+      (username !== undefined && username != '') && 
       email !== undefined &&
-      EmailValidator(this.state.email) &&
-      password !== undefined &&
-      termsAccepted && PasswordValidator(password) && username !== undefined
+      EmailValidator(email) &&
+      ( password !== undefined && password != '' ) &&
+      termsAccepted && PasswordValidator(password) 
     );
   }
 
 
   onTermsModalPress = () => {
     this.setState({ termsModalStatus: !this.state.termsModalStatus })
+  }
+
+  onPrivacyModalPress = () => {
+    this.setState({ privacyModalStatus: !this.state.privacyModalStatus })
   }
   
   onForgetPasswordButtonPress = () => {
@@ -148,6 +154,7 @@ class SignUp2Component extends React.Component {
             email={this.state.email}
             password={this.state.password}
             termsAccepted={this.state.termsAccepted}
+            privacyModalStatus={this.state.privacyModalStatus}
             termsModalStatus={this.state.termsModalStatus}
             onUsernameInputTextChange={this.onUsernameInputTextChange}
             onEmailInputTextChange={this.onEmailInputTextChange}
@@ -155,6 +162,7 @@ class SignUp2Component extends React.Component {
             onPasswordInputValidationResult={this.onPasswordInputValidationResult}
             onTermsValueChange={this.onTermsValueChange}
             onTermsModalPress={this.onTermsModalPress}
+            onPrivacyModalPress={this.onPrivacyModalPress}
           />
           <Button
             style={styles.yellowButton}

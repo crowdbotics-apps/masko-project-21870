@@ -113,7 +113,7 @@ class OrderDetailsComponent extends React.Component {
     const { themedStyle, cart, navigation, order } = this.props;
 
     let date = moment(order.products[0].date).format(AppConfig.dateFormat);
-
+    let recurringTotal = order.total_price * ( (order.total_purchases>0)?order.total_purchases:1 )
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={[styles.itemsContainerWithoutPad]}>
         {this.renderSpinner()}
@@ -193,6 +193,13 @@ class OrderDetailsComponent extends React.Component {
                 </View>);
           })}
           
+          <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
+            <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
+            <View style={themedStyle.labelContainer} >
+                <Text style={themedStyle.summary.labelTextHead} >${recurringTotal}</Text>
+
+            </View>
+          </View>
       
           <Button
                             style={styles.yellowButton}
