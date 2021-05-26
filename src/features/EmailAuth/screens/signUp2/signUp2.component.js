@@ -24,6 +24,7 @@ const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles';
 import { translate }  from 'src/utils/translation';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 class SignUp2Component extends React.Component {
@@ -34,7 +35,8 @@ class SignUp2Component extends React.Component {
     email: undefined,
     password: undefined,
     termsAccepted: false,
-    termsModalStatus: false
+    termsModalStatus: false,
+    privacyModalStatus: false,
   };
 
   onTermsValueChange = termsAccepted => {
@@ -98,16 +100,21 @@ class SignUp2Component extends React.Component {
     const { username, email, password, termsAccepted } = this.state;
 
     return (
+      (username !== undefined && username != '') && 
       email !== undefined &&
-      EmailValidator(this.state.email) &&
-      password !== undefined &&
-      termsAccepted && PasswordValidator(password) && username !== undefined
+      EmailValidator(email) &&
+      ( password !== undefined && password != '' ) &&
+      termsAccepted && PasswordValidator(password) 
     );
   }
 
 
   onTermsModalPress = () => {
     this.setState({ termsModalStatus: !this.state.termsModalStatus })
+  }
+
+  onPrivacyModalPress = () => {
+    this.setState({ privacyModalStatus: !this.state.privacyModalStatus })
   }
   
   onForgetPasswordButtonPress = () => {
@@ -129,7 +136,9 @@ class SignUp2Component extends React.Component {
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         {this.renderSpinner()}
-        <ScrollableAvoidKeyboard style={themedStyle.container}>
+        <ScrollableAvoidKeyboard style={themedStyle.container}
+     
+        >
           <View  >
             <LargeLogo width={width} style={{ marginBottom: 10, marginTop: 40 }} />
             <Text style={themedStyle.signInLabel} category="s1" style={styles.signUpHeading} >
@@ -148,6 +157,7 @@ class SignUp2Component extends React.Component {
             email={this.state.email}
             password={this.state.password}
             termsAccepted={this.state.termsAccepted}
+            privacyModalStatus={this.state.privacyModalStatus}
             termsModalStatus={this.state.termsModalStatus}
             onUsernameInputTextChange={this.onUsernameInputTextChange}
             onEmailInputTextChange={this.onEmailInputTextChange}
@@ -155,6 +165,7 @@ class SignUp2Component extends React.Component {
             onPasswordInputValidationResult={this.onPasswordInputValidationResult}
             onTermsValueChange={this.onTermsValueChange}
             onTermsModalPress={this.onTermsModalPress}
+            onPrivacyModalPress={this.onPrivacyModalPress}
           />
           <Button
             style={styles.yellowButton}
@@ -181,8 +192,9 @@ class SignUp2Component extends React.Component {
             <Text style={styles.whiteFont}>{translate('ForgetPasswordText')}</Text> <Text style={styles.yellowFont}>{translate('ResetPasswordText')}</Text>
 
           </Button>
+          
         </ScrollableAvoidKeyboard>
-      </LinearGradient>
+       </LinearGradient>
     );
   }
 }

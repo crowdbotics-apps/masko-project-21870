@@ -1,7 +1,16 @@
 from django.db import models
 
+class RecurringOrderManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_recurring=True)
+
+
 # Order Model
 class Order(models.Model):
+
+    objects = models.Manager()
+    recurring_objects = RecurringOrderManager()
+
     PENDING = 'PN'
     PAID = 'PD'
     STATUS_CHOICES = [
@@ -68,6 +77,7 @@ class Order(models.Model):
 
 # Product Model
 class Product(models.Model):
+    
     
     product = models.ForeignKey('service.Product', on_delete=models.CASCADE, null=True, default=None )
     service = models.ForeignKey('service.Service', on_delete=models.CASCADE, null=True, default=None )

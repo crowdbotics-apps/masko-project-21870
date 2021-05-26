@@ -22,3 +22,20 @@ export function addOrder( accessToken, cart, payMethod ) {
 
     return Api(path, body, 'post', accessToken);
 }
+
+export function getRecurringOrders( accessToken, from_date, to_date ) {
+ 
+    let path = ApiConstants.ACTIONS.RECURRING_ORDER+'?';
+    
+    if( from_date != null ){
+        path += 'fromDate='+encodeURIComponent(from_date)
+    }
+
+
+    if( to_date != null ){
+        path += '&toDate='+encodeURIComponent(to_date)
+    }
+    
+
+    return Api(path, null, 'get', accessToken);
+}

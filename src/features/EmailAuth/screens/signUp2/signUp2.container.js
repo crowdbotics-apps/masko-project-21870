@@ -21,17 +21,11 @@ export class _SignUp2Container extends React.Component {
   };
 
   onSignInPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.SignIn,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.SignIn );
   };
 
   onForgetPasswordButtonPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.ForgetPassword,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ForgetPassword );
   }
 
   onPhotoPress = () => {};

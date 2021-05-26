@@ -351,7 +351,7 @@ class AddPetFormComponent extends React.Component {
                 autoCapitalize="none"
                 placeholder={translate('AgePlaceHolder')}
                 placeholderTextColor={"#fff"}
-                keyboardType={'number-pad'}
+                keyboardType={'decimal-pad'}
                 value={age}
                 onChangeText={onAgeInputTextChange}
               />

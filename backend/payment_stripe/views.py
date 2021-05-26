@@ -6,6 +6,9 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from datetime import datetime
+
+
 from .models import (
     Subscription, 
     SubscriptionPayments, 
@@ -25,7 +28,7 @@ class WebHookViewSet(ViewSet):
         else: 
             request_data = request.data
         
-        
+        event_id = None
         # print(request_data['data'])
 
         try:
@@ -44,15 +47,21 @@ class WebHookViewSet(ViewSet):
                         'message': 'Error',
                         'data': str(e)
                     }, status=400)
+                print("HERE")    
                 event_type = event['type']
+                event_id = event['id']
             else:
                     data = request_data['data']
                     event_type = request_data['type']
             # print("* DATA")
             # print(event_type)
             data_object = data['object']
+            event_id = request_data['id']
+            stripe_date = int(request_data['created'])
+            print(stripe_date)
+            
 
-            stripe_event = StripeEvents(eventType = event_type, requestBody = request_data)
+            stripe_event = StripeEvents(stripe_id = event_id, eventType = event_type, requestBody = request_data)
             stripe_event.save() 
                
 
@@ -68,14 +77,18 @@ class WebHookViewSet(ViewSet):
                     if subscription_id is not None:
                         subscriptions = Subscription.objects.filter(stripe_id=subscription_id).all()
                         if len(subscriptions) > 0 : 
+                            stripe_date_con = datetime.utcfromtimestamp(stripe_date).strftime('%Y-%m-%dT%H:%M:%SZ')
+                            print(stripe_date_con)
                             subscription_item = subscriptions[0]
                             subscriptions_payments = SubscriptionPayments(
                                                                     paymentType = data_object['billing_reason'],
                                                                     order_id=subscription_item.order_id,
                                                                     subscription_id=subscription_item.id,
                                                                     event_id = stripe_event.id, 
-                                                                    stripe_payment_intent = payment_intent_id
-                                                                     )
+                                                                    stripe_payment_intent = payment_intent_id,
+                                                                    stripe_date = stripe_date_con
+                                                                    )
+                            
                             subscriptions_payments.save()                                                                     
                         
 
@@ -98,8 +111,19 @@ class WebHookViewSet(ViewSet):
                         'data': "Default payment method set for subscription:" + str(payment_intent.payment_method)
                     }, status=200)
 
+            elif event_type == 'invoice.paid':
+                return Response({
+                        'status': 200,
+                        'message': 'Success - invoice.paid',
+                        'data': 'Invoice payment paid: {}'.format(event_id)
+                    }, status=200)  
 
-
+            elif event_type == 'invoice.updated':
+                return Response({
+                        'status': 200,
+                        'message': 'Success - invoice.updated',
+                        'data': 'Invoice payment updated: {}'.format(event_id)
+                    }, status=200)    
             elif event_type == 'invoice.payment_failed':
                 # If the payment fails or the customer does not have a valid payment method,
                 # an invoice.payment_failed event is sent, the subscription becomes past_due.
@@ -109,7 +133,7 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.payment_failed',
-                        'data': 'Invoice payment failed: {}'.format(event.id)
+                        'data': 'Invoice payment failed: {}'.format(event_id)
                     }, status=200)
                     
 
@@ -120,7 +144,7 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.finalized',
-                        'data': 'Invoice finalized : {}'.format(event.id)
+                        'data': 'Invoice finalized : {}'.format(event_id)
                     }, status=200)
 
             elif event_type == 'customer.subscription.deleted':
@@ -130,13 +154,13 @@ class WebHookViewSet(ViewSet):
                     return Response({
                         'status': 200,
                         'message': 'Success - invoice.subscription.deleted',
-                        'data': 'Subscription canceled: {}'.format(event.id)
+                        'data': 'Subscription canceled: {}'.format(event_id)
                     }, status=200)
 
             return Response({
                         'status': 400,
                         'message': 'Success - No Even Type Handled',
-                        'data': 'Event Obj: {}'.format(event.id)
+                        'data': 'Event Obj: {}'.format(event_id)
                     }, status=400)
         except Exception as e:
             return Response({

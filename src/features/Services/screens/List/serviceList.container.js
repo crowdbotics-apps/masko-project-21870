@@ -75,6 +75,8 @@ export class _ServiceListContainer extends React.Component {
   
   render() {
     const { navigation } = this.props;
+   
+
     return (
       <ServiceList
         errorMsg={this.props.signInErrors}
