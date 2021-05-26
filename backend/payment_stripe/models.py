@@ -196,7 +196,7 @@ class Card(models.Model):
 class ProductPrices(models.Model):
 
     MONTHLY_RECURRING = 'month'
-    MONTHLY_RECURRING = 'day'
+    DAILY_RECURRING = 'day'
 
     NICKNAME_DAILY = 'Day'
     NICKNAME_WEEK = 'Week'
