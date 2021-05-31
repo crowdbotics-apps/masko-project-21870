@@ -34,7 +34,8 @@ from home.api.v1.serializers import (
     ServiceCategorySerializer,
     ProductSerializer,
     OrderSerializer,
-    RecurringOrderSerializer
+    RecurringOrderSerializer,
+    MyOrderSerializer
 )
 
 from payment_stripe.serializers import ( CardSerializer )
@@ -466,5 +467,28 @@ class RecurringOrderViewSet(ModelViewSet):
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
 
+class MyOrderViewSet(ModelViewSet):
+    serializer_class = MyOrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        fromDate = None
+        toDate = None
+
+        queryset = Order.normal_objects.filter(owner=user)
+      
+        if 'fromDate' in self.request.GET:
+            fromDate = datetime.strptime(self.request.GET['fromDate'], '%d/%m/%Y')
+            queryset = queryset.filter(created_at__gte = fromDate)
+
+        if 'toDate' in self.request.GET:
+            toDate = datetime.strptime(self.request.GET['toDate'],  '%d/%m/%Y')
+            queryset = queryset.filter(created_at__lt = toDate)
+      
+        return queryset.order_by('-created_at')
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
 
 

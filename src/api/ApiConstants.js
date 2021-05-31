@@ -17,6 +17,7 @@ const ApiConstants = {
     SERVICE: "/api/v1/service/",
     ORDER: "/api/v1/order/",
     RECURRING_ORDER: "/api/v1/recurring-orders/",
+    MY_ORDER: "/api/v1/my-orders/",
     PRODUCT: "/api/v1/product/",
     SERVICE_CATEGORY: "/api/v1/service-category/",
     UNDS: "/api/v1/unds/",
