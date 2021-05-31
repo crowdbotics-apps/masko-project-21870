@@ -142,7 +142,6 @@ export default CheckoutReducer = (state = initialState, action) => {
     default:
       return {
         ...state,
-        cart:  new CartModel(),
       };
   }
 };
