@@ -1,5 +1,6 @@
 import * as actions from "./constants";
 import * as AuthActions from 'src/features/EmailAuth/redux/constants';
+import * as utils from '../utils/general';
 
 const initialState = {
   services: [],
@@ -140,6 +141,13 @@ export default ServiceReducer = (state = initialState, action) => {
             }
           };
     
+    case AuthActions.EMAIL_AUTH_REINIT_STORE:
+            return {
+              ...state,
+              categories: utils.formatServiceCategories(state.categories),
+              products: [],
+              services: []
+            };
       
 
     case AuthActions.EMAIL_AUTH_LOGOUT:

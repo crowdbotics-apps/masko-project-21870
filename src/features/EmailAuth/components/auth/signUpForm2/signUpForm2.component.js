@@ -50,11 +50,13 @@ class SignUpForm2Component extends React.Component {
       password,
       termsAccepted,
       termsModalStatus,
+      privacyModalStatus,
       onUsernameInputTextChange,
       onEmailInputTextChange,
       onPasswordInputValidationResult,
       onTermsValueChange,
       onTermsModalPress,
+      onPrivacyModalPress,
       ...restProps
     } = this.props;
 
@@ -92,18 +94,38 @@ class SignUpForm2Component extends React.Component {
           />
       
           <View style={{flexDirection:'row',flexWrap:'wrap'}}>
-          <CheckBox
-            style={themedStyle.termsCheckBox}
-            textStyle={themedStyle.termsCheckBoxText}
-            checked={termsAccepted}
-            onChange={onTermsValueChange}
-            text=" "
-          />
+            <CheckBox
+              style={themedStyle.termsCheckBox}
+              textStyle={themedStyle.termsCheckBoxText}
+              checked={termsAccepted}
+              onChange={onTermsValueChange}
+              text=" "
+            />
 
-          <TouchableOpacity style={themedStyle.termsText} onPress={onTermsModalPress} >
-              <Text style={[formStyles.whiteFont ]}>{translate('TermsConditionLabel1')} <Text style={[formStyles.yellowFont]}>{translate('TermsConditionLabel2')}</Text></Text>
-          </TouchableOpacity>
+            <View style={themedStyle.termsText}  >
+                <Text style={[formStyles.whiteFont ]}>{translate('TermsConditionLabel1')} </Text>
+                <TouchableOpacity onPress={onTermsModalPress} ><Text style={[formStyles.yellowFontBold]}>{translate('TermsConditionLabel2')}</Text></TouchableOpacity>
+                <Text style={[formStyles.whiteFont ]}> and </Text> 
+                <TouchableOpacity onPress={onPrivacyModalPress} ><Text style={[formStyles.yellowFontBold]}>{translate('TermsConditionLabel3')}</Text></TouchableOpacity>
+            </View>
           </View>
+          <Modal
+            backdropStyle={themedStyle.backdrop}
+            onBackdropPress={onPrivacyModalPress}
+            visible={privacyModalStatus}>
+            <View style={formStyles.termsModalContainer}>
+             <View style={{flexDirection:'row'}} >
+             <TouchableOpacity   onPress={onPrivacyModalPress} >
+                  <Icon width={25} height={25} fill='#FFF' name="arrow-ios-back-outline" />
+             </TouchableOpacity>
+             <Text style={[formStyles.termsHeading,{marginTop:0} ]}> {translate('SignUpPrivacyStatementHead')} </Text>
+          
+             </View>
+             <Text style={[formStyles.termsConditionText]}>{translate('SignUpPrivacyPolicyText')}</Text>
+            </View>
+          </Modal>
+
+
           <Modal
             backdropStyle={themedStyle.backdrop}
             onBackdropPress={onTermsModalPress}
@@ -119,6 +141,8 @@ class SignUpForm2Component extends React.Component {
              <Text style={[formStyles.termsConditionText]}>{translate('TermsConditionText')}</Text>
             </View>
           </Modal>
+
+
         </View>
       </View>
     );
@@ -149,7 +173,9 @@ export const SignUpForm2 = withStyles(SignUpForm2Component, theme => ({
   },
   termsText: {
     flex:4,
-    marginTop: 20
+    marginTop: 20,
+    flexDirection:'row',
+    flexWrap: 'wrap'
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

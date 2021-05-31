@@ -1,6 +1,7 @@
 import {all, takeLatest, put, call} from 'redux-saga/effects';
 import * as NavigationService from '../../../navigator/NavigationService';
 
+
 import {
   EMAIL_AUTH_LOGIN_REQUEST,
   EMAIL_AUTH_LOGIN_ERROR,
@@ -101,7 +102,13 @@ function* handleLogin(action) {
 
 
      
-       NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount );
+      NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount );
+      // NavigationService.navigate( appConfig.NAVIGATOR_ROUTE.UserAccount, 
+      //   {}, 
+      //   NavigationActions.navigate({ 
+      //       routeName: 'Home' 
+      //   })
+      // );
     } else {
       yield put({
         type: EMAIL_AUTH_LOGIN_ERROR,

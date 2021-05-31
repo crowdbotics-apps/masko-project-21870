@@ -8,13 +8,14 @@ import {Provider as ReduxProvider} from 'react-redux';
 import {crowdboticsTheme} from './src/config/crowdboticsTheme';
 
 // import SplashScreen from './src/features/SplashScreen';
-import {store} from './src/store';
+import {store, persistor} from './src/store';
 import NavigatorProvider from './src/navigator/mainNavigator';
 import {setupHttpConfig} from './src/utils/http';
 import * as NavigationService from './src/navigator/NavigationService';
 import SplashScreen from 'react-native-splash-screen';
 
 
+import { PersistGate } from 'redux-persist/integration/react';
 import i18n from "i18n-js";
 import memoize from "lodash.memoize";
 import * as RNLocalize from "react-native-localize";
@@ -78,23 +79,31 @@ export default class App extends React.Component {
     </View>
   );
 
+  setNavigator(nav){
+    this.navigator = nav;
+    NavigationService.setNavigator(nav);
+  }
+
   renderApp = () => (
     <ReduxProvider store={store}>
-       <IconRegistry icons={EvaIconsPack}/>
-        <ApplicationProvider 
-        mapping={mapping}
-        theme={crowdboticsTheme}
-        >
-              <NavigatorProvider
-                style={styles.flex}
-                ref={(nav) => {
-                  this.navigator = nav;
-                }}>
-                {/* <View style={[styles.flex]}>
-                  <SplashScreen />
-                </View> */}
-              </NavigatorProvider>
-        </ApplicationProvider>
+      <PersistGate loading={null} persistor={persistor}>
+            <IconRegistry icons={EvaIconsPack}/>
+            <ApplicationProvider 
+            mapping={mapping}
+            theme={crowdboticsTheme}
+            >
+                  <NavigatorProvider
+                  persistor={persistor}
+                    style={styles.flex}
+                    ref={(nav) => {
+                      this.setNavigator(nav);
+                    }}>
+                    {/* <View style={[styles.flex]}>
+                      <SplashScreen />
+                    </View> */}
+                  </NavigatorProvider>
+            </ApplicationProvider>
+        </PersistGate>
     </ReduxProvider>
   );
 

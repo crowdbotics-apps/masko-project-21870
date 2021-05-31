@@ -17,17 +17,11 @@ export class _SignIn4Container extends React.Component {
   };
 
   onSignUpPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.SignUp,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.SignUp );
   };
 
   onForgotPasswordPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.ForgetPassword,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ForgetPassword );
   };
 
   onGooglePress = () => {};

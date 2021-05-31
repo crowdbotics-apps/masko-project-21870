@@ -2,7 +2,6 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
-import SplashScreen from "../features/SplashScreen";
 import SideMenu from './sideMenu';
 //@BlueprintImportInsertion
 
@@ -17,9 +16,25 @@ import MapsNavigator from '../features/Maps/navigator';
 import AddItemNavigator from '../features/Additem/navigator';
 import ServiceNavigator from '../features/Services/navigator';
 import CheckoutNavigator from '../features/Checkout/navigator';
+import RecurrOrderNavigator from '../features/RecurringOrders/navigator';
+
+
+import { useSelector } from 'react-redux';
+import * as storeSettings from '../store';
 /**
  * new navigators can be imported here
  */
+// alert(storeSettings.persistor.getState().EmailAuth)
+
+console.log("Check Store Object ")
+console.log(storeSettings)
+//  const user = storeSettings().store.getState().EmailAuth.user;
+ 
+ let initialRoute = 'EmailAuth'
+// if(user){
+//   initialRoute = UserAccount
+// }
+
 
 const AppNavigator = {
 
@@ -41,13 +56,14 @@ Maps: { screen: MapsNavigator },
 UserAccount: { screen: UserAccountNavigator},
 Service: { screen: ServiceNavigator },
 Checkout: { screen: CheckoutNavigator},
+RecurringOrder: { screen: RecurrOrderNavigator},
 
     /** new navigators can be added here */
-    SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
-      swipeEnabled: true,
-      gesturesEnabled: true,
-      drawerLockMode: 'locked-closed',
-    })},
+    // SplashScreen:  { screen: SplashScreen ,  navigationOptions: ({ navigation }) => ({
+    //   swipeEnabled: true,
+    //   gesturesEnabled: true,
+    //   drawerLockMode: 'locked-closed',
+    // })},
 };
 
 const DrawerAppNavigator = createDrawerNavigator(
@@ -55,7 +71,7 @@ const DrawerAppNavigator = createDrawerNavigator(
     ...AppNavigator,
   },
   {
-    initialRouteName: 'SplashScreen',
+    initialRouteName: initialRoute,
     contentComponent: SideMenu
   },
 );

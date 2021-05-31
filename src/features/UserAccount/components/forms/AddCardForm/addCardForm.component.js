@@ -46,7 +46,8 @@ class AddCardFormComponent extends React.Component {
   }
 
   onAddCardButtonPress = () => {
-    this.props.onAddCardPress()
+    this.props.onAddCardPress();
+    this.props.onCloseModal();
   }
 
   checkExpiry = () => {

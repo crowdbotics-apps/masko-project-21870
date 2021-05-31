@@ -21,6 +21,9 @@ class ProductsInline(admin.TabularInline):
     def special_message( self, obj):
         if obj.service is not None: 
             return format_html('<b>Time Option:</b> {} <br/><b>Date:</b> {}<br/> <b>Time:</b> {} '.format(obj.timeOption, obj.date, obj.time))
+        elif obj.product is not None and obj.product.is_recurring:
+            return format_html('<b>Order Every:</b> {} <br/><b>Date:</b> {} '.format(obj.order_every, obj.date))
+
 
         return 'N/A' 
     special_message.short_description = "Extra Details" 

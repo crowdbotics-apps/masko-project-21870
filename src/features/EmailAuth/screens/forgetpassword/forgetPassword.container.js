@@ -19,17 +19,11 @@ export class _ForgetPasswordContainer extends React.Component {
   };
 
   onSignUpPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.SignUp,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.SignUp );
   };
 
   onSignInButtonPress = () => {
-    this.props.navigation.navigate({
-      key: this.navigationKey,
-      routeName: appConfig.NAVIGATOR_ROUTE.SignIn,
-    });
+    this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.SignIn );
   };
 
   onForgotPasswordPress = data => {

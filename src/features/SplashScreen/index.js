@@ -12,7 +12,6 @@ import { translate }  from 'src/utils/translation';
 
 
 
-
 export default class App extends Component {
 
   static navigationOptions = {

@@ -11,11 +11,14 @@ from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 from django.db.models import Q
 from django.db import transaction 
+from datetime import datetime
 
 from rest_framework.generics import CreateAPIView
 from payment_stripe.utils import (
+        create_stripe_subscription,
         create_stripe_order,
         prepare_items_4m_orderColect,
+        prepare_item_4_subscriptions,
         create_stripe_charge
     )
 
@@ -30,11 +33,12 @@ from home.api.v1.serializers import (
     ServiceSerializer,
     ServiceCategorySerializer,
     ProductSerializer,
-    OrderSerializer
+    OrderSerializer,
+    RecurringOrderSerializer
 )
 
 from payment_stripe.serializers import ( CardSerializer )
-from payment_stripe.models import ( Card ) 
+from payment_stripe.models import ( Card, ProductPrices, Subscription ) 
 
 from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
@@ -82,6 +86,8 @@ class HomePageViewSet(ModelViewSet):
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
     http_method_names = ["get"]
+
+
 
 
 class ServiceCategoryViewSet(ModelViewSet):
@@ -237,29 +243,70 @@ class AddOrderViewSet(CreateAPIView):
     def get_extra_actions(cls):
         return []
 
+    def getRecurringProdPrice(self, item, product):
+        print("** getRecurringProdPrice")
+        
+        if item is not None:
+            prices = ProductPrices.objects.filter( 
+                                                    Q(product_id__exact=item['id']) & 
+                                                    Q(nickname__icontains=item['orderEvery']) 
+                                            
+            ).order_by('-nickname')
+
+            ## Create Price if not available    
+            if len(prices) is 0:
+                price = ProductPrices(
+                        product_id = item['id'],
+                        price = Product.get_recurring_price( product, item['orderEvery'] ), 
+                        nickname = item['orderEvery'],
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING, 
+                    )
+                price.save()    
+                prices = [] 
+                prices.append(price)    
+
+            return prices
+
+        else:
+            return None    
+
+
     def getProductItem(self, item, orderId, pets):
         response = None
         
         if item['type'] == "product":
             product = Product.objects.get( pk=item['id'] )
-            response = {
-                        'item': OrderProduct( 
+            orderProduct = OrderProduct( 
                                 pType = item['type'],
                                 product_id = item['id'],
                                 order_id = orderId, 
                                 pet_id = item['pet'],
                                 unit_price = product.price,
                                 quantity = item['quantity']
-                            ),
+                            )
+            totalPrice = product.price*item['quantity']  
+            tmpProductPrices = None
+
+            # Recurring Purchases                
+            if product.is_recurring: 
+                orderProduct.order_every = item['orderEvery'] if 'orderEvery' in item else ''                 
+                orderProduct.date = item['scheduleDate']
+                tmpProductPrices = self.getRecurringProdPrice(item, product)[0]
+                orderProduct.unit_price = tmpProductPrices.price
+                totalPrice = orderProduct.unit_price * item['quantity'] 
+                      
+
+            response = {
+                         'item': orderProduct,
                          'source': product,
                          'pet': next((x for x in pets if x.id == item['pet']), None),
-                         'totalPrice': product.price*item['quantity']
+                         'totalPrice': totalPrice,
+                         'productPrice': tmpProductPrices if tmpProductPrices is not None else None
             }   
         else:
             service = Service.objects.get( pk=item['id'] )
             
-            response = {
-                        'item': OrderProduct( 
+            orderProduct = OrderProduct( 
                                     pType = item['type'],
                                     service_id = item['id'],
                                     order_id = orderId, 
@@ -270,10 +317,19 @@ class AddOrderViewSet(CreateAPIView):
                                     date = item['scheduleDate'],
                                     time = item['time'] if 'time' in item else '',
                                     notes = item['notes'],
-                                ),
+                                )
+            totalPrice = service.price*item['quantity']   
+
+            # Recurring Purchases                    
+            if service.is_recurring: 
+                orderProduct.order_every = item['orderEvery'] if 'orderEvery' in item else ''               
+                orderProduct.scheduleDate = item['scheduleDate']
+            
+            response = {
+                         'item': orderProduct,
                          'source': service,
                          'pet': next((x for x in pets if x.id == item['pet']), None),
-                         'totalPrice': service.price*item['quantity']
+                         'totalPrice': totalPrice
             }   
 
         return response    
@@ -286,6 +342,7 @@ class AddOrderViewSet(CreateAPIView):
             
             # response = super().create(request, *args, **kwargs)   
             if 'items' in request.data:
+                recurringIteminOrder = False
                 order = Order( owner = request.user, is_recurring = False)
                 order.save()
 
@@ -295,10 +352,15 @@ class AddOrderViewSet(CreateAPIView):
                 userPets = Pet.objects.filter( owner = request.user )    
                 for item in request.data['items']:
                     pProduct = self.getProductItem( item, order.id, userPets)
+
+                    if pProduct['source'].is_recurring:
+                        recurringIteminOrder = True
+
                     subTotal += ( pProduct['item'].unit_price * pProduct['item'].quantity )
                     productCollection.append( pProduct['item'] )
                     itemCollectionForEmail.append( pProduct )
 
+                
                 OrderProduct.objects.bulk_create( productCollection )    
 
                 order.subtotal_price = subTotal
@@ -312,8 +374,27 @@ class AddOrderViewSet(CreateAPIView):
                 # order.stripe_order_id = stripe_order.id
                 # ##
 
-                ## Create Stripe Charge
-                if 'payment_method' in request.data and str(request.data['payment_method']).lower()=='card':
+                ## Create Stripe Charge and Recurring Subscriptions
+                if recurringIteminOrder: #Recurring Subscriptions
+                    order.is_recurring = True
+                    subscriptionObj = {
+                        'customer': request.user.stripe_id,
+                        'items': prepare_item_4_subscriptions( itemCollectionForEmail ),
+                    }
+                    stripeSubscription = create_stripe_subscription( subscriptionObj )
+
+                    if stripeSubscription is not None:
+                        subsSubscription = Subscription( 
+                                                        order_id = order.id,
+                                                        stripe_id = stripeSubscription.id
+                                                        )
+                        subsSubscription.save()                                
+
+                        
+
+                    
+                elif ( recurringIteminOrder is False and 'payment_method' in request.data  # Create Stripe Charge
+                        and str(request.data['payment_method']).lower()=='card'): 
                     charge = create_stripe_charge( itemCollectionForEmail, request.user, order )
                     order.stripe_order_id = charge.id
                     order.status = Order.PAID
@@ -361,7 +442,29 @@ class AddOrderViewSet(CreateAPIView):
                 'data': str(e)
             },status=400)   
 
+class RecurringOrderViewSet(ModelViewSet):
+    serializer_class = RecurringOrderSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        fromDate = None
+        toDate = None
+
+        queryset = Order.recurring_objects.filter(owner=user)
+      
+        if 'fromDate' in self.request.GET:
+            fromDate = datetime.strptime(self.request.GET['fromDate'], '%d/%m/%Y')
+            queryset = queryset.filter(created_at__gte = fromDate)
+
+        if 'toDate' in self.request.GET:
+            toDate = datetime.strptime(self.request.GET['toDate'],  '%d/%m/%Y')
+            queryset = queryset.filter(created_at__lt = toDate)
+      
+        return queryset.order_by('-created_at')
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    # permission_classes = [IsAdminUser]
+    http_method_names = ["get"]
 
 
 

@@ -16,10 +16,12 @@ export function appendCart( storeCartItems, userItem ){
 
   let list = []
   list.push(userItem);
+  if( !userItem.is_recurring ){
+    _.forEach(storeCartItems,(i)=>{
+      list.push(i);
+     });
+  }
   
-  _.forEach(storeCartItems,(i)=>{
-    list.push(i);
-   });
 
    return list;
 
@@ -29,15 +31,29 @@ export function updateCartObject ( storeCart, userItem ){
   
   let list = []
   list.push(userItem);
+  let hasRecurItem = hasRecurringItem(storeCart.items)
   
-  _.forEach(storeCart.items,(i)=>{
-    if( i.source.id !== userItem.source.id )
-      list.push(i);
-   });
+  if( !userItem.source.is_recurring  && !hasRecurItem ){
+    _.forEach(storeCart.items,(i)=>{
+      if( i.source.id !== userItem.source.id )
+        list.push(i);
+     });
+  }
+  
 
    storeCart.updateCartItems(list);
 
    return storeCart; 
+}
+
+export function hasRecurringItem( items ){
+  let flag = false
+  _.forEach(items, (i)=>{
+    if(i.source.is_recurring){
+      flag = true
+    }
+  });
+  return flag
 }
 
 

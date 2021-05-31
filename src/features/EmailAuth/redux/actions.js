@@ -25,3 +25,7 @@ export const setUser = ( user ) => ({
   user
 })
 
+export const reInitStore4mSession = () => ({
+  type: actions.EMAIL_AUTH_REINIT_STORE
+})
+

@@ -107,7 +107,142 @@ class Service(models.Model):
         auto_now=True,
     )
     
+    ### Handle Before Save Of a Service 
+    def save(self, *args, **kwargs):
 
+        oldService = None
+        try:
+            oldService = Service.objects.get( pk=self.id )
+        except Service.DoesNotExist:
+            pass
+
+        super(Service, self).save(*args, **kwargs)
+
+        # Stripe Product Creation Only Available for Recurring Products
+        if self.stripe_id is None and self.is_recurring is True: 
+            stripe_obj = self.create_stripe_product()
+            self.stripe_id = stripe_obj.id
+            self.create_product_prices(oldService)
+        elif self.is_recurring is True:
+            self.update_stripe_product()
+            self.create_product_prices(oldService)
+        ### 
+        super(Service, self).save(*args, **kwargs)   
+
+   
+    ### Create Stripe Product
+    def create_stripe_product(self):
+        try:
+            stripe_obj = stripe.Product.create(
+                                                name = 'SERVICE - {}'.format(self.name_en),
+                                                description = self.description_en,
+                                                metadata = {
+                                                    'type': 'service',
+                                                    'masko_service_id': self.id,
+                                                    'start_price': self.price, 
+                                                    'current_price': self.price, 
+                                                    'category': self.category.name_en,
+
+                                                }
+
+                                            )
+
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+
+
+    ### Update Stripe Product
+    def update_stripe_product(self):
+        try:
+            stripe_obj = stripe.Product.modify(
+                                                self.stripe_id,
+                                                name = 'SERVICE - {}'.format(self.name_en),
+                                                description = self.description_en,
+                                                metadata = {
+                                                    'current_price': self.price, 
+                                                    'category': self.category.name_en,
+
+                                                }
+
+                                            )
+
+            return stripe_obj            
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+    
+    ### Create Stripe Product Prices
+    def create_product_prices(self, oldService):
+        try:
+            if oldService is None or ( oldService is not None and oldService.price != self.price ) :
+              
+                ### Daily Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_DAILY,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_DAILY ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
+
+                ### Weekly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_WEEK,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_WEEK ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING 
+
+                )
+                item.save()
+                ###
+
+                ### Bi-Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_BI_MONTH,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_BI_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
+
+                ### Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_MONTH,
+                        service = self, 
+                        price = Service.get_recurring_price(self, ProductPrices.NICKNAME_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
+
+                
+                return item
+            else: 
+                return None    
+            
+                   
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+    
+    @classmethod
+    def get_recurring_price( self, item, orderOptions ):
+        priceList = ProductPrices.PRICE_LIST
+        price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
+        return item.price * price['factor']
+        
+   
     def __str__ (self):
         return self.name_es
 
@@ -194,10 +329,19 @@ class Product(models.Model):
         auto_now=True,
     )
 
+
+
     ### Handle Before Save Of a Product 
     def save(self, *args, **kwargs):
-        oldProduct = Product.objects.get( pk=self.id )
+
+        oldProduct = None
+        try:
+            oldProduct = Product.objects.get( pk=self.id )
+        except Product.DoesNotExist:
+            pass
+
         super(Product, self).save(*args, **kwargs)
+
         # Stripe Product Creation Only Available for Recurring Products
         if self.stripe_id is None and self.is_recurring is True: 
             stripe_obj = self.create_stripe_product()
@@ -207,42 +351,47 @@ class Product(models.Model):
             self.update_stripe_product()
             self.create_product_prices(oldProduct)
         ###    
+        super(Product, self).save(*args, **kwargs)
+
+    ### Handle Delete Of a Product
+    def delete(self):
+        self.purge()
+        super(Product, self).delete()    
+
+    def purge(self):
+        self.disable_stripe_product()
 
 
-       
-
-     ### Create Product Prices
-    def create_product_prices(self, oldProduct):
+    ### Disabled Stripe Product
+    def disable_stripe_product(self):
         try:
-            if oldProduct.price != self.price:
-                item = ProductPrices(
-                        product = self, 
-                        price = self.price, 
-
-                )
-                item.save()
-                return item
-            else: 
-                return None    
+            stripe_obj = stripe.Product.modify(
+                                               self.stripe_id,
+                                               active =  False,
+                                               name = '(Deleted) - {}'.format(self.name_en),
+                                               metadata = {
+                                                   'notes': "Product has been deleted on Masko App"
+                                               }
+                                            )
             
-                   
+            return stripe_obj   
+        except stripe.error.InvalidRequestError as e:
+            if smart_str(e).startswith("No such product"):    
+                pass         
         except Exception as e:
             raise NameError(e)
 
         return None    
-  
-
-     ### Create Stripe Prices
-    
-    
+      
 
     ### Create Stripe Product
     def create_stripe_product(self):
         try:
             stripe_obj = stripe.Product.create(
-                                                name = self.name_en,
+                                                name = 'PRODUCT - {}'.format(self.name_en),
                                                 description = self.description_en,
                                                 metadata = {
+                                                    'type': 'product',
                                                     'masko_product_id': self.id,
                                                     'brand': self.brand_en,
                                                     'weight': self.weight,
@@ -262,15 +411,13 @@ class Product(models.Model):
 
         return None    
   
-
-     ### Create Stripe Prices
-    
+ 
     ### Update Stripe Product
     def update_stripe_product(self):
         try:
             stripe_obj = stripe.Product.modify(
                                                 self.stripe_id,
-                                                name = self.name_en,
+                                                name = 'PRODUCT - {}'.format(self.name_en),
                                                 description = self.description_en,
                                                 metadata = {
                                                     'brand': self.brand_en,
@@ -289,9 +436,124 @@ class Product(models.Model):
             raise NameError(e)
 
         return None    
-  
+    
+    ### Create Stripe Product Prices
+    def create_product_prices(self, oldProduct):
+        try:
+            if oldProduct is None or ( oldProduct is not None and oldProduct.price != self.price):
+                
+                ### Daily Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_DAILY,
+                        product = self, 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_DAILY ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
 
+                )
+                item.save()
+                ###
+
+                ### Weekly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_WEEK,
+                        product = self, 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_WEEK ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING 
+
+                )
+                item.save()
+                ###
+
+                ### Bi-Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_BI_MONTH,
+                        product = self, 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_BI_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
+
+                ### Monthly Recurrence
+                item = ProductPrices(
+                        nickname= ProductPrices.NICKNAME_MONTH,
+                        product = self, 
+                        price = Product.get_recurring_price(self, ProductPrices.NICKNAME_MONTH ),
+                        recurring_interval = ProductPrices.MONTHLY_RECURRING
+
+                )
+                item.save()
+                ###
+
+                return item
+            else: 
+                return None    
+            
+                   
+        except Exception as e:
+            raise NameError(e)
+
+        return None    
+  
+   
+    @classmethod
+    def get_recurring_price(self, item, orderOptions):
+        priceList = ProductPrices.PRICE_LIST
+        price = next((x for x in (priceList) if x['key']==orderOptions), priceList[3] )
+        return item.price * price['factor']
+        
+        
     def __str__ (self):
         return self.name_es
 
-  
+
+#   stripe.Subscription.create(
+#   customer="cus_JHzRAu80GRPLFV",
+#   items=[
+#     {
+#     'metadata':{
+#         'name':'john',
+#          'description': 'adsa',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1IlrRkES1Wz3F8fhwQ1G5oOf'
+#     },
+
+#     {
+#     'metadata':{
+#         'name':'PRODUCT - WHISKAS 1+ Can Fish/Chicken Selection',
+#          'description': 'Each can contains 390g wet food for your cat while a healthy 4kg adult cat required at least 300g to 400g balanced diet daily depending on cat’s activity level. It contains no artificial flavors, preservatives or colors but made of real fresh meat. Furthermore, each tin contains perfect amount of zinc to ensure healthy skin and coat.',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1InzHVES1Wz3F8fhiU37zgYs'
+#     },
+#   ],
+# )
+
+# sub_JOi5yufjuIA4Ti
+
+
+# stripe.Subscription.create(
+#   customer="cus_JHzRAu80GRPLFV",
+#   items=[
+#     {
+#     'metadata':{
+#         'name':'john',
+#          'description': 'adsa',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1IlrRlES1Wz3F8fhEJdwPEqj'
+#     },
+
+#     {
+#     'metadata':{
+#         'name':'PRODUCT - WHISKAS 1+ Can Fish/Chicken Selection',
+#          'description': 'Each can contains 390g wet food for your cat while a healthy 4kg adult cat required at least 300g to 400g balanced diet daily depending on cat’s activity level. It contains no artificial flavors, preservatives or colors but made of real fresh meat. Furthermore, each tin contains perfect amount of zinc to ensure healthy skin and coat.',
+#     },
+#     'quantity': 2, 
+#     'price': 'price_1InzHVES1Wz3F8fhiU37zgYs'
+#     },
+#   ],
+# )
+#sub_JQr8LaGohjcM8F

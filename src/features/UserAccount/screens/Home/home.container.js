@@ -44,7 +44,7 @@ export class _HomeContainer extends React.Component {
   }
 
   onPressCategory = ( item ) => {
-    if(item.id == 3){
+    if(item.name_en.includes('Food Product')){
 
         this.props.navigation.navigate('Service', 
         {}, 
@@ -53,10 +53,16 @@ export class _HomeContainer extends React.Component {
             params: {category: item}
         }));
 
-        // this.props.navigation.navigate("ProductList",{
-        //   category: item,
-        // })
-       
+    }     
+    else if (item.name_en.includes('Recurring')){
+      
+      this.props.navigation.navigate('Service', 
+      {}, 
+      NavigationActions.navigate({ 
+          routeName: 'ProductList' ,
+          params: {category: item}
+      }));
+    
     }else{
       this.props.navigation.navigate("ServiceList",{
         category: item,
