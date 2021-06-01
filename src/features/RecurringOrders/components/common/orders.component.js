@@ -50,6 +50,10 @@ class _OrderComponent extends React.Component {
           <View>
             <Text style={themedStyle.textTitle}  >{translate('OrderItemsNumberLabel')}{item.id}</Text>
             <Text style={themedStyle.textDescription}  >{moment( item.created_at ).format( AppConfig.dateFormat )}</Text>
+            {item.subscription && item.subscription.is_cancelled && (
+              <Text style={themedStyle.textCancelled}  >{translate('OrderItemsCancelledLabel')}</Text>
+            )}
+            
           </View>
         </View>
         <View style={themedStyle.textContainer} >
@@ -166,6 +170,12 @@ export const OrderComponent = withStyles(_OrderComponent, theme => ({
     fontSize: 12,
 
     color: "#5D5A53"
+  },
+  textCancelled:{
+    fontFamily: "Montserrat",
+    fontSize: 12,
+
+    color: "red"
   },
   yellowBtn:{
         fontFamily: "Montserrat",

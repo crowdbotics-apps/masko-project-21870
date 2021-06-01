@@ -150,6 +150,7 @@
     "RecurringOrderGetError": "Unable to get recurring orders.",
     "RecurrOrderListNavTitle":"Recurring Orders",
     "OrderItemsNumberLabel":"Order #",
+    "OrderItemsCancelledLabel":"Cancelled",
     "OrderItemBrandLabel": "Brand",
     "OrderItemWeightLabel": "Weight",
     "OrderItemRecurrEveryLabel": "Recurrent every ",
@@ -167,7 +168,9 @@
     "MyOrderGetError": "Unable to get my orders.",
     "MyOrderDetailsNavTitle": "Order Details",
     "MyOrderDetailsIntro": "Order has been received. We will keep you informed on it’s status",
-  
+    "RecurringOrderCancelError": "Unable to cancel subscription",
+    "SubscriptionCancelConfirmation": "Are you sure you want to cancel this subscription?",
+    "SubscriptionCancelSuccessMsg": "Subscription has been cancelled successfully.",
     
     
     

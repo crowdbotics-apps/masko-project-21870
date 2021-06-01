@@ -1,4 +1,4 @@
-from payment_stripe.models import SubscriptionPayments
+from payment_stripe.models import Subscription, SubscriptionPayments
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
@@ -168,6 +168,12 @@ class SubscriptionPaymentsSerializer(serializers.ModelSerializer):
         model = SubscriptionPayments
         fields = "__all__"                
 
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = "__all__"                
+
+
 class MyOrderSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     total_purchases = serializers.SerializerMethodField()
@@ -201,7 +207,16 @@ class RecurringOrderSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     total_purchases = serializers.SerializerMethodField()
     purchases = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
     
+    def get_subscription( self, order):
+        list = []
+        item = Subscription.objects.filter(order_id = order.id).first()
+        if item is not None:
+            return SubscriptionSerializer(item).data
+        else:
+            return None   
+
     def get_products(self, order):
         items = OrderProduct.objects.filter(order=order)
         list = []
@@ -223,7 +238,10 @@ class RecurringOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','total_purchases','purchases')
+        fields = ('id','address','country','subtotal_price','ship_price',
+                  'tax_price','total_price','created_at','status','owner',
+                  'products','total_purchases','purchases',
+                  'subscription')
 
 class RecurringOrderDetailSerializer(serializers.ModelSerializer):
     

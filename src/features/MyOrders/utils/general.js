@@ -106,6 +106,8 @@ export function getPetsTotalQty ( pets ){
 export function formatOrderDetailsProducts(order, userPets){
 
    let newList = []
+   let obj = null
+   let sourcePet = null
    _.forEach(order.products, (i)=>{
       
        obj = _.find(newList, (j) => j.product.id == i.refrence_item.id );

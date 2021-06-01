@@ -9,10 +9,12 @@ const initialState = {
   orders: [],
   errors: { 
            ListRecurOrder: null,
+           CancelRecurOrder: null
            
           },
   loaders: { 
             ListRecurOrder: null,
+            CancelRecurOrder: null
           }
 };
 
@@ -60,6 +62,49 @@ export default RecurringOrderReducer = (state = initialState, action) => {
         }
       };
   
+    case actions.RECURRING_ORDER_CANCEL_REQUEST:
+        return {
+          ...state,
+          errors: {
+            ...state.errors,
+            CancelRecurOrder: null
+          },
+          loaders: {
+            ...state.loaders,
+            CancelRecurOrder: true
+  
+          }
+  
+        };
+    case actions.RECURRING_ORDER_CANCEL_SUCCESS:
+        return {
+          ...state,
+          orders:  utils.updateCancelSubscription( state.orders, action.data, true),
+          errors: {
+            ...state.errors,
+            CancelRecurOrder: null
+          },
+          loaders: {
+            ...state.loaders,
+            CancelRecurOrder: null
+  
+          }
+        };
+    case actions.RECURRING_ORDER_CANCEL_ERROR:
+        return {
+          ...state,
+          errors: {
+            ...state.errors,
+            CancelRecurOrder: action.error
+          },
+          loaders: {
+            ...state.loaders,
+            CancelRecurOrder: null
+  
+          }
+        };
+      
+
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
     default:

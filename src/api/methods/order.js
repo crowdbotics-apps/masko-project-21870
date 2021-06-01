@@ -56,3 +56,15 @@ export function getMyOrders( accessToken, from_date, to_date ) {
 
     return Api(path, null, 'get', accessToken);
 }
+
+export function cancelSubscription( accessToken, order ) {
+ 
+    let path = ApiConstants.ACTIONS.RECURRING_SUBSCRIPTION_CANCEL;
+    
+    let body = {
+        id : order.id
+    }
+    
+
+    return Api(path, body, 'post', accessToken);
+}
