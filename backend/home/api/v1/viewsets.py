@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from home.permissions import IsOwnerOrReadOnly
 from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSetPagination
 from django.db.models import Q
@@ -19,7 +20,8 @@ from payment_stripe.utils import (
         create_stripe_order,
         prepare_items_4m_orderColect,
         prepare_item_4_subscriptions,
-        create_stripe_charge
+        create_stripe_charge,
+        cancel_stripe_subscription
     )
 
 from home.api.v1.serializers import (
@@ -232,7 +234,6 @@ class CardViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     http_method_names = ["get", "post", "put", "patch", "delete"]
 
-   
 
 class AddOrderViewSet(CreateAPIView):
 
@@ -465,7 +466,30 @@ class RecurringOrderViewSet(ModelViewSet):
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     # permission_classes = [IsAdminUser]
-    http_method_names = ["get"]
+    http_method_names = ["get","post"]
+
+    @action(detail=False, methods=['post'])
+    def cancel_subscription(self, request):
+        status = False
+        if 'id' in request.data:
+            id = request.data['id']
+            subscriptions = Subscription.objects.filter( order_id=id )
+            
+            if len(subscriptions) > 0:
+                subscription = subscriptions[0]
+                status = cancel_stripe_subscription({ "subs_id": subscription.stripe_id})
+                subscription.is_cancelled = True
+                subscription.save()
+
+            if status:
+                return Response({'status': 'success','msg':"Subscription Cancel Succeed"},status=200)
+            else:
+                return Response({'status': 'error','msg':"Subscription Cancel Failed"},status=400)                
+
+
+            
+        return Response({'status': 'error','msg':"Data Missing"},status=400)
+
 
 class MyOrderViewSet(ModelViewSet):
     serializer_class = MyOrderSerializer

@@ -307,7 +307,9 @@ class Subscription(models.Model):
         null=True,
         blank=True,
         max_length=255,
-    )      
+    )
+
+    is_cancelled = models.BooleanField(default=False)      
 
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -316,6 +318,8 @@ class Subscription(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True,
     )
+
+
 
     def __str__ (self):
         return self.stripe_id
