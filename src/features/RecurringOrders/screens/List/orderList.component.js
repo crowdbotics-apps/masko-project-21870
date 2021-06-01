@@ -134,6 +134,10 @@ class OrderListComponent extends React.Component {
     this.props.onPressOrderItem(item)
   }
 
+  onPressBuyNow = (item) => {
+    this.props.onPressBuyNow(item)
+  }
+
   onSearchInputTextChange = (text) => {
     this.setState({ search: text });
     this.onChangeSearchTextDelayed(text)
@@ -244,6 +248,7 @@ class OrderListComponent extends React.Component {
           <OrderComponent
           data={this.props.orders}
           onPressOrderItem={this.onPressOrderItem}
+          onPressBuyNow={this.onPressBuyNow}
 
         />
         )}   

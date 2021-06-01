@@ -57,12 +57,19 @@ export class _OrderListContainer extends React.Component {
           ...item,
           formattedItem: formattedProducts
     }
-    navigation.navigate("OrderDetails",{
+    navigation.navigate( appConfig.NAVIGATOR_ROUTE.OrderDetails ,{
       order: item2 
     })
     
   }
   
+  onPressBuyNow = (item) => {
+    const { navigation } = this.props;
+    navigation.navigate( appConfig.NAVIGATOR_ROUTE.ProductDetails ,{
+      product: item.products[0].refrence_item 
+    })
+  }
+
   render() {
     const { navigation } = this.props;
     return (
@@ -71,7 +78,9 @@ export class _OrderListContainer extends React.Component {
         orders={this.props.orders}
         getRecurrOrderLoading={this.props.getRecurrOrderLoading}
         onPressOrderItem={this.onPressOrderItem}
+        onPressBuyNow={this.onPressBuyNow}
         getRecurringOrderCb={this.getRecurringOrders}
+
         
        />
     );

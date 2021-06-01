@@ -6,10 +6,10 @@ import { OrderDetailsContainer } from './screens/Details/orderDetails.container'
 
 export default MyOrderNavigator = createStackNavigator(
   {
-    OrderList: { screen: OrderListContainer },
+    OrderList2: { screen: OrderListContainer },
     OrderDetails: { screen: OrderDetailsContainer }
   },
   {
-    initialRouteName: 'OrderList',
+    initialRouteName: 'OrderList2',
   },
 );

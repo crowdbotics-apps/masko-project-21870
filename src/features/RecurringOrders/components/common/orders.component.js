@@ -30,7 +30,7 @@ const moment = require('moment');
 class _OrderComponent extends React.Component {
   
   _onPress = (item) => {
-    this.props.onPressOrderItem(item)
+    this.props.onPressBuyNow(item)
   }
 
 
@@ -82,10 +82,10 @@ class _OrderComponent extends React.Component {
               textStyle={themedStyle.yellowBtnText}
               status='primary'
               style={themedStyle.yellowBtn}
-              // onPress={() => this._onPress(item)}
+              onPress={() => this._onPress(item)}
               >{translate('OrderItemBuyNowBtn')}
               
-            </Button>
+          </Button>
             <View style={{alignSelf: 'center',borderWidth: 1, borderRadius: 25, borderColor:"#E9EBED", width: width*0.75, padding: 10, justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={themedStyle.textTitleBold}>${item.total_price} (purchased {item.total_purchases} times)</Text>
             </View>
