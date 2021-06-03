@@ -28,7 +28,7 @@ const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
 
-import { OrderComponent } from '../../components/common';
+import { NormalOrderComponent } from '../../components/common';
 
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -64,17 +64,17 @@ class OrderListComponent extends React.Component {
 
   componentDidMount(){
     const { bookingFromDate, bookingToDate } = this.state
-    this.getRecurringOrders(bookingFromDate, bookingToDate)
+    this.getMyOrders(bookingFromDate, bookingToDate)
   }
 
-  getRecurringOrders(bookingFromDate, bookingToDate) {
-    this.props.getRecurringOrderCb(bookingFromDate.display, bookingToDate.display)
+  getMyOrders(bookingFromDate, bookingToDate) {
+    this.props.getMyOrdersCb(bookingFromDate.display, bookingToDate.display)
   }
 
 
   renderSpinner = () => {
-    const { getRecurrOrderLoading } = this.props;
-    if (getRecurrOrderLoading) {
+    const { getMyOrderLoading } = this.props;
+    if (getMyOrderLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -97,7 +97,7 @@ class OrderListComponent extends React.Component {
       } else {
         this.setState({ bookingFromDate });
       }
-      this.getRecurringOrders(bookingFromDate, bookingToDate)
+      this.getMyOrders(bookingFromDate, bookingToDate)
 
     } else {
       this.setState({ showDatePickerFrom: false });
@@ -122,7 +122,7 @@ class OrderListComponent extends React.Component {
       } else {
         this.setState({ bookingToDate });
       }
-      this.getRecurringOrders(bookingFromDate, bookingToDate)
+      this.getMyOrders(bookingFromDate, bookingToDate)
 
     } else {
       this.setState({ showDatePickerTo: false });
@@ -132,10 +132,6 @@ class OrderListComponent extends React.Component {
 
   onPressOrderItem = (item) => {
     this.props.onPressOrderItem(item)
-  }
-
-  onPressBuyNow = (item) => {
-    this.props.onPressBuyNow(item)
   }
 
   onSearchInputTextChange = (text) => {
@@ -245,10 +241,9 @@ class OrderListComponent extends React.Component {
       
         )} 
         { this.props.orders.length > 0 && (
-          <OrderComponent
+          <NormalOrderComponent
           data={this.props.orders}
           onPressOrderItem={this.onPressOrderItem}
-          onPressBuyNow={this.onPressBuyNow}
 
         />
         )}   

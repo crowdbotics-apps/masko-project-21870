@@ -139,24 +139,6 @@ export function formatOrderDetailsProducts(order, userPets){
 
 }
 
-export function updateCancelSubscription( storeOrders, order, status) {
-  let newList = []
-    _.forEach(storeOrders, (i)=>{
-      if(i.id == order.id && status){
-        newList.push({
-          ...i,
-          subscription:{
-            ...i.subscription,
-            is_cancelled: true
-          }
-        })
-      }else{
-        newList.push(i)
-      }
-    })
-  return newList;
-}
-
 
 
 

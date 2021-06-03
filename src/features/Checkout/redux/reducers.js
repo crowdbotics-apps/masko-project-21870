@@ -94,7 +94,7 @@ export default CheckoutReducer = (state = initialState, action) => {
           }
         };  
     
-        case actions.CHECKOUT_ORDER_ADD_REQUEST:
+    case actions.CHECKOUT_ORDER_ADD_REQUEST:
           return {
             ...state,
             errors: {
@@ -108,7 +108,7 @@ export default CheckoutReducer = (state = initialState, action) => {
             }
     
           };
-        case actions.CHECKOUT_ORDER_ADD_SUCCESS:
+    case actions.CHECKOUT_ORDER_ADD_SUCCESS:
           return {
             ...state,
             cart: new CartModel(),
@@ -122,7 +122,7 @@ export default CheckoutReducer = (state = initialState, action) => {
     
             }
           };
-        case actions.CHECKOUT_ORDER_ADD_ERROR:
+    case actions.CHECKOUT_ORDER_ADD_ERROR:
           return {
             ...state,
             errors: {
@@ -136,13 +136,18 @@ export default CheckoutReducer = (state = initialState, action) => {
             }
           };
            
-        
+    case AuthActions.EMAIL_AUTH_REINIT_STORE:
+            return {
+              ...state,
+              cart: new CartModel()
+              
+            };
+            
     case AuthActions.EMAIL_AUTH_LOGOUT:
       return initialState;
     default:
       return {
         ...state,
-        cart:  new CartModel(),
       };
   }
 };

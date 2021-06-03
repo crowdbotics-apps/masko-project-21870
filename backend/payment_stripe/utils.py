@@ -8,7 +8,7 @@ def create_stripe_subscription(data):
         try:
             print("** create_stripe_subscription")
             print(data['items'])
-            subscription = stripe.Subscription.create(
+            subscription = c.create(
                 customer=data['customer'],
                 items=data['items'],
             )
@@ -16,6 +16,15 @@ def create_stripe_subscription(data):
         except Exception as e:
             print('Stripe Subscription Create error - {}'.format(str(e)))
             return None
+
+def cancel_stripe_subscription(data):
+    try:
+        stripe.Subscription.delete(data['subs_id'])
+        return True
+    except Exception as e:
+        print('Stripe Subscription Cancel error - {}'.format(str(e)))
+        return False    
+
 
 def create_stripe_charge(items,customer, order):
     cards = customer.default_card

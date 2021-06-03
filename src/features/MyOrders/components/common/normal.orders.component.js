@@ -33,10 +33,29 @@ class _OrderComponent extends React.Component {
     this.props.onPressOrderItem(item)
   }
 
-  _onPressBuyNow = (item) => {
-    this.props.onPressBuyNow(item)
-  }
+  renderAttributes = (item) => {
+      const { themedStyle } = this.props;
+      if(item.pType=="product"){
+        let product = item.refrence_item
+        return [
+          <Text style={themedStyle.itemDetail}>{translate('OrderItemBrandLabel')}: {product.brand_en}</Text>,
+          <Text style={themedStyle.itemDetail}>{translate('OrderItemWeightLabel')}: {product.weight}</Text>
+    
 
+        ];
+        
+      }else{
+        let service = item.refrence_item
+        return [
+          <Text style={themedStyle.itemDetail}>{item.timeOption}</Text>,
+          <Text style={themedStyle.itemDetail}>{moment( item.date ).format( AppConfig.dateFormat )}</Text>,
+          <Text style={themedStyle.itemDetail}>{item.time}</Text>,
+          
+
+        ];
+
+      }
+  }
 
   renderItem = ({ item, index, separators }) => {
     const { themedStyle } = this.props;
@@ -54,10 +73,6 @@ class _OrderComponent extends React.Component {
           <View>
             <Text style={themedStyle.textTitle}  >{translate('OrderItemsNumberLabel')}{item.id}</Text>
             <Text style={themedStyle.textDescription}  >{moment( item.created_at ).format( AppConfig.dateFormat )}</Text>
-            {item.subscription && item.subscription.is_cancelled && (
-              <Text style={themedStyle.textCancelled}  >{translate('OrderItemsCancelledLabel')}</Text>
-            )}
-            
           </View>
         </View>
         <View style={themedStyle.textContainer} >
@@ -67,31 +82,28 @@ class _OrderComponent extends React.Component {
               return (<View style={themedStyle.itemContainer}>
                       <Avatar
                         source={{uri: product.photo}}
+                        style={{marginRight: 10}}
                       />
                       <View style={{flex:1, flexDirection: 'column'}}>
                         <Text style={themedStyle.itemHead}>{product.name_en}</Text>
-                        <Text style={themedStyle.itemDetail}>{translate('OrderItemBrandLabel')}: {product.brand_en}</Text>
-                        <Text style={themedStyle.itemDetail}>{translate('OrderItemWeightLabel')}: {product.weight}</Text>
+                        {this.renderAttributes(i)}
                       </View>
                       
                       <Text style={themedStyle.itemHead}>x{i.quantity}</Text>
               </View>)
 
           })}
-          <View style={{flexDirection:'row'}}>
-            <Image source={require('src/assets/icons/checkbox-icon.png')} style={{width:20,height: 20, marginRight: 5}} />
-            <Text style={themedStyle.textTitleBold}>{translate('OrderItemRecurrEveryLabel')}{recurrEvery}</Text> 
-          </View>
+          
           <Button
               textStyle={themedStyle.yellowBtnText}
               status='primary'
               style={themedStyle.yellowBtn}
-              onPress={() => this._onPressBuyNow(item)}
+              // onPress={() => this._onPress(item)}
               >{translate('OrderItemBuyNowBtn')}
               
-          </Button>
+            </Button>
             <View style={{alignSelf: 'center',borderWidth: 1, borderRadius: 25, borderColor:"#E9EBED", width: width*0.75, padding: 10, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={themedStyle.textTitleBold}>${item.total_price} (purchased {item.total_purchases} times)</Text>
+                <Text style={themedStyle.textTitleBold}>${item.total_price}</Text>
             </View>
          
         </View>
@@ -174,12 +186,6 @@ export const OrderComponent = withStyles(_OrderComponent, theme => ({
     fontSize: 12,
 
     color: "#5D5A53"
-  },
-  textCancelled:{
-    fontFamily: "Montserrat",
-    fontSize: 12,
-
-    color: "red"
   },
   yellowBtn:{
         fontFamily: "Montserrat",

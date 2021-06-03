@@ -39,3 +39,32 @@ export function getRecurringOrders( accessToken, from_date, to_date ) {
 
     return Api(path, null, 'get', accessToken);
 }
+
+export function getMyOrders( accessToken, from_date, to_date ) {
+ 
+    let path = ApiConstants.ACTIONS.MY_ORDER+'?';
+    
+    if( from_date != null ){
+        path += 'fromDate='+encodeURIComponent(from_date)
+    }
+
+
+    if( to_date != null ){
+        path += '&toDate='+encodeURIComponent(to_date)
+    }
+    
+
+    return Api(path, null, 'get', accessToken);
+}
+
+export function cancelSubscription( accessToken, order ) {
+ 
+    let path = ApiConstants.ACTIONS.RECURRING_SUBSCRIPTION_CANCEL;
+    
+    let body = {
+        id : order.id
+    }
+    
+
+    return Api(path, body, 'post', accessToken);
+}

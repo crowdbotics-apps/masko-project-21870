@@ -6,8 +6,7 @@ import {
   Image,
   View,
   TouchableOpacity,
-  Platform,
-  Alert
+  Platform
 } from 'react-native';
 
 import {
@@ -46,8 +45,8 @@ class OrderDetailsComponent extends React.Component {
   }
 
   renderSpinner = () => {
-    const { addOrderLoading, cancelOrderLoading } = this.props;
-    if (addOrderLoading || cancelOrderLoading) {
+    const { addOrderLoading } = this.props;
+    if (addOrderLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -96,31 +95,17 @@ class OrderDetailsComponent extends React.Component {
   }
 
   validator = () => {
-    const { order } = this.props
+    const { payMethodLabel } = this.state
 
-    return ( order.subscription.is_cancelled  )
+    return (payMethodLabel)
   }
 
-  onPressCancel = () => {
-    let that = this;
-    Alert.alert(
-      translate('ConfirmPopUpHead'),
-      translate('SubscriptionCancelConfirmation'),
-      [
-        {
-          text: translate('PopUpCancelButton'),
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: translate('PopUpOkButton'), onPress: () => {
-            console.log("OK Pressed")
-            that.props.onCancelSubscription()
-          }
-         }
-      ]
-    );
-    
-  }
+  // onPressConfirmBtn = () => {
+  //   const { payMethodLabel, payMethodValue } = this.state
+  //   this.props.onConfirmOrder({
+  //     paymentMethod: payMethodLabel
+  //   })
+  // }
 
 
   render() {
@@ -139,7 +124,7 @@ class OrderDetailsComponent extends React.Component {
             <View style={themedStyle.headerLogo}>
                 <MicroLogo size={20} />
             </View>
-           <Text style={themedStyle.orderDetailText}>{translate('RecurringOrderDetailsIntro')}</Text>
+           <Text style={themedStyle.orderDetailText}>{translate('MyOrderDetailsIntro')}</Text>
           <View style={[themedStyle.summary.headRowContainer]}  >
               <Text style={themedStyle.summary.heading} >{translate('OrderSummaryLabel')}</Text>
             
@@ -156,25 +141,7 @@ class OrderDetailsComponent extends React.Component {
               onItemPress={this.onItemPress}
           />
 
-          <View style={[themedStyle.summary.headRowContainer]}  >
-              <Text style={themedStyle.summary.heading} >{translate('RecurrOrderDetailsRecurrentInfo')}</Text>
-          </View>
-          <View style={themedStyle.summary.rowContainer}  >
-            <Text style={themedStyle.summary.label} >{translate('RecurrOrderDetailsOrderEveryLabel')}</Text>
-            <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >{order.products[0].order_every}</Text>
-
-            </View>
-          </View>
-          <View style={themedStyle.summary.rowContainer}  >
-            <Text style={themedStyle.summary.label} >{translate('RecurrOrderDetailsStart')}</Text>
-            <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >{date}</Text>
-
-            </View>
-          </View>
-
-
+        
        
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
@@ -184,55 +151,30 @@ class OrderDetailsComponent extends React.Component {
             </View>
           </View>
 
-          <View style={[themedStyle.summary.headRowContainer]}  >
-              <Text style={themedStyle.summary.heading} >{translate('RecurrOrderDetailsPurchasesInfo')} ({order.total_purchases})</Text>
-          </View>
-
-          {order.purchases.map( (i) => {
-                
-                let date = null
-                if (i.stripe_date){
-                  date = moment(i.stripe_date).format(AppConfig.dateFormat)
-                }else{
-                  date = moment(i.created_at).format(AppConfig.dateFormat)
-                }
-                
-
-
-                return (<View style={themedStyle.summary.rowContainer}  >
-                  <Text style={themedStyle.summary.label} >{date}</Text>
-                  <View style={themedStyle.labelContainer} >
-                      <Text style={themedStyle.summary.labelText} >${order.total_price}</Text>
-      
-                  </View>
-                </View>);
-          })}
-          
-          <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
-            <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
-            <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >${recurringTotal}</Text>
-
-            </View>
-          </View>
-      
-          <Button
-                            style={styles.yellowButton}
-                            textStyle={styles.whiteFont}
-                            size="giant"
-                            status='primary'
-                            onPress={this.onPressCancel}
-                            disabled={this.validator()}
-
-                          >
-                            {translate("CancelRecurringBtn")}
-                        </Button>
 
         </ScrollView>
       </LinearGradient>
     );
   }
 }
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 14,
+    marginBottom: 12,
+    color: '#FFF',
+    fontFamily: "Montserrat",
+
+  },
+  inputAndroid: {
+    fontSize: 10,
+    padding: 0,
+    margin: 0,
+    color: '#FFF',
+    fontFamily: "Montserrat",
+
+  },
+});
 
 
 export const OrderDetails = withStyles( OrderDetailsComponent, theme => ({

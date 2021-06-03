@@ -124,7 +124,7 @@ class _CartItemsComponent extends React.Component {
               <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
           </View>
           <View style={themedStyle.itemPriceContainer}>
-               <Text style={themedStyle.itemPriceLabel}>${price}2</Text>
+               <Text style={themedStyle.itemPriceLabel}>${price}</Text>
           </View>
     
         </View>);

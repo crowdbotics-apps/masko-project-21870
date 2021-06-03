@@ -4,12 +4,17 @@ class RecurringOrderManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_recurring=True)
 
+class NoRecurrOrderManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_recurring=False)        
+
 
 # Order Model
 class Order(models.Model):
 
     objects = models.Manager()
     recurring_objects = RecurringOrderManager()
+    normal_objects = NoRecurrOrderManager()
 
     PENDING = 'PN'
     PAID = 'PD'
@@ -62,6 +67,8 @@ class Order(models.Model):
         auto_now=True,
     )
     is_recurring = models.BooleanField(default=False)
+    
+    
     
     status = models.CharField(
         max_length=2,

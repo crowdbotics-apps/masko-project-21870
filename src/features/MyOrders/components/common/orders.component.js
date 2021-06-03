@@ -33,10 +33,6 @@ class _OrderComponent extends React.Component {
     this.props.onPressOrderItem(item)
   }
 
-  _onPressBuyNow = (item) => {
-    this.props.onPressBuyNow(item)
-  }
-
 
   renderItem = ({ item, index, separators }) => {
     const { themedStyle } = this.props;
@@ -54,10 +50,6 @@ class _OrderComponent extends React.Component {
           <View>
             <Text style={themedStyle.textTitle}  >{translate('OrderItemsNumberLabel')}{item.id}</Text>
             <Text style={themedStyle.textDescription}  >{moment( item.created_at ).format( AppConfig.dateFormat )}</Text>
-            {item.subscription && item.subscription.is_cancelled && (
-              <Text style={themedStyle.textCancelled}  >{translate('OrderItemsCancelledLabel')}</Text>
-            )}
-            
           </View>
         </View>
         <View style={themedStyle.textContainer} >
@@ -67,6 +59,7 @@ class _OrderComponent extends React.Component {
               return (<View style={themedStyle.itemContainer}>
                       <Avatar
                         source={{uri: product.photo}}
+                        style={{marginRight: 10}}
                       />
                       <View style={{flex:1, flexDirection: 'column'}}>
                         <Text style={themedStyle.itemHead}>{product.name_en}</Text>
@@ -86,10 +79,10 @@ class _OrderComponent extends React.Component {
               textStyle={themedStyle.yellowBtnText}
               status='primary'
               style={themedStyle.yellowBtn}
-              onPress={() => this._onPressBuyNow(item)}
+              // onPress={() => this._onPress(item)}
               >{translate('OrderItemBuyNowBtn')}
               
-          </Button>
+            </Button>
             <View style={{alignSelf: 'center',borderWidth: 1, borderRadius: 25, borderColor:"#E9EBED", width: width*0.75, padding: 10, justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={themedStyle.textTitleBold}>${item.total_price} (purchased {item.total_purchases} times)</Text>
             </View>
@@ -174,12 +167,6 @@ export const OrderComponent = withStyles(_OrderComponent, theme => ({
     fontSize: 12,
 
     color: "#5D5A53"
-  },
-  textCancelled:{
-    fontFamily: "Montserrat",
-    fontSize: 12,
-
-    color: "red"
   },
   yellowBtn:{
         fontFamily: "Montserrat",

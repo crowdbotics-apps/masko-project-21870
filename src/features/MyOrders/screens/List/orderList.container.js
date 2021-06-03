@@ -3,7 +3,7 @@ import React from 'react';
 import { OrderList } from './orderList.component';
 import { View } from 'react-native';
 import {connect} from 'react-redux';
-import * as RecurrOrderActions from '../../redux/actions';
+import * as MyOrderActions from '../../redux/actions';
 import appConfig from 'src/config/app';
 import * as utils from '../../utils/general';
 
@@ -17,7 +17,7 @@ import { translate }  from 'src/utils/translation';
 export class _OrderListContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    titleText = translate('RecurrOrderListNavTitle');
+    titleText = translate('MyOrderListNavTitle');
   
     return {
                 title: titleText,
@@ -42,9 +42,9 @@ export class _OrderListContainer extends React.Component {
   }
 
 
-  getRecurringOrders = ( from_date, to_date ) => {
+  getMyOrders = ( from_date, to_date ) => {
     const { accessToken, actions, navigation } = this.props;
-    actions.getRecurringOrder( accessToken, from_date, to_date );
+    actions.getMyOrders( accessToken, from_date, to_date );
   }
 
   
@@ -57,30 +57,21 @@ export class _OrderListContainer extends React.Component {
           ...item,
           formattedItem: formattedProducts
     }
-    navigation.navigate( appConfig.NAVIGATOR_ROUTE.OrderDetails ,{
+    navigation.navigate("OrderDetails",{
       order: item2 
     })
     
   }
   
-  onPressBuyNow = (item) => {
-    const { navigation } = this.props;
-    navigation.navigate( appConfig.NAVIGATOR_ROUTE.ProductDetails ,{
-      product: item.products[0].refrence_item 
-    })
-  }
-
   render() {
     const { navigation } = this.props;
     return (
       <OrderList
         navigation={navigation}
         orders={this.props.orders}
-        getRecurrOrderLoading={this.props.getRecurrOrderLoading}
+        getMyOrderLoading={this.props.getMyOrderLoading}
         onPressOrderItem={this.onPressOrderItem}
-        onPressBuyNow={this.onPressBuyNow}
-        getRecurringOrderCb={this.getRecurringOrders}
-
+        getMyOrdersCb={this.getMyOrders}
         
        />
     );
@@ -89,15 +80,15 @@ export class _OrderListContainer extends React.Component {
 
 const mapStateToProps = state => ({
   accessToken: state.EmailAuth.accessToken,
-  orders: state.RecurringOrder.orders,
-  getRecurrOrderLoading: state.RecurringOrder.ListRecurOrder,
+  orders: state.MyOrder.orders,
+  getMyOrderLoading: state.MyOrder.ListMyOrder,
   userPets: state.UserAccount.pets,
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    getRecurringOrder: ( accessToken , from_date, to_date ) => {
-      dispatch(RecurrOrderActions.getRecuringOrders( accessToken, from_date, to_date ));
+    getMyOrders: ( accessToken , from_date, to_date ) => {
+      dispatch(MyOrderActions.getMyOrders( accessToken, from_date, to_date ));
     },
   },
 });

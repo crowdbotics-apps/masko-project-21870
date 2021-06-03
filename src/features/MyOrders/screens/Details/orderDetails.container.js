@@ -14,7 +14,7 @@ import { translate }  from 'src/utils/translation';
 export class _OrderDetailsContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    titleText = translate('RecurringOrderDetailsNavTitle');
+    titleText = translate('MyOrderDetailsNavTitle');
  
     return {
                 title: titleText,
@@ -41,9 +41,9 @@ export class _OrderDetailsContainer extends React.Component {
 
  
 
-  onCancelSubscription = () => {
-      const { actions, accessToken, navigation  } = this.props;
-      actions.cancelSubscription( accessToken, navigation.state.params.order  )
+  onConfirmOrder = (data) => {
+      const { actions, accessToken, cart } = this.props;
+      actions.addOrder( accessToken, cart, data.paymentMethod )
 
 
   }
@@ -57,8 +57,7 @@ export class _OrderDetailsContainer extends React.Component {
           order={navigation.state.params.order}
           cart={this.props.cart}
           addOrderLoading={this.props.addOrderLoading}
-          cancelOrderLoading={this.props.cancelOrderLoading}
-          onCancelSubscription={this.onCancelSubscription}
+          onConfirmOrder={this.onConfirmOrder}
         
        />
     );
@@ -70,16 +69,13 @@ const mapStateToProps = state => ({
   services: state.Service.services,
   getServiceLoading: state.Service.GetService,
   cart: state.Checkout.cart,
-  addOrderLoading: state.Checkout.loaders.AddOrder,
-  cancelOrderLoading: state.RecurringOrder.loaders.CancelRecurOrder,
-
+  addOrderLoading: state.Checkout.loaders.AddOrder
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-   
-    cancelSubscription: (  accessToken, order ) => {
-      dispatch( CheckoutActions.cancelSubscription( accessToken, order ) );
+    addOrder: (  accessToken, cart, paymentMethod ) => {
+      dispatch( CheckoutActions.submitOrder( accessToken, cart, paymentMethod ) );
     },
   },
 });

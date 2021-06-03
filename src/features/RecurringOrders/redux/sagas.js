@@ -7,6 +7,9 @@ import * as OrderMethod from 'src/api/methods/order';
 
 
 import { 
+  RECURRING_ORDER_CANCEL_ERROR,
+  RECURRING_ORDER_CANCEL_REQUEST,
+  RECURRING_ORDER_CANCEL_SUCCESS,
   RECURRING_ORDER_LIST_ERROR,
   RECURRING_ORDER_LIST_REQUEST, RECURRING_ORDER_LIST_SUCCESS,
    } from './constants';
@@ -57,10 +60,53 @@ function* handleGetRecurringOrders(action) {
   
 }
 
+function* handleCancelSubscription(action) {
+  const {
+  accessToken, 
+  order, 
+  } = action;
+  
+  try {
+    const {status, data, error} = yield call( OrderMethod.cancelSubscription, accessToken, order);
+
+      if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
+        yield put({
+          type: RECURRING_ORDER_CANCEL_SUCCESS,
+          data: order
+        });
+        setTimeout(()=>{
+          showSuccessAlert(translate('SubscriptionCancelSuccessMsg'))
+       },500);
+
+       NavigationService.goBack();
+
+
+      } else {
+        let msg = compileErrorMessage(error,data)
+        yield put({
+          type: RECURRING_ORDER_CANCEL_ERROR,
+          error: msg,
+        });
+        setTimeout(()=>{
+          showErrorAlert(msg)
+      },500);
+      }
+  } catch (error) {
+    // todo add errors with similar structure in backend
+    yield put({
+      type: RECURRING_ORDER_CANCEL_ERROR,
+      error: translate('RecurringOrderCancelError'),
+    });
+  }
+   
+  
+}
+
 
 
 
 export default all([
   takeLatest(RECURRING_ORDER_LIST_REQUEST, handleGetRecurringOrders),
+  takeLatest(RECURRING_ORDER_CANCEL_REQUEST, handleCancelSubscription),
   
 ]);
