@@ -30,6 +30,10 @@ const moment = require('moment');
 class _OrderComponent extends React.Component {
   
   _onPress = (item) => {
+    this.props.onPressOrderItem(item)
+  }
+
+  _onPressBuyNow = (item) => {
     this.props.onPressBuyNow(item)
   }
 
@@ -82,7 +86,7 @@ class _OrderComponent extends React.Component {
               textStyle={themedStyle.yellowBtnText}
               status='primary'
               style={themedStyle.yellowBtn}
-              onPress={() => this._onPress(item)}
+              onPress={() => this._onPressBuyNow(item)}
               >{translate('OrderItemBuyNowBtn')}
               
           </Button>
