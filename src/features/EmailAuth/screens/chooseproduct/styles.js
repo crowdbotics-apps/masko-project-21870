@@ -13,9 +13,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: height,
+        paddingHorizontal: 10,
         paddingBottom: 70
     },
     item: {
@@ -104,16 +105,6 @@ const styles = StyleSheet.create({
         backgroundColor:null,
         fontFamily: "Montserrat",
         color: '#FFF',
-    },
-    inputBox2:{
-        borderBottomColor:'#7384B2',
-        borderBottomWidth:1,
-        padding:10,
-        margin:10,
-        backgroundColor:null,
-        fontFamily: "Montserrat",
-        color: '#FFF',
-        flexDirection:'row'
     },
     inputBoxText:{
         fontFamily: "Montserrat",

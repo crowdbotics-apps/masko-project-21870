@@ -28,4 +28,8 @@ export const setUser = ( user ) => ({
 export const reInitStore4mSession = () => ({
   type: actions.EMAIL_AUTH_REINIT_STORE
 })
+export const setProducts = (products) => ({
+  type: actions.EMAIL_AUTH_SET_PRODUCT_SELECTION,
+  products
+})
 

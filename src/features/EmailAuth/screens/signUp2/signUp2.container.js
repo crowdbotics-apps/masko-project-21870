@@ -12,6 +12,16 @@ export class _SignUp2Container extends React.Component {
     header: null,
   };
 
+  constructor(props){
+    super(props)
+    const didFocusSubscription = props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.setState({...this.state})
+      }
+    );
+  }
+
   navigationKey = 'SignIn2';
 
   onSignUpPress = data => {
@@ -28,6 +38,10 @@ export class _SignUp2Container extends React.Component {
     this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.ForgetPassword );
   }
 
+  onChooseProductPress = () =>{
+    this.props.navigation.navigate( 'ChooseProduct' );
+  }
+
   onPhotoPress = () => {};
 
   
@@ -39,8 +53,11 @@ export class _SignUp2Container extends React.Component {
         onSignInPress={this.onSignInPress}
         onPhotoPress={this.onPhotoPress}
         onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
+        onChooseProductPress={this.onChooseProductPress}
         errorMsg={this.props.signUpErrors}
         signUpLoading={this.props.signUpLoading}
+        selectedProducts={this.props.selectedProducts}
+        resetSignUpState={this.props.resetSignUpState}
         
       />
     );
@@ -49,14 +66,17 @@ export class _SignUp2Container extends React.Component {
 
 const mapStateToProps = state => ({
   // signUpErrors: state.SignUp02Blueprint.errors.SignUp,
-  signUpLoading: state.EmailAuth.loaders.SignUp
+  signUpLoading: state.EmailAuth.loaders.SignUp,
+  resetSignUpState: state.EmailAuth.formReset.SignUp,
+
+  selectedProducts: state.EmailAuth.selectedProducts
 });
 
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    signUp: ({email, password, name}) => {
-      dispatch(emailAuthActions.signUp({email, password, name}));
+    signUp: ({email, password, name, frequentPurchases, signupProducts}) => {
+      dispatch(emailAuthActions.signUp({email, password, name, frequentPurchases, signupProducts}));
     },
   },
 });

@@ -10,6 +10,8 @@ from allauth.account.utils import setup_user_email
 from rest_framework import serializers
 from rest_auth.serializers import PasswordResetSerializer
 from home.models import HomePage, CustomText
+import json
+
 
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category, Product
@@ -42,6 +44,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def _get_request(self):
         request = self.context.get("request")
+        print(request.data)
         if (
             request
             and not isinstance(request, HttpRequest)
@@ -61,12 +64,21 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
     def set_user_signup_prod(self, user, request):
-        if 'products' in request.POST:
-            in_product = request.POST['products']
+        products = []
+        if 'products' in request.data:
+            in_product = request.data['products']
             products = in_product.split(',')
+            
+
+        elif 'products' in request.POST:
+            in_product = request.POST['products']
+      
+            products = in_product.split(',')
+
+        if len(products)>0:
             for item in products:
                 newItem = SignUpProduct(user_id=user.id, product_id=item)
-                newItem.save()
+                newItem.save()    
       
 
     def create(self, validated_data):
@@ -78,9 +90,11 @@ class SignupSerializer(serializers.ModelSerializer):
                 [validated_data.get("name"), validated_data.get("email"), "user"]
             ),
         )
+        
         user.set_password(validated_data.get("password"))
         user.save()
-        request = self._get_request()
+        request = self.context.get("request")
+        
         self.set_user_signup_prod(user, request)
         setup_user_email(request, user, [])
         return user

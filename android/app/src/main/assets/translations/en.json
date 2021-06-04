@@ -16,9 +16,11 @@
     "placeholdersEmail":"Email",
     "placeholdersPassword":"Enter Password",
     "SignUp2Button": "Sign Up",
+    "SignupChoosePreferredProduct": "Choose Preferred Products",
     "Already have an account?": "Already have an account?",
     "placeholdersFullName":"Full Name",
     "placeholdersCreatePassword":"Create Password",
+    "placeholdersFrequentPurchases":"How frequent you purchase in a month?",
     "TermsConditionLabel1":"By using Masko you agree with our",
     "TermsConditionLabel2":"T&C",
     "TermsConditionLabel3":"privacy statement",
@@ -171,6 +173,8 @@
     "RecurringOrderCancelError": "Unable to cancel subscription",
     "SubscriptionCancelConfirmation": "Are you sure you want to cancel this subscription?",
     "SubscriptionCancelSuccessMsg": "Subscription has been cancelled successfully.",
+    "ChooseProductsHead":"Select Your Products",
+    "ChooseSelectedButton": "Choose Selected"
     
     
     

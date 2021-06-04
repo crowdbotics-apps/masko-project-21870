@@ -31,10 +31,10 @@ import * as UserPasswordMethods from 'src/api/methods/forgetPassword';
 
 function* handleSignUp(action) {
   const {
-    user: {email, password, name},
+    user: {email, password, name, frequentPurchases, signupProducts },
   } = action;
   try {
-    const {status, data, error} = yield call(signUpUser, {email, password, name});
+    const {status, data, error} = yield call(signUpUser, {email, password, name, frequentPurchases, signupProducts});
 
       if (status === ApiConstants.STATUS_CODES.SUCCESS_CREATED ) {
         yield put({

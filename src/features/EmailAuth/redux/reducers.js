@@ -2,7 +2,12 @@ import * as actions from "./constants";
 
 const initialState = {
   user: null,
+  formReset:{
+    SignUp: false,
+    SignIn: false
+  },
   accessToken: null,
+  selectedProducts: [],
   errors: { SignIn: null, SignUp: null, PasswordRecover: null },
   loaders: { SignIn: null, SignUp: null, PasswordRecover: null }
 };
@@ -19,6 +24,11 @@ export default EmailAuthReducer = (state = initialState, action) => {
       return { 
                 ...state,
                 accessToken: action.accessToken,
+                formReset: {
+                  ...state.formReset,
+                  SignIn: true,
+        
+                },
                 user: action.user,
                 errors: {  ...state.errors, SignIn: null },
                 loaders: { ...state.loaders, SignIn: null },
@@ -27,6 +37,11 @@ export default EmailAuthReducer = (state = initialState, action) => {
 
       return { 
         ...state,
+        formReset: {
+          ...state.formReset,
+          SignIn: false,
+
+        },
         errors: { ...state.errors, SignIn: action.error },
         loaders: { ...state.loaders, SignIn: null },
        };
@@ -41,13 +56,23 @@ export default EmailAuthReducer = (state = initialState, action) => {
     case actions.EMAIL_AUTH_SIGNUP_SUCCESS:
       return { 
         ...state,
-        user: action.user,
+        selectedProducts: [],
+        formReset: {
+          ...state.formReset,
+          SignUp: true,
+
+        },
         errors: {  ...state.errors, SignUp: null },
         loaders: { ...state.loaders, SignUp: null },
        };
     case actions.EMAIL_AUTH_SIGNUP_ERROR:
       return { 
         ...state,
+        formReset: {
+          ...state.formReset,
+          SignUp: false,
+
+        },
         errors: { ...state.errors, SignUp: action.error },
         loaders: { ...state.loaders, SignUp: null },
        };
@@ -74,6 +99,12 @@ export default EmailAuthReducer = (state = initialState, action) => {
             return { 
                   ...state,
                   user: action.user
+                  
+                 };         
+    case actions.EMAIL_AUTH_SET_PRODUCT_SELECTION:
+            return { 
+                  ...state,
+                  selectedProducts: action.products
                   
                  };         
     case actions.EMAIL_AUTH_LOGOUT:
