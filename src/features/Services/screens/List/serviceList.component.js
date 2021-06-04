@@ -51,7 +51,7 @@ class ServiceListComponent extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot){
     
-    if( this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
+    if( this.props.navigation.state.params && this.props.navigation.state.params.category != prevProps.navigation.state.params.category ){
       this.setState({ search: '' });
     }  
         
