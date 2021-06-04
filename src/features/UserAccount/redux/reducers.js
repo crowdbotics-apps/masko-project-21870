@@ -9,6 +9,7 @@ const initialState = {
   petTypes: [],
   breedTypes: [],
   selectedPet: null,
+  selectedBreedType: null,
   errors: {   
           SetPet: null,
           GetPet: null,
@@ -570,7 +571,15 @@ export default UserAccountReducer = (state = initialState, action) => {
           ...state,
           showPetSelector: false
           
-        };      
+        }; 
+        
+        case actions.USER_PET_BREED_SET_SUCCESS:
+          return {
+            ...state,
+            selectedBreedType: action.breed,
+            
+          }; 
+            
           
 
     

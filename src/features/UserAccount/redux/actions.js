@@ -10,9 +10,15 @@ export const getPetType = accessToken => ({
   accessToken
 });
 
-export const getBreedType = accessToken => ({
+export const getBreedType = (accessToken,keyword) => ({
   type: actions.USER_PET_BREED_GET_REQUEST,
-  accessToken
+  accessToken,
+  keyword
+});
+
+export const setBreedType = (breed) => ({
+  type: actions.USER_PET_BREED_SET_SUCCESS,
+  breed
 });
 
 export const addPet = (accessToken , pet ) => ({

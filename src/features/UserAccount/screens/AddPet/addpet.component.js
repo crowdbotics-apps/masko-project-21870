@@ -89,7 +89,7 @@ class _AddPetComponent extends React.Component {
     this.props.onAddButtonPress({
       name: this.state.name,
       pet_type: this.state.pet,
-      breed: this.state.breed,
+      breed: this.props.selectedBreedType.id,
       age: this.state.age,
       image: this.state.image
     });
@@ -120,12 +120,13 @@ class _AddPetComponent extends React.Component {
 
   validator() {
 
-    const { name, pet, breed, age, image } = this.state;
+    const { name, pet,  age, image } = this.state;
+    const { selectedBreedType } = this.props;
 
     return (
       name !== undefined &&
       pet !== undefined && pet !== 0 &&
-      breed !== undefined && breed !== 0 &&
+      selectedBreedType !== undefined && selectedBreedType !== null &&
       age !== undefined && 
       image.content !== null 
     );
@@ -150,6 +151,10 @@ class _AddPetComponent extends React.Component {
     this.props.onForgetPasswordButtonPress();
   }
 
+  onPressChooseBreed = () => {
+    this.props.onPressChooseBreed();
+  }
+
   render() {
     const { themedStyle } = this.props;
 
@@ -159,12 +164,14 @@ class _AddPetComponent extends React.Component {
         <ScrollableAvoidKeyboard style={themedStyle.container}>
 
             <AddPetForm
+
                 name={this.state.name}
                 pet={this.state.pet}
                 breed={this.state.breed}
                 age={this.state.age}
                 breedTypes={this.props.breedTypes}
                 breedTypeName={this.state.breedTypeName}
+                selectedBreedType={this.props.selectedBreedType}
                 petTypeName={this.state.petTypeName}
                 petTypes={this.props.petTypes}
                 onNameInputTextChange={this.onNameInputTextChange}
@@ -173,6 +180,8 @@ class _AddPetComponent extends React.Component {
                 onAgeInputTextChange={this.onAgeInputTextChange}
                 onPetImageChange={this.onPetImageChange}
                 changePhotoLabel={translate("AddPhotoLabel")}
+                onPressChooseBreed={this.onPressChooseBreed}
+
               />
             <Button
                 style={styles.yellowButton}
@@ -191,7 +200,7 @@ class _AddPetComponent extends React.Component {
             size="giant"
             status='info'
             // disabled={!this.validator()}
-            onPress={this.onCancelButtonPress}
+            onPress={this.onPressChooseBreed}
 
           >
             {translate("CancelButtonLabel")}

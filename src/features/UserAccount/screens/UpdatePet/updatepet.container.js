@@ -51,6 +51,13 @@ export class _UpdatePetContainer extends React.Component {
     this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.Home )
   };
 
+  onPressChooseBreed = (breed) =>{
+    this.props.navigation.navigate({
+      routeName: 'ChooseBreed' ,
+      params: {breed: breed}
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     return (
@@ -63,6 +70,9 @@ export class _UpdatePetContainer extends React.Component {
         breedTypes={this.props.breedTypes}
         navigation={navigation}
 
+        onPressChooseBreed={this.onPressChooseBreed}
+        selectedBreedType={this.props.selectedBreedType}
+
       />
     );
   }
@@ -73,7 +83,8 @@ const mapStateToProps = state => ({
   user: state.EmailAuth.user,
   updateLoading: state.UserAccount.loaders.UpdatePet,
   petTypes: state.UserAccount.petTypes,
-  breedTypes: state.UserAccount.breedTypes
+  breedTypes: state.UserAccount.breedTypes,
+  selectedBreedType: state.UserAccount.selectedBreedType,
 });
 
 const mapDispatchToProps = dispatch => ({

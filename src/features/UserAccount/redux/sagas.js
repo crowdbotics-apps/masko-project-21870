@@ -232,10 +232,11 @@ function* handleGetPetType(action) {
 
 function* handleGetBreedType(action) {
   const {
-    accessToken
+    accessToken,
+    keyword
   } = action;
   try {
-    const {status, data, error} = yield call( getBreedType, accessToken );
+    const {status, data, error} = yield call( getBreedType, accessToken, keyword );
 
       if ( status === ApiConstants.STATUS_CODES.SUCCESS_OK ) {
         yield put({

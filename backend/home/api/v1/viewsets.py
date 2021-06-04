@@ -214,7 +214,19 @@ class PetTypeViewSet(ModelViewSet):
     
 class BreedTypeViewSet(ModelViewSet):
     serializer_class = BreedTypeSerializer
-    queryset = BreedType.objects.all().order_by('-sort')
+    
+    def get_queryset( self ):
+        queryset = BreedType.objects.all()
+        keyword = self.request.query_params.get('keyword')
+        
+        if keyword is not None:
+            queryset = queryset.filter(
+                                        Q(name__icontains=keyword) 
+                                      )
+
+       
+        return queryset.order_by('-sort')
+
 
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = [IsOwnerOrReadOnly]
