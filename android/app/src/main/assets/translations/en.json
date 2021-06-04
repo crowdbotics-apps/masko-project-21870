@@ -20,6 +20,7 @@
     "Already have an account?": "Already have an account?",
     "placeholdersFullName":"Full Name",
     "placeholdersCreatePassword":"Create Password",
+    "passwordHintText":"Password must be 8+ characters  long",
     "placeholdersFrequentPurchases":"How frequent you purchase in a month?",
     "TermsConditionLabel1":"By using Masko you agree with our",
     "TermsConditionLabel2":"T&C",

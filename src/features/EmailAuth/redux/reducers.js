@@ -49,6 +49,11 @@ export default EmailAuthReducer = (state = initialState, action) => {
     case actions.EMAIL_AUTH_SIGNUP_REQUEST:
         return { 
                   ...state,
+                  formReset: {
+                    ...state.formReset,
+                    SignUp: false,
+          
+                  },
                   errors: { ...state.errors, SignUp: null },
                   loaders: { ...state.loaders, SignUp: true },
                  };   

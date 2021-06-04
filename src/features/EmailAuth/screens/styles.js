@@ -119,6 +119,13 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFF',
     },
+    inputHintText:{
+        fontFamily: "Montserrat",
+        color: '#FFCD3E',
+        fontSize: 10,
+        marginLeft: 20,
+        marginTop: -5,
+    },
     inputIconContainer:{
         flex: 1, 
         flexDirection: 'row',

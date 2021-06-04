@@ -95,6 +95,8 @@ class SignUpForm2Component extends React.Component {
             value={password}
             onChangeText={onPasswordInputValidationResult}
           />
+          <Text style={formStyles.inputHintText}>{translate('passwordHintText')}</Text>
+            
           <TouchableOpacity style={formStyles.inputBox} onPress={()=>this.props.onChooseProductPress()}>
             <Text style={formStyles.inputBoxText}>{translate('SignupChoosePreferredProduct')}</Text>
             {selectedProducts.map((k)=>{

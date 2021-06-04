@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import CartIcon from 'src/assets/icons/cart-icon.svg';
 import React from "react";
 import { PetButton } from 'src/components/HeaderBar';
+import { CartModel } from 'src/features/Checkout/models';
 
 
 import {connect} from 'react-redux';
@@ -28,7 +29,7 @@ export class _RightIcon extends React.Component {
   render() {
     const { navigation, cart } = this.props;
 
-    const quantity = (cart!=null)?cart.getTotalItemCount():0
+    const quantity = (cart instanceof CartModel )?cart.getTotalItemCount():0
 
       return (<View style={{flex:1, flexDirection:'row', justifyContent:'flex-end', marginRight: 10}}>
                         <TouchableOpacity onPress={this.onPress}>

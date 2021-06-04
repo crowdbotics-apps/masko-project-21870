@@ -66,13 +66,12 @@ class SignupSerializer(serializers.ModelSerializer):
     def set_user_signup_prod(self, user, request):
         products = []
         if 'products' in request.data:
-            in_product = request.data['products']
+            in_product = str(request.data['products'])
             products = in_product.split(',')
             
 
         elif 'products' in request.POST:
-            in_product = request.POST['products']
-      
+            in_product = str(request.POST['products'])
             products = in_product.split(',')
 
         if len(products)>0:
