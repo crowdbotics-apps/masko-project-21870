@@ -46,6 +46,8 @@ class User(AbstractUser):
         max_length=512,
     )
 
+    signup_frequent_purchase = models.IntegerField(default=0, null=True, blank=True)  
+
     default_card = models.ForeignKey(Card, on_delete=models.CASCADE, null=True)
 
     timestamp_created = models.DateTimeField(
@@ -66,25 +68,25 @@ class User(AbstractUser):
 
     ### Handle Before Save Of a User
     def save(self, *args, **kwargs):
-        try:
-            if self.stripe_id is None:
-                stripe_customer = stripe.Customer.create(
-                        description="{}-({}) is created from Masko App".format(self.name,self.email),
-                        email= self.email,
-                        name= self.name
-                        )
-                self.stripe_id = stripe_customer.id        
-            else:
-                stripe.Customer.modify(
-                    self.stripe_id,
-                    description="{}-({}) is updated from Masko App".format(self.name,self.email),
-                    email= self.email,
-                    name= self.name
-                    )
-        except Exception as e: 
-            print("Stripe Save Error")
-            print(e)      
-            pass      
+        # try:
+        #     if self.stripe_id is None:
+        #         stripe_customer = stripe.Customer.create(
+        #                 description="{}-({}) is created from Masko App".format(self.name,self.email),
+        #                 email= self.email,
+        #                 name= self.name
+        #                 )
+        #         self.stripe_id = stripe_customer.id        
+        #     else:
+        #         stripe.Customer.modify(
+        #             self.stripe_id,
+        #             description="{}-({}) is updated from Masko App".format(self.name,self.email),
+        #             email= self.email,
+        #             name= self.name
+        #             )
+        # except Exception as e: 
+        #     print("Stripe Save Error")
+        #     print(e)      
+        #     pass      
 
 
         super(User, self).save(*args, **kwargs)
@@ -113,59 +115,15 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
 
-# cus_JHxE0CHwbYh3jv
-# stripe.Customer.create(
-#   description="My First Test Customer (created for API docs)", email="John@live.com", name="Bingo John")
 
+# Product Model
+class SignUpProduct(models.Model):
+    product = models.ForeignKey('service.Product', on_delete=models.CASCADE, null=True, default=None )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
 
-
-# stripe.Token.create(
-#   card={
-#     "number": "4242424242424242",
-#     "exp_month": 4,
-#     "exp_year": 2022,
-#     "cvc": "314",
-#   },
-# )
-
-
-
-# <Token token id=tok_1IfNU2ES1Wz3F8fhd547iBEb at 0x106316470> JSON: {
-#   "card": {
-#     "address_city": null,
-#     "address_country": null,
-#     "address_line1": null,
-#     "address_line1_check": null,
-#     "address_line2": null,
-#     "address_state": null,
-#     "address_zip": null,
-#     "address_zip_check": null,
-#     "brand": "Visa",
-#     "country": "US",
-#     "cvc_check": "unchecked",
-#     "dynamic_last4": null,
-#     "exp_month": 4,
-#     "exp_year": 2022,
-#     "fingerprint": "uN9vQZmQ8wvwLiKv",
-#     "funding": "credit",
-#     "id": "card_1IfNU2ES1Wz3F8fhZhBEBZG9",
-#     "last4": "4242",
-#     "metadata": {},
-#     "name": null,
-#     "object": "card",
-#     "tokenization_method": null
-#   },
-#   "client_ip": "39.57.175.142",
-#   "created": 1618225150,
-#   "id": "tok_1IfNU2ES1Wz3F8fhd547iBEb",
-#   "livemode": false,
-#   "object": "token",
-#   "type": "card",
-#   "used": false
-# }
-
-
-# stripe.Customer.create_source(
-#   "cus_JHxE0CHwbYh3jv",
-#   source="tok_1IfNU2ES1Wz3F8fhd547iBEb",
-# )
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )

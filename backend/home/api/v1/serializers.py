@@ -14,6 +14,7 @@ from home.models import HomePage, CustomText
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category, Product
 from order.models import Order, Product as OrderProduct
+from users.models import SignUpProduct
 
 
 import boto3
@@ -30,7 +31,7 @@ BASE_PATH_PET_IMAGE = '{}/pet_images'.format(BASE_PATH)
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "name", "email", "password")
+        fields = ("id", "name", "email", "password","signup_frequent_purchase")
         extra_kwargs = {
             "password": {"write_only": True, "style": {"input_type": "password"}},
             "email": {
@@ -58,10 +59,21 @@ class SignupSerializer(serializers.ModelSerializer):
                 )
         return email
 
+
+    def set_user_signup_prod(self, user, request):
+        if 'products' in request.POST:
+            in_product = request.POST['products']
+            products = in_product.split(',')
+            for item in products:
+                newItem = SignUpProduct(user_id=user.id, product_id=item)
+                newItem.save()
+      
+
     def create(self, validated_data):
         user = User(
             email=validated_data.get("email"),
             name=validated_data.get("name"),
+            signup_frequent_purchase=validated_data.get("signup_frequent_purchase"),
             username=generate_unique_username(
                 [validated_data.get("name"), validated_data.get("email"), "user"]
             ),
@@ -69,6 +81,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data.get("password"))
         user.save()
         request = self._get_request()
+        self.set_user_signup_prod(user, request)
         setup_user_email(request, user, [])
         return user
 

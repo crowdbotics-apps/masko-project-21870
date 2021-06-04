@@ -68,8 +68,6 @@ class Order(models.Model):
     )
     is_recurring = models.BooleanField(default=False)
     
-    
-    
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOICES,

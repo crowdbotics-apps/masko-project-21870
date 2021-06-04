@@ -18,6 +18,7 @@ from django.urls import path, reverse
 from import_export.signals import post_export, post_import
 
 
+## BOF User Import Customization
 class SpImportMixin(ImportMixin):
 
     def import_action(self, request, *args, **kwargs):
@@ -83,7 +84,7 @@ class SpImportMixin(ImportMixin):
                 confirm_form = self.get_confirm_import_form()
                 initial = self.get_form_kwargs(form=form, **initial)
                 context['confirm_form'] = confirm_form(initial=initial)
-                
+
                 self.generate_log_entries(result, request)
                 self.add_success_message(result, request)
                 post_import.send(sender=None, model=self.model)
@@ -107,7 +108,6 @@ class SpImportMixin(ImportMixin):
         return TemplateResponse(request, [self.import_template_name],
                                 context)
 
-
 class SpImportExportMixin(SpImportMixin, ExportMixin):
     """
     Import and export mixin.
@@ -127,10 +127,7 @@ class ProductResource(resources.ModelResource):
         model = Product
         fields = ('id', 'name_en', 'name_es','description_en','description_es',
         'brand_en','brand_es','price','weight','size','photo','category','petType','is_recurring')
-
-
-class BookAdmin(ImportExportModelAdmin):
-    resource_class = ProductResource        
+## EOF User Import Customization
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
      def label_from_instance(self, obj):
