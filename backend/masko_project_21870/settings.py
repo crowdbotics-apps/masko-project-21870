@@ -59,7 +59,8 @@ LOCAL_APPS = [
     "pet",
     "service",
     "payment_stripe",
-    "order"
+    "order",
+    "import_export"
 ]
 
 THIRD_PARTY_APPS = [
@@ -244,6 +245,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+IMPORT_EXPORT_USE_TRANSACTIONS = False
+IMPORT_EXPORT_SKIP_ADMIN_LOG = True
 
 # ATOMIC_REQUESTS = True
 
