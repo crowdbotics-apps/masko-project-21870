@@ -1,18 +1,32 @@
 import React from 'react';
+import {
+  View
+} from 'react-native';
 import {NavigationStackScreenProps} from 'react-navigation-stack';
 import { ChooseProduct } from './chooseProduct.component';
 import {connect} from 'react-redux';
 import * as emailAuthActions from '../../redux/actions';
 import  appConfig from 'src/config/app';
 import * as ServiceActions from 'src/features/Services/redux/actions';
-
 import * as NavigationService from 'src/navigator/NavigationService';
+
+import { BackIcon, RightIcon, LogoIcon } from 'src/components/HeaderBar';
+import { translate }  from 'src/utils/translation';
 
 
 export class _ChooseProductContainer extends React.Component {
-  static navigationOptions = {
-    header: null,
+  
+  static navigationOptions = ({ navigation }) => {
+  
+    return {
+                title: translate('ChooseProductNavTitle'),
+                headerLeft: (<BackIcon navigation={navigation} />),
+                headerTitleStyle:appConfig.headerTitleStyle,
+                headerStyle: appConfig.headerStyle,
+                headerRight: (<View />)
+          }
   };
+
   navigationKey = 'ChooseProductContainer';
 
   componentDidMount(){

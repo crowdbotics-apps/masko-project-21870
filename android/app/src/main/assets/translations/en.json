@@ -175,7 +175,8 @@
     "SubscriptionCancelConfirmation": "Are you sure you want to cancel this subscription?",
     "SubscriptionCancelSuccessMsg": "Subscription has been cancelled successfully.",
     "ChooseProductsHead":"Select Your Products",
-    "ChooseSelectedButton": "Choose Selected"
+    "ChooseSelectedButton": "Choose Selected",
+    "ChooseProductNavTitle":"Products",
     
     
     

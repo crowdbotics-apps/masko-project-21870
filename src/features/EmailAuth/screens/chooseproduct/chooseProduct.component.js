@@ -60,8 +60,9 @@ class ChooseProductComponent extends React.Component {
 
   addProduct = (product) =>{
     const { selectedProducts } = this.state;
+    let obj = null;
     obj = _.find(selectedProducts, (j) => j.id == product.id );
-    if(!obj){
+    if(obj == null){
       let newList = selectedProducts;
       newList.push(product)
       this.setState({selectedProducts: newList})
@@ -120,7 +121,7 @@ class ChooseProductComponent extends React.Component {
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
         <ScrollableAvoidKeyboard >
             {this.renderSpinner()}
-            <View style={{marginTop: 40}}>
+            <View >
                 <SearchBox 
                   extraTitle={'Product'}
                   onSearchInputTextChange={this.onSearchInputTextChange} 
@@ -143,12 +144,13 @@ class ChooseProductComponent extends React.Component {
                 )}
 
             </View>
-            
-            <FlatList
-              data={products}
-              renderItem={this.renderItem}
-              keyExtractor={item => item.id}
-            />
+            <View >
+              <FlatList
+                data={products}
+                renderItem={this.renderItem}
+                keyExtractor={item => item.id}
+              />
+            </View>
                   
             
             <Button
