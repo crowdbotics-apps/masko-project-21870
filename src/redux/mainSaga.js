@@ -6,6 +6,7 @@ import UserAccountSaga from 'src/features/UserAccount/redux/sagas';
 import ServiceSaga from 'src/features/Services/redux/sagas';
 import CheckoutSaga from 'src/features/Checkout/redux/sagas';
 import RecurringOrderSaga from 'src/features/RecurringOrders/redux/sagas';
+import MyOrderSaga from 'src/features/MyOrders/redux/sagas';
 
 //@BlueprintReduxSagaImportInsertion
 
@@ -21,7 +22,8 @@ export function* mainSaga() {
     UserAccountSaga,
     ServiceSaga,
     CheckoutSaga,
-    RecurringOrderSaga
+    RecurringOrderSaga,
+    MyOrderSaga
     //@BlueprintReduxSagaMainInsertion
     
   ]);

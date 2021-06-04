@@ -51,12 +51,15 @@ class SignUpForm2Component extends React.Component {
       termsAccepted,
       termsModalStatus,
       privacyModalStatus,
+      frequentPurchases,
+      onFrequentInputTextChange,
       onUsernameInputTextChange,
       onEmailInputTextChange,
       onPasswordInputValidationResult,
       onTermsValueChange,
       onTermsModalPress,
       onPrivacyModalPress,
+      selectedProducts,
       ...restProps
     } = this.props;
 
@@ -91,6 +94,24 @@ class SignUpForm2Component extends React.Component {
             placeholderTextColor={"#fff"}
             value={password}
             onChangeText={onPasswordInputValidationResult}
+          />
+          <Text style={formStyles.inputHintText}>{translate('passwordHintText')}</Text>
+            
+          <TouchableOpacity style={formStyles.inputBox} onPress={()=>this.props.onChooseProductPress()}>
+            <Text style={formStyles.inputBoxText}>{translate('SignupChoosePreferredProduct')}</Text>
+            {selectedProducts.map((k)=>{
+              return (<Text style={formStyles.inputBoxText} >{k.name_en}</Text>)
+            })}
+          </TouchableOpacity>
+          <Input
+           style={formStyles.inputBox}
+           textStyle={formStyles.inputBoxText}
+            autoCapitalize="none"
+            placeholder={translate('placeholdersFrequentPurchases')}
+            keyboardType={'number-pad'}
+            placeholderTextColor={"#fff"}
+            value={frequentPurchases}
+            onChangeText={onFrequentInputTextChange}
           />
       
           <View style={{flexDirection:'row',flexWrap:'wrap'}}>

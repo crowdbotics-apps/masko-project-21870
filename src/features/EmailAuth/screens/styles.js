@@ -105,9 +105,26 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         color: '#FFF',
     },
+    inputBox2:{
+        borderBottomColor:'#7384B2',
+        borderBottomWidth:1,
+        padding:10,
+        margin:10,
+        backgroundColor:null,
+        fontFamily: "Montserrat",
+        color: '#FFF',
+        flexDirection:'row'
+    },
     inputBoxText:{
         fontFamily: "Montserrat",
         color: '#FFF',
+    },
+    inputHintText:{
+        fontFamily: "Montserrat",
+        color: '#FFCD3E',
+        fontSize: 10,
+        marginLeft: 20,
+        marginTop: -5,
     },
     inputIconContainer:{
         flex: 1, 

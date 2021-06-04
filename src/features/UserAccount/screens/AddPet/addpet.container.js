@@ -42,6 +42,11 @@ export class _AddPetContainer extends React.Component {
     this.props.navigation.navigate( appConfig.NAVIGATOR_ROUTE.Home )
   };
 
+  onPressChooseBreed = () =>{
+    this.props.navigation.navigate( 'ChooseBreed' );
+  }
+
+
   render() {
     return (
       <AddPet
@@ -51,6 +56,8 @@ export class _AddPetContainer extends React.Component {
         addLoading={this.props.addLoading}
         petTypes={this.props.petTypes}
         breedTypes={this.props.breedTypes}
+        onPressChooseBreed={this.onPressChooseBreed}
+        selectedBreedType={this.props.selectedBreedType}
 
       />
     );
@@ -62,7 +69,9 @@ const mapStateToProps = state => ({
   user: state.EmailAuth.user,
   addLoading: state.UserAccount.loaders.AddPet,
   petTypes: state.UserAccount.petTypes,
-  breedTypes: state.UserAccount.breedTypes
+  breedTypes: state.UserAccount.breedTypes,
+
+  selectedBreedType: state.UserAccount.selectedBreedType,
 });
 
 const mapDispatchToProps = dispatch => ({

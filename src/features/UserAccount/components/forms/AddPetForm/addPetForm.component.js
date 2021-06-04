@@ -192,6 +192,39 @@ class AddPetFormComponent extends React.Component {
 
   }
 
+  onPressChooseBreed = ()=>{
+    this.props.onPressChooseBreed()
+  }
+ 
+  renderBreedTypeField = () => {
+    const { onPressChooseBreed, breedType, selectedBreedType } = this.props;
+
+    if(breedType){
+      return (
+        <TouchableOpacity
+            style={formStyles.pickerContainer}
+            onPress={()=> onPressChooseBreed() }
+          ><Text style={formStyles.inputBoxLabelTxt}>{translate('BreedLabel')}</Text>
+         
+          {breedType && (<Text style={formStyles.inputBoxValueTxt} >{breedType.name}</Text>)}
+          {!breedType && (<Text style={formStyles.inputBoxValueTxt} >{translate('BreedTypePlaceHolder')}</Text>)}
+          </TouchableOpacity>   
+      );
+
+    }
+
+      return (
+        <TouchableOpacity
+            style={formStyles.pickerContainer}
+            onPress={()=> onPressChooseBreed() }
+          ><Text style={formStyles.inputBoxLabelTxt}>{translate('BreedLabel')}</Text>
+         
+          { selectedBreedType && (<Text style={formStyles.inputBoxValueTxt} >{selectedBreedType.name}</Text>)}
+          {!breedType &&!selectedBreedType && (<Text style={formStyles.inputBoxValueTxt} >{translate('BreedTypePlaceHolder')}</Text>)}
+          </TouchableOpacity>   
+      );
+  }
+
 
   render() {
     const {
@@ -201,6 +234,7 @@ class AddPetFormComponent extends React.Component {
       pet,
       petTypeName, 
       breed,
+      breedType,
       breedTypeName,
       age,
       image,
@@ -208,7 +242,9 @@ class AddPetFormComponent extends React.Component {
       onPetInputTextChange,
       onBreedInputTextChange,
       onAgeInputTextChange,
+      onPressChooseBreed,
       changePhotoLabel,
+      selectedBreedType,
 
       ...restProps
     } = this.props;
@@ -302,10 +338,10 @@ class AddPetFormComponent extends React.Component {
 
           </View>
 
+              {this.renderBreedTypeField()}
+           
 
-
-
-          <View
+          {/* <View
             style={formStyles.pickerContainer}
           >
 
@@ -326,7 +362,7 @@ class AddPetFormComponent extends React.Component {
             </RNPickerSelect>
 
           </View>
-
+ */}
 
 
 

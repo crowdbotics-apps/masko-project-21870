@@ -41,7 +41,10 @@ export default appConfig = {
     "ProductList": "ProductList",
     "ProductDetails": "ProductDetails",
     "ConfirmOrder": "ConfirmOrder",
-    "MyCart": "MyCart"
+    "MyCart": "MyCart",
+    "RecurringOrders":"RecurringOrder",
+    "MyOrders": "MyOrder",
+    "OrderDetails": "OrderDetails",
   },
   STATUS_CODES: {
     SUCCESS_OK: 200,

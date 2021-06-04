@@ -47,6 +47,7 @@ class _UpdatePetComponent extends React.Component {
       petTypeName: this.getPetType(-1, pet.typeInfo.id ).name,
       breed: pet.breed,
       breedTypeName: this.getBreedType(-1, pet.breed ).name,
+      breedType: this.getBreedType(-1, pet.breed ),
       age: pet.age,
       image: {
         content: null,
@@ -93,6 +94,15 @@ class _UpdatePetComponent extends React.Component {
     this.setState({ name });
   };
 
+  componentDidUpdate(prevProps,prevStates){
+    if( ( this.props.selectedBreedType && prevProps.selectedBreedType) 
+         && this.props.selectedBreedType.id != prevProps.selectedBreedType.id){
+     this.setState({
+      breedType: this.props.selectedBreedType
+     })       
+    }
+  }
+
   onPetInputTextChange = ( pet, index ) => {
     this.setState({ pet, petTypeName: this.getPetType(index,-1).name });
   };
@@ -130,7 +140,7 @@ class _UpdatePetComponent extends React.Component {
       id: this.state.id,
       name: this.state.name,
       pet_type: this.state.pet,
-      breed: this.state.breed,
+      breed: this.state.breedType.id,
       age: this.state.age,
       image: this.state.image
     });
@@ -161,12 +171,12 @@ class _UpdatePetComponent extends React.Component {
 
   validator() {
 
-    const { name, pet, breed, age, image } = this.state;
+    const { name, pet, breedType, age, image } = this.state;
 
     return (
       name !== undefined &&
       pet !== undefined && pet !== 0 &&
-      breed !== undefined && breed !== 0 &&
+      breedType !== undefined && breedType !== null &&
       age !== undefined && 
       ( image.content !== null || image.path !== '' )
     );
@@ -191,6 +201,11 @@ class _UpdatePetComponent extends React.Component {
     this.props.onForgetPasswordButtonPress();
   }
 
+  onPressChooseBreed = () => {
+    const { breedType } = this.state;
+    this.props.onPressChooseBreed(breedType);
+  }
+
   render() {
     const { themedStyle } = this.props;
     const { name, pet, breed, age, image } = this.state;
@@ -206,10 +221,14 @@ class _UpdatePetComponent extends React.Component {
             pet={pet}
             breed={breed}
             breedTypeName={this.state.breedTypeName}
+            breedType={this.state.breedType}
             petTypeName={this.state.petTypeName}
+
+            selectedBreedType={this.props.selectedBreedType}
             age={age.toString()}
             petImage={image}
             breedTypes={this.props.breedTypes}
+
             petTypes={this.props.petTypes}
             onNameInputTextChange={this.onNameInputTextChange}
             onPetInputTextChange={this.onPetInputTextChange}
@@ -217,6 +236,8 @@ class _UpdatePetComponent extends React.Component {
             onAgeInputTextChange={this.onAgeInputTextChange}
             onPetImageChange={this.onPetImageChange}
             changePhotoLabel={translate('ChangePhotoLabel')}
+
+            onPressChooseBreed={this.onPressChooseBreed}
           />
          <Button
             style={styles.yellowButton}

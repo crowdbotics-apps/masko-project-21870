@@ -1,4 +1,4 @@
-from payment_stripe.models import SubscriptionPayments
+from payment_stripe.models import Subscription, SubscriptionPayments
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
@@ -10,10 +10,13 @@ from allauth.account.utils import setup_user_email
 from rest_framework import serializers
 from rest_auth.serializers import PasswordResetSerializer
 from home.models import HomePage, CustomText
+import json
+
 
 from pet.models import Pet, PetType, BreedType
 from service.models import Service, Category, Product
 from order.models import Order, Product as OrderProduct
+from users.models import SignUpProduct
 
 
 import boto3
@@ -30,7 +33,7 @@ BASE_PATH_PET_IMAGE = '{}/pet_images'.format(BASE_PATH)
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "name", "email", "password")
+        fields = ("id", "name", "email", "password","signup_frequent_purchase")
         extra_kwargs = {
             "password": {"write_only": True, "style": {"input_type": "password"}},
             "email": {
@@ -41,6 +44,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def _get_request(self):
         request = self.context.get("request")
+        print(request.data)
         if (
             request
             and not isinstance(request, HttpRequest)
@@ -58,17 +62,39 @@ class SignupSerializer(serializers.ModelSerializer):
                 )
         return email
 
+
+    def set_user_signup_prod(self, user, request):
+        products = []
+        if 'products' in request.data:
+            in_product = str(request.data['products'])
+            products = in_product.split(',')
+            
+
+        elif 'products' in request.POST:
+            in_product = str(request.POST['products'])
+            products = in_product.split(',')
+
+        if len(products)>0:
+            for item in products:
+                newItem = SignUpProduct(user_id=user.id, product_id=item)
+                newItem.save()    
+      
+
     def create(self, validated_data):
         user = User(
             email=validated_data.get("email"),
             name=validated_data.get("name"),
+            signup_frequent_purchase=validated_data.get("signup_frequent_purchase"),
             username=generate_unique_username(
                 [validated_data.get("name"), validated_data.get("email"), "user"]
             ),
         )
+        
         user.set_password(validated_data.get("password"))
         user.save()
-        request = self._get_request()
+        request = self.context.get("request")
+        
+        self.set_user_signup_prod(user, request)
         setup_user_email(request, user, [])
         return user
 
@@ -168,7 +194,13 @@ class SubscriptionPaymentsSerializer(serializers.ModelSerializer):
         model = SubscriptionPayments
         fields = "__all__"                
 
-class RecurringOrderSerializer(serializers.ModelSerializer):
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = "__all__"                
+
+
+class MyOrderSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     total_purchases = serializers.SerializerMethodField()
     purchases = serializers.SerializerMethodField()
@@ -195,6 +227,47 @@ class RecurringOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id','address','country','subtotal_price','ship_price','tax_price','total_price','created_at','status','owner','products','total_purchases','purchases')
+
+
+class RecurringOrderSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField()
+    total_purchases = serializers.SerializerMethodField()
+    purchases = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
+    
+    def get_subscription( self, order):
+        list = []
+        item = Subscription.objects.filter(order_id = order.id).first()
+        if item is not None:
+            return SubscriptionSerializer(item).data
+        else:
+            return None   
+
+    def get_products(self, order):
+        items = OrderProduct.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(OrderProductSerializer(item).data)
+        return list
+
+    def get_total_purchases(self, order):
+        items = SubscriptionPayments.objects.filter(order=order)
+        return len(items)
+
+    def get_purchases(self, order):
+        items = SubscriptionPayments.objects.filter(order=order)
+        list = []
+        for item in items:
+            list.append(SubscriptionPaymentsSerializer(item).data)
+        return list 
+
+
+    class Meta:
+        model = Order
+        fields = ('id','address','country','subtotal_price','ship_price',
+                  'tax_price','total_price','created_at','status','owner',
+                  'products','total_purchases','purchases',
+                  'subscription')
 
 class RecurringOrderDetailSerializer(serializers.ModelSerializer):
     

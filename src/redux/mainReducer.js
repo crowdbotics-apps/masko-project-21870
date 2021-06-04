@@ -14,6 +14,7 @@ import UserAccountReducer from 'src/features/UserAccount/redux/reducers'
 import ServiceReducer from 'src/features/Services/redux/reducers'
 import CheckoutReducer from 'src/features/Checkout/redux/reducers'
 import RecurringOrderReducer from 'src/features/RecurringOrders/redux/reducers'
+import MyOrderReducer from 'src/features/MyOrders/redux/reducers'
 
 
 const config = {
@@ -56,6 +57,12 @@ const recurOrderPersistConfig = {
   blacklist: ["errors","loaders"],
 };
 
+const myOrderPersistConfig = {
+  key: "myOrder",
+  storage : AsyncStorage,
+  blacklist: ["errors","loaders"],
+};
+
 export const combinedReducers = persistCombineReducers(config,{
   blank: (state, action) => {
     if (state == null) state = [];
@@ -69,5 +76,6 @@ export const combinedReducers = persistCombineReducers(config,{
   Service: persistReducer( servicePersistConfig, ServiceReducer),
   Checkout: persistReducer( checkoutPersistConfig, CheckoutReducer),
   RecurringOrder: persistReducer( recurOrderPersistConfig, RecurringOrderReducer),
+  MyOrder: persistReducer( myOrderPersistConfig, MyOrderReducer),
 
 });

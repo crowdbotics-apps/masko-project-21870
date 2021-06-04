@@ -106,6 +106,8 @@ export function getPetsTotalQty ( pets ){
 export function formatOrderDetailsProducts(order, userPets){
 
    let newList = []
+   let obj = null
+   let sourcePet = null
    _.forEach(order.products, (i)=>{
       
        obj = _.find(newList, (j) => j.product.id == i.refrence_item.id );
@@ -135,6 +137,24 @@ export function formatOrderDetailsProducts(order, userPets){
    return newList;
 
 
+}
+
+export function updateCancelSubscription( storeOrders, order, status) {
+  let newList = []
+    _.forEach(storeOrders, (i)=>{
+      if(i.id == order.id && status){
+        newList.push({
+          ...i,
+          subscription:{
+            ...i.subscription,
+            is_cancelled: true
+          }
+        })
+      }else{
+        newList.push(i)
+      }
+    })
+  return newList;
 }
 
 

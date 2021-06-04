@@ -27,17 +27,28 @@ import { translate }  from 'src/utils/translation';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
+const initialState = {
+  username: undefined,
+  email: undefined,
+  password: undefined,
+  termsAccepted: false,
+  termsModalStatus: false,
+  privacyModalStatus: false,
+  frequentPurchases: 0,
+  signupProducts: []
+};
+
 class SignUp2Component extends React.Component {
 
 
-  state = {
-    username: undefined,
-    email: undefined,
-    password: undefined,
-    termsAccepted: false,
-    termsModalStatus: false,
-    privacyModalStatus: false,
-  };
+  state = {...initialState};
+
+  componentDidUpdate(prevProps,prevStats){
+    if( this.props.resetSignUpState != prevProps.resetSignUpState
+      && this.props.resetSignUpState == true ){
+        this.setState({...initialState});
+      }
+  }
 
   onTermsValueChange = termsAccepted => {
     this.setState({ termsAccepted });
@@ -45,6 +56,10 @@ class SignUp2Component extends React.Component {
 
   onUsernameInputTextChange = username => {
     this.setState({ username });
+  };
+
+  onFrequentInputTextChange = frequentPurchases => {
+    this.setState({ frequentPurchases });
   };
 
   onEmailInputTextChange = email => {
@@ -63,6 +78,10 @@ class SignUp2Component extends React.Component {
     this.props.onSignInPress();
   };
 
+  onChooseProductPress = () =>{
+    this.props.onChooseProductPress();
+  }
+
   onForgetPasswordButtonPress = () => {
     this.props.onForgetPasswordButtonPress();
   };
@@ -73,6 +92,8 @@ class SignUp2Component extends React.Component {
       email: this.state.email,
       password: this.state.password,
       name: this.state.username,
+      frequentPurchases: this.state.frequentPurchases,
+      signupProducts: this.props.selectedProducts
     });
   };
 
@@ -159,9 +180,17 @@ class SignUp2Component extends React.Component {
             termsAccepted={this.state.termsAccepted}
             privacyModalStatus={this.state.privacyModalStatus}
             termsModalStatus={this.state.termsModalStatus}
+            
+            frequentPurchases={this.state.frequentPurchases}
+            signupProducts={this.state.signupProducts}
+            selectedProducts={this.props.selectedProducts}
+
+            onFrequentInputTextChange={this.onFrequentInputTextChange}
+
             onUsernameInputTextChange={this.onUsernameInputTextChange}
             onEmailInputTextChange={this.onEmailInputTextChange}
             onForgetPasswordButtonPress={this.onForgetPasswordButtonPress}
+            onChooseProductPress={this.onChooseProductPress}
             onPasswordInputValidationResult={this.onPasswordInputValidationResult}
             onTermsValueChange={this.onTermsValueChange}
             onTermsModalPress={this.onTermsModalPress}

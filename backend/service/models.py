@@ -333,7 +333,7 @@ class Product(models.Model):
 
     ### Handle Before Save Of a Product 
     def save(self, *args, **kwargs):
-
+       
         oldProduct = None
         try:
             oldProduct = Product.objects.get( pk=self.id )
@@ -341,6 +341,11 @@ class Product(models.Model):
             pass
 
         super(Product, self).save(*args, **kwargs)
+        
+        print("**** BEFORE SAVE OF A PRODUCT")
+        print(self.name_en)
+        print(self.id)
+        print("***")
 
         # Stripe Product Creation Only Available for Recurring Products
         if self.stripe_id is None and self.is_recurring is True: 
@@ -355,6 +360,10 @@ class Product(models.Model):
 
     ### Handle Delete Of a Product
     def delete(self):
+        print("**** BEFORE DELETE")
+        print(self.name_en)
+        print(self.id)
+        print("***")
         self.purge()
         super(Product, self).delete()    
 

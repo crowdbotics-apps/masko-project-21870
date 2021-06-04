@@ -6,7 +6,8 @@ import {
   Image,
   View,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 
 import {
@@ -45,8 +46,8 @@ class OrderDetailsComponent extends React.Component {
   }
 
   renderSpinner = () => {
-    const { addOrderLoading } = this.props;
-    if (addOrderLoading) {
+    const { addOrderLoading, cancelOrderLoading } = this.props;
+    if (addOrderLoading || cancelOrderLoading) {
       return <Spinner />;
     } else {
       return null;
@@ -95,17 +96,31 @@ class OrderDetailsComponent extends React.Component {
   }
 
   validator = () => {
-    const { payMethodLabel } = this.state
+    const { order } = this.props
 
-    return (payMethodLabel)
+    return ( order.subscription.is_cancelled  )
   }
 
-  // onPressConfirmBtn = () => {
-  //   const { payMethodLabel, payMethodValue } = this.state
-  //   this.props.onConfirmOrder({
-  //     paymentMethod: payMethodLabel
-  //   })
-  // }
+  onPressCancel = () => {
+    let that = this;
+    Alert.alert(
+      translate('ConfirmPopUpHead'),
+      translate('SubscriptionCancelConfirmation'),
+      [
+        {
+          text: translate('PopUpCancelButton'),
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: translate('PopUpOkButton'), onPress: () => {
+            console.log("OK Pressed")
+            that.props.onCancelSubscription()
+          }
+         }
+      ]
+    );
+    
+  }
 
 
   render() {
@@ -206,8 +221,8 @@ class OrderDetailsComponent extends React.Component {
                             textStyle={styles.whiteFont}
                             size="giant"
                             status='primary'
-                            onPress={this.onPressConfirmBtn}
-                            disabled={!this.validator()}
+                            onPress={this.onPressCancel}
+                            disabled={this.validator()}
 
                           >
                             {translate("CancelRecurringBtn")}
@@ -218,24 +233,6 @@ class OrderDetailsComponent extends React.Component {
     );
   }
 }
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 14,
-    marginBottom: 12,
-    color: '#FFF',
-    fontFamily: "Montserrat",
-
-  },
-  inputAndroid: {
-    fontSize: 10,
-    padding: 0,
-    margin: 0,
-    color: '#FFF',
-    fontFamily: "Montserrat",
-
-  },
-});
 
 
 export const OrderDetails = withStyles( OrderDetailsComponent, theme => ({
