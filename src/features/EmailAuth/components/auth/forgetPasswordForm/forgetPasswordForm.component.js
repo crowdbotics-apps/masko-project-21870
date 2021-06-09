@@ -17,9 +17,7 @@ import {NameValidator, PasswordValidator} from '../../../core/validators';
 import formStyles from 'src/features/EmailAuth/screens/styles';
 
 class ForgetPasswordFormComponent extends React.Component {
-  state = {
-    username: undefined
-  };
+  
 
   onForgotPasswordButtonPress = () => {
     this.props.onForgotPasswordPress();

@@ -23,12 +23,20 @@ import styles from '../styles'
 
 import { translate }  from 'src/utils/translation';
 
+const initialState = {
+  username: '',
+  password: '',
+};
 
 class ForgetPasswordComponent extends React.Component {
-  state = {
-    username: '',
-    password: '',
-  };
+  state = {...initialState};
+
+  componentDidUpdate(prevProps,prevStats){
+    if( this.props.resetForgetPwdState != prevProps.resetForgetPwdState
+      && this.props.resetForgetPwdState == true ){
+        this.setState({...initialState});
+      }
+  }
 
   onUsernameInputTextChange = username => {
     this.setState({username});
@@ -110,7 +118,7 @@ class ForgetPasswordComponent extends React.Component {
               style={[themedStyle.formContainer]}
               onForgotPasswordPress={this.onForgotPasswordButtonPress}
               onUsernameInputTextChange={this.onUsernameInputTextChange}
-              email={this.state.username}
+              username={this.state.username}
             />
             <Button
               style={styles.yellowButton}
