@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Dimensions, FlatList} from 'react-native';
+import {View, Dimensions, FlatList, TouchableOpacity} from 'react-native';
 import {
   withStyles,
 } from 'react-native-ui-kitten';
@@ -23,7 +23,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles'
 
 import { translate }  from 'src/utils/translation';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
+
 
 
 const initState = {
@@ -99,6 +100,24 @@ class ChooseProductComponent extends React.Component {
       );
     }
 
+    renderList = () =>{
+      const { products } = this.props;
+      
+      if(products && products.length==0){
+        return (<View>
+          <EmptyRecordContainer emptyText={translate('NoProductAvailableMsg')} />
+        </View>);
+      }
+        
+      return ( <View >
+          <FlatList
+            data={products}
+            renderItem={this.renderItem}
+            keyExtractor={item => item.id}
+          />
+        </View>);
+    }
+
     renderSelection = ({ item , index, separators }) => {
       return (<TouchableOpacity
         key={item.id}
@@ -144,14 +163,8 @@ class ChooseProductComponent extends React.Component {
                 )}
 
             </View>
-            <View >
-              <FlatList
-                data={products}
-                renderItem={this.renderItem}
-                keyExtractor={item => item.id}
-              />
-            </View>
-                  
+           
+            {this.renderList()}       
             
             <Button
               style={styles.yellowButton}

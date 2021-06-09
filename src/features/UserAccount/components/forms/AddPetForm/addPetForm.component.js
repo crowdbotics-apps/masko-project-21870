@@ -364,11 +364,6 @@ class AddPetFormComponent extends React.Component {
           </View>
  */}
 
-
-
-
-
-
           <TouchableWithoutFeedback
 
             onPress={() => {

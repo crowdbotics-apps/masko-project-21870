@@ -177,6 +177,8 @@
     "ChooseProductsHead":"Select Your Products",
     "ChooseSelectedButton": "Choose Selected",
     "ChooseProductNavTitle":"Products",
+    "NoProductAvailableMsg": "No Product is available",
+    "NoBreedAvailableMsg": "No Breed is available",
     "ChooseBreedNavTitle":"Pet Breeds",
     
     
