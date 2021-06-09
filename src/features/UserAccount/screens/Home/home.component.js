@@ -42,6 +42,14 @@ class HomeComponent extends React.Component {
     password: '',
   };
 
+  componentDidUpdate(prevProps,prevStates){
+
+    if(this.props.showPetSelector !== prevProps.showPetSelector  && this.props.showPetSelector){
+      this.scrollRef.scrollTo({x: 0, y: 0, animated: true});
+    }
+
+  }
+
   onUsernameInputTextChange = username => {
     this.setState({username});
   };
@@ -72,6 +80,10 @@ class HomeComponent extends React.Component {
     );
   }
 
+  goToTop = () => {
+    this.scrollRef.scrollTo({x: 0, y: 0, animated: true});
+ }
+
 
   render() {
     const {
@@ -80,7 +92,9 @@ class HomeComponent extends React.Component {
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainerWithOutPad}>
-           <ScrollView style={styles.scrollView} contentContainerStyle={{ paddingBottom: 150 }} >
+           <ScrollView 
+           ref={ref => (this.scrollRef = ref)}
+           style={styles.scrollView} contentContainerStyle={{ paddingBottom: 150 }} >
              <PetComponent 
                   navigation={navigation}
               />
@@ -90,7 +104,7 @@ class HomeComponent extends React.Component {
                   data={this.props.serviceCat}
                   onPressCategory={this.props.onPressCategory}
                   />
-           
+              {/* <Button onPress={this.goToTop}>Go To Top</Button> */}
             </ScrollView>          
       </LinearGradient>
     );
