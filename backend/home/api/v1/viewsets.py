@@ -170,7 +170,14 @@ class ProductViewSet(ModelViewSet):
                                       )
 
         if petType is not None:
-            queryset = queryset.filter( petType_id = petType ) 
+            if petType == '-1': 
+                excludeList = [1,2]
+                queryset = queryset.exclude( petType_id__in = excludeList )
+            else:
+                queryset = queryset.filter( petType_id = petType ) 
+
+
+            
 
         if priceIndex is not None: 
             priceRange = self.getPriceRange( priceIndex )
