@@ -26,14 +26,14 @@ import { translate }  from 'src/utils/translation';
 
 
 class SignIn4Component extends React.Component {
-  state = {
-    username: 'usama149+05032021@gmail.com',
-    password: 'test123456',
-  };
   // state = {
-  //   username: '',
-  //   password: '',
+  //   username: 'usama149+05032021@gmail.com',
+  //   password: 'test123456',
   // };
+  state = {
+    username: '',
+    password: '',
+  };
 
   onUsernameInputTextChange = username => {
     this.setState({username});

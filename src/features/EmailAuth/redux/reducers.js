@@ -4,7 +4,8 @@ const initialState = {
   user: null,
   formReset:{
     SignUp: false,
-    SignIn: false
+    SignIn: false,
+    forgetPassword: false,
   },
   accessToken: null,
   selectedProducts: [],
@@ -86,17 +87,33 @@ export default EmailAuthReducer = (state = initialState, action) => {
        case actions.EMAIL_AUTH_PASSWORD_RECOVER_REQUEST:
         return { 
           ...state,
+          formReset: {
+            ...state.formReset,
+            forgetPassword: false,
+  
+          },
           errors: {  ...state.errors, PasswordRecover: null },
           loaders: { ...state.loaders, PasswordRecover: true },
          };
       case actions.EMAIL_AUTH_PASSWORD_RECOVER_SUCCESS:
         return { 
           ...state,
+          formReset: {
+            ...state.formReset,
+            forgetPassword: true,
+  
+          },
           loaders: { ...state.loaders, PasswordRecover: null },
          };   
 
     case actions.EMAIL_AUTH_PASSWORD_RECOVER_ERROR:
-      return { ...state,
+      return { 
+            ...state,
+            formReset: {
+              ...state.formReset,
+              forgetPassword: false,
+    
+            },
             errors: { PasswordRecover: action.error },
             loaders: { ...state.loaders, PasswordRecover: null }
            };  

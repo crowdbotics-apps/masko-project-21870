@@ -48,6 +48,7 @@ export class _ForgetPasswordContainer extends React.Component {
         onTwitterPress={this.onTwitterPress}
         errorMsg={this.props.signInErrors}
         forgetPwdLoading={this.props.forgetPwdLoading}
+        resetForgetPwdState={this.props.resetForgetPwdState}
 
       />
     );
@@ -56,6 +57,7 @@ export class _ForgetPasswordContainer extends React.Component {
 
 const mapStateToProps = state => ({
   forgetPwdLoading: state.EmailAuth.loaders.PasswordRecover,
+  resetForgetPwdState: state.EmailAuth.formReset.forgetPassword,
   // signInErrors: state.SignIn04Blueprint.errors.SignIn,
 });
 

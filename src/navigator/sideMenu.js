@@ -27,7 +27,17 @@ const height = Dimensions.get('screen').height
 class _SideMenu extends React.Component {
   onMenuItemPressed = item => {
     
-    this.props.navigation.navigate(item.access_route);
+    const { navigation } = this.props;
+    if( 
+      navigation.state.routes[navigation.state.index] 
+      && navigation.state.routes[navigation.state.index].routeName == item.access_route
+      ){
+      this.props.navigation.closeDrawer();
+    }else{
+      this.props.navigation.navigate(item.access_route);
+    }
+      
+    
   };
 
   onSignOutPressed = () => {

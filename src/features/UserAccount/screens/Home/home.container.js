@@ -30,7 +30,7 @@ export class _HomeContainer extends React.Component {
                 },
                 
                 headerStyle: appConfig.headerStyle,
-                headerRight: (<RightIcon navigation={navigation} />)
+                headerRight: (<RightIcon navigation={navigation} onPressPet={this} />)
           }
   };
   navigationKey = 'HomeContainer';
@@ -95,6 +95,7 @@ const mapStateToProps = state => ({
   userPets: state.UserAccount.pets,
   serviceCat: state.Service.categories,
   selectedPet: state.UserAccount.selectedPet,
+  showPetSelector: state.UserAccount.showPetSelector
 });
 
 const mapDispatchToProps = dispatch => ({

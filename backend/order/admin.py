@@ -70,6 +70,9 @@ class OrderAdmin(admin.ModelAdmin):
     fields = ('owner', 'is_recurring' , 'full_price','status')
     list_display = ('id',  'customer_name' , 'customer_email', 'full_price', 'status', 'created_at')
     readonly_fields = ('created_at', 'full_price' , 'owner', 'is_recurring' )
-    
+    list_filter = (
+                    ('owner',admin.RelatedOnlyFieldListFilter),
+                    ('is_recurring',admin.BooleanFieldListFilter),
+    )
 
 admin.site.register(Order, OrderAdmin)
