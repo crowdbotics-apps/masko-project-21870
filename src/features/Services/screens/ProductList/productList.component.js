@@ -60,7 +60,7 @@ const PET_TYPES = [
   },
   {
     type: 'text',
-    key: 3, 
+    key: -1, 
     value: 'ProductListSearchFilterTypeOther'
   }
 
@@ -168,12 +168,12 @@ class ProductListComponent extends React.Component {
 
   onSearchInputTextChange = (text) => {
     this.setState({ search: text });
-    this.onChangeSearchTextDelayed(text)
+    const { petType, priceRange ,  sortResult } = this.state;
+    this.onChangeSearchTextDelayed(text, petType, priceRange, sortResult)
     
   }
 
   callGetProducts = (text, type, price, sort)=>{
-    // const { petType, priceRange, sortResult } = this.state
     this.props.getProductsCb(text, type, price, sort);
   }
 
