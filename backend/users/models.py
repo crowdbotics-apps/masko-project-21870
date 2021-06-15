@@ -68,28 +68,36 @@ class User(AbstractUser):
 
     ### Handle Before Save Of a User
     def save(self, *args, **kwargs):
-        # try:
-        #     if self.stripe_id is None:
-        #         stripe_customer = stripe.Customer.create(
-        #                 description="{}-({}) is created from Masko App".format(self.name,self.email),
-        #                 email= self.email,
-        #                 name= self.name
-        #                 )
-        #         self.stripe_id = stripe_customer.id        
-        #     else:
-        #         stripe.Customer.modify(
-        #             self.stripe_id,
-        #             description="{}-({}) is updated from Masko App".format(self.name,self.email),
-        #             email= self.email,
-        #             name= self.name
-        #             )
-        # except Exception as e: 
-        #     print("Stripe Save Error")
-        #     print(e)      
-        #     pass      
+        try:
+            if self.stripe_id is None:
+                stripe_customer = stripe.Customer.create(
+                        description="{}-({}) is created from Masko App".format(self.name,self.email),
+                        email= self.email,
+                        name= self.name
+                        )
+                self.stripe_id = stripe_customer.id        
+            else:
+                stripe.Customer.modify(
+                    self.stripe_id,
+                    description="{}-({}) is updated from Masko App".format(self.name,self.email),
+                    email= self.email,
+                    name= self.name
+                    )
+        except Exception as e: 
+            print("Stripe Save Error")
+            print(e)      
+            pass      
 
 
         super(User, self).save(*args, **kwargs)
+
+
+    def create_stripe_customer(self):
+        return  stripe.Customer.create(
+                        description="{}-({}) is created from Masko App".format(self.name,self.email),
+                        email= self.email,
+                        name= self.name
+                        )
 
     
     def purge(self):

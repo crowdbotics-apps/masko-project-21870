@@ -29,6 +29,11 @@ class CardSerializer(serializers.ModelSerializer):
         try:
               
             instance = Card(owner=request.user)
+            
+            if request.user.stripe_id is None:
+                request.user.save()
+
+
             instance.generate_card({
                 'card':request.data,
                 'customer': request.user.stripe_id
@@ -38,8 +43,6 @@ class CardSerializer(serializers.ModelSerializer):
  
             return instance
         except Exception as e:
-            # print("*** Error in Data Set ***")
-            # print(e)
             raise serializers.ValidationError(e)
             # raise    
         

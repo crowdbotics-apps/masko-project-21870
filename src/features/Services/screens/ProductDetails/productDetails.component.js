@@ -438,6 +438,7 @@ class ProductDetailsComponent extends React.Component {
                 mode={'date'}
                 style={{ color: "#FFF" }}
                 textColor={'#FFF'}
+                minimumDate={new Date()} 
                 onChange={this.handleBookingDateChange}
                 onConfirm={this.handleBookingDateChange}
                 onCancel={this.toggleDateModal}

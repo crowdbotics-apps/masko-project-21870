@@ -114,7 +114,8 @@ class Card(models.Model):
        
         if data['card'] is not None:
             token_obj , token_id = self.create_card_token( data['card'] )
-         
+            print(token_id)
+            print(data['customer'])
             card = self.create_card( {
                 'customer': data['customer'],
                 'source': token_id

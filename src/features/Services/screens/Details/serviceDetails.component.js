@@ -428,6 +428,7 @@ class ServiceDetailsComponent extends React.Component {
                 mode={'date'}
                 style={{ color: "#FFF" }}
                 textColor={'#FFF'}
+                minimumDate={new Date()} 
                 onChange={this.handleBookingDateChange}
                 onConfirm={this.handleBookingDateChange}
                 onCancel={this.toggleDateModal}
@@ -438,7 +439,10 @@ class ServiceDetailsComponent extends React.Component {
 
 
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
-            <Text style={themedStyle.detailContainer.valueText}>{user.address}</Text>
+            {user && (
+              <Text style={themedStyle.detailContainer.valueText}>{user.address}</Text>
+            )}
+            
 
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailNoteLabel')}</Text>
             <Input

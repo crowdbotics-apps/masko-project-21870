@@ -472,14 +472,18 @@ class RecurringOrderViewSet(ModelViewSet):
         toDate = None
 
         queryset = Order.recurring_objects.filter(owner=user)
-      
+
+
         if 'fromDate' in self.request.GET:
-            fromDate = datetime.strptime(self.request.GET['fromDate'], '%d/%m/%Y')
+            inFromDate = '{} 00:00:00'.format(self.request.GET['fromDate'])
+            fromDate = datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S')
             queryset = queryset.filter(created_at__gte = fromDate)
 
         if 'toDate' in self.request.GET:
-            toDate = datetime.strptime(self.request.GET['toDate'],  '%d/%m/%Y')
-            queryset = queryset.filter(created_at__lt = toDate)
+            inToDate = '{} 23:59:59'.format(self.request.GET['toDate'])
+            toDate = datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S')
+            queryset = queryset.filter(created_at__lte = toDate)
+
       
         return queryset.order_by('-created_at')
 
@@ -521,12 +525,14 @@ class MyOrderViewSet(ModelViewSet):
         queryset = Order.normal_objects.filter(owner=user)
       
         if 'fromDate' in self.request.GET:
-            fromDate = datetime.strptime(self.request.GET['fromDate'], '%d/%m/%Y')
+            inFromDate = '{} 00:00:00'.format(self.request.GET['fromDate'])
+            fromDate = datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S')
             queryset = queryset.filter(created_at__gte = fromDate)
 
         if 'toDate' in self.request.GET:
-            toDate = datetime.strptime(self.request.GET['toDate'],  '%d/%m/%Y')
-            queryset = queryset.filter(created_at__lt = toDate)
+            inToDate = '{} 23:59:59'.format(self.request.GET['toDate'])
+            toDate = datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S')
+            queryset = queryset.filter(created_at__lte = toDate)
       
         return queryset.order_by('-created_at')
 
