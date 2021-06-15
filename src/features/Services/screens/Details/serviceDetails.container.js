@@ -68,6 +68,7 @@ export class _ServiceDetailsContainer extends React.Component {
     return (
       <ServiceDetails
         errorMsg={this.props.signInErrors}
+        user={this.props.user}
         navigation={navigation}
         services={this.props.services}
         getServiceLoading={this.props.getServiceLoading}
@@ -85,6 +86,7 @@ export class _ServiceDetailsContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.EmailAuth.user,
   accessToken: state.EmailAuth.accessToken,
   services: state.Service.services,
   getServiceLoading: state.Service.GetService,

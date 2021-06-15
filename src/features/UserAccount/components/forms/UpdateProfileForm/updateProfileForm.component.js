@@ -63,6 +63,7 @@ class UpdateProfileFormComponent extends React.Component {
 
   
   toggleModel =  () => {
+    this.props.onCancelCardPress()
     this.setState({
       addUndsModal: !this.state.addUndsModal
     });

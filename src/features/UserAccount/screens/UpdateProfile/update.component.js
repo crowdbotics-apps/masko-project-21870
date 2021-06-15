@@ -115,9 +115,21 @@ class _UpdateProfileComponent extends React.Component {
     this.props.onUpdateButtonPress(item);
   };
 
+  onCancelCardPress = () => {
+      this.setState({
+            cards: '',
+            number: '',
+            expiry: '',
+            cvv: '',
+        });
+  }
+
   onCancelButtonPress = () => {
     this.props.onCancelButtonPress();
   };
+
+  
+
 
   getExpiryObj = () => {
     const { expiry } = this.state;
@@ -198,6 +210,7 @@ class _UpdateProfileComponent extends React.Component {
                 onCVVInputTextChange={this.onCVVInputTextChange}
                 onAddCardPress={this.onAddCardPress}
                 onCancelPress={this.onCancelButtonPress}
+                onCancelCardPress={this.onCancelCardPress}
                 onCheckedChange={this.onCheckedChange}
                 addCardLoading={this.props.addCardLoading}
                 addCardError={this.props.addCardError}

@@ -11,12 +11,20 @@ export function getPets( accessToken ) {
 export function addPet( accessToken, pet ) {
  
     let path = ApiConstants.ACTIONS.PET;
+    let age = pet.age
+    
+    if(age!=null){
+        age = age.toString().replace(',','.')
+    }
+
+
+
     let body = {
         name: pet.name,
-        age: pet.age,
+        age: age,
         pet_type: pet.pet_type,
         breed: pet.breed,
-      };
+    };
 
     if( pet.image && pet.image.content!=null ) {
         body.file = pet.image.content.data
@@ -29,9 +37,16 @@ export function addPet( accessToken, pet ) {
 export function updatePet( accessToken, pet ) {
  
     let path = ApiConstants.ACTIONS.PET+pet.id+'/';
+
+    let age = pet.age
+
+    if(age!=null){
+        age = age.toString().replace(',','.')
+    }
+
     let body = {
         name: pet.name,
-        age: pet.age,
+        age: age,
         pet_type: pet.pet_type,
         breed: pet.breed,
       };

@@ -32,6 +32,11 @@ export class _AddPetContainer extends React.Component {
   };
   navigationKey = 'AddPetContainer';
 
+  componentDidMount(){
+    const { actions } = this.props;
+    actions.SetBreedType()
+  }
+
   onAddButtonPress = data => {
     const { actions, accessToken } = this.props;
     actions.AddPet(accessToken, data)
@@ -80,6 +85,9 @@ const mapDispatchToProps = dispatch => ({
     AddPet: (accessToken, pet) => {
       dispatch( userAccountActions.addPet( accessToken, pet ) );
     },
+    SetBreedType: (breed) => {
+      dispatch( userAccountActions.setBreedType(breed) )
+    }
   },
 });
 

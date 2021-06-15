@@ -316,7 +316,8 @@ class ServiceDetailsComponent extends React.Component {
       themedStyle,
       navigation,
       selectedPet,
-      userSelection
+      userSelection,
+      user
     } = this.props;
 
     const { service } = navigation.state.params;
@@ -437,7 +438,7 @@ class ServiceDetailsComponent extends React.Component {
 
 
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailAddLabel')}</Text>
-            <Text style={themedStyle.detailContainer.valueText}>4505  Melody Lane, Reston, Virginia</Text>
+            <Text style={themedStyle.detailContainer.valueText}>{user.address}</Text>
 
             <Text style={themedStyle.detailContainer.placeHolderText} >{translate('ServiceDetailNoteLabel')}</Text>
             <Input
