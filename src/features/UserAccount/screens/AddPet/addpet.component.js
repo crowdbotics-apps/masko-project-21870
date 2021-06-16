@@ -200,7 +200,7 @@ class _AddPetComponent extends React.Component {
             size="giant"
             status='info'
             // disabled={!this.validator()}
-            onPress={this.onPressChooseBreed}
+            onPress={this.onCancelButtonPress}
 
           >
             {translate("CancelButtonLabel")}

@@ -61,6 +61,12 @@ class UpdateProfileFormComponent extends React.Component {
     this.ActionSheet.show()
   }
 
+  onCancelCardPress =  () => {
+    this.props.onCancelCardPress()
+    this.setState({
+      addUndsModal: !this.state.addUndsModal
+    });
+  }
   
   toggleModel =  () => {
     this.setState({
@@ -202,7 +208,7 @@ class UpdateProfileFormComponent extends React.Component {
                     onExpiryInputTextChange={onExpiryInputTextChange}
                     onCVVInputTextChange={onCVVInputTextChange}
                     onAddCardPress={()=>this.onAddCardPress()}
-                    onCancelPress={() => {this.toggleModel()}}
+                    onCancelPress={() => {this.onCancelCardPress()}}
                     onCloseModal={()=>{this.toggleModel()}}
                     addCardLoading={this.props.addCardLoading}
                     

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Dimensions, FlatList, TouchableOpacity} from 'react-native';
+import {View, Dimensions, FlatList, TouchableOpacity, ScrollView} from 'react-native';
 import {
   withStyles,
 } from 'react-native-ui-kitten';
@@ -138,7 +138,7 @@ class ChooseProductComponent extends React.Component {
 
     return (
       <LinearGradient colors={AppConfig.backgroundColor} style={styles.itemsContainer}>
-        <ScrollableAvoidKeyboard >
+        <ScrollView contentContainerStyle={{paddingBottom: 70}}  >
             {this.renderSpinner()}
             <View >
                 <SearchBox 
@@ -178,7 +178,7 @@ class ChooseProductComponent extends React.Component {
             
            
          
-        </ScrollableAvoidKeyboard>
+        </ScrollView>
       </LinearGradient>
     );
   }

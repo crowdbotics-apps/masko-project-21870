@@ -40,27 +40,39 @@ import * as _ from 'lodash';
 
 const moment = require('moment');
 
+const initialState = {
+
+  bookingFromDate: {
+    display: moment().subtract(1, 'months').format(AppConfig.dateFormat),
+    value: new Date()
+  },
+  bookingToDate: {
+    display: moment().format(AppConfig.dateFormat),
+    value: new Date()
+  },
+
+  showDatePickerFrom: false,
+  showDatePickerTo: false,
+};
 
 class OrderListComponent extends React.Component {
-  state = {
-    bookingFromDate: {
-      display: moment().subtract(1, 'months').format(AppConfig.dateFormat),
-      value: new Date()
-    },
-    bookingToDate: {
-      display: moment().format(AppConfig.dateFormat),
-      value: new Date()
-    },
-
-    showDatePickerFrom: false,
-    showDatePickerTo: false,
-    
-  }
+  state = {...initialState}
   
   constructor(props){
     super(props);
     this.onChangeSearchTextDelayed = _.debounce(this.callGetService, 1000);
   }
+
+  componentDidUpdate(prevProps, prevStates){
+    
+    if( this.props.resetMyOrderState != prevProps.resetMyOrderState
+      && this.props.resetMyOrderState == true ){
+        this.setState({...initialState});
+      }
+    // myOrderFormReset 
+  }
+
+  
 
   componentDidMount(){
     const { bookingFromDate, bookingToDate } = this.state

@@ -37,11 +37,7 @@ export class _OrderListContainer extends React.Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
-   
-  }
-
-
+ 
   getMyOrders = ( from_date, to_date ) => {
     const { accessToken, actions, navigation } = this.props;
     actions.getMyOrders( accessToken, from_date, to_date );
@@ -72,6 +68,7 @@ export class _OrderListContainer extends React.Component {
         getMyOrderLoading={this.props.getMyOrderLoading}
         onPressOrderItem={this.onPressOrderItem}
         getMyOrdersCb={this.getMyOrders}
+        resetMyOrderState={this.props.resetMyOrderState}
         
        />
     );
@@ -83,6 +80,7 @@ const mapStateToProps = state => ({
   orders: state.MyOrder.orders,
   getMyOrderLoading: state.MyOrder.ListMyOrder,
   userPets: state.UserAccount.pets,
+  resetMyOrderState: state.MyOrder.formReset.MyOrders
 });
 
 const mapDispatchToProps = dispatch => ({

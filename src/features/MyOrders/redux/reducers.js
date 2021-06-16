@@ -7,6 +7,9 @@ import * as _ from 'lodash';
 
 const initialState = {
   orders: [],
+  formReset:{
+    MyOrders: false,
+  },
   errors: { 
            ListMyOrder: null,
            
@@ -59,9 +62,21 @@ export default MyOrderReducer = (state = initialState, action) => {
 
         }
       };
-  
+    case AuthActions.EMAIL_AUTH_LOGIN_SUCCESS:
+        return {
+          ...state,
+          formReset:{
+            MyOrders: true,
+          }
+        };
+      
     case AuthActions.EMAIL_AUTH_LOGOUT:
-      return initialState;
+      return {
+        ...initialState,
+        formReset:{
+          MyOrders: false,
+        }
+      };
     default:
       return {
         ...state,
