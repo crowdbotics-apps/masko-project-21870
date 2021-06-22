@@ -81,6 +81,7 @@ export class _ProductListContainer extends React.Component {
         getProductsCb={this.getProducts}
         selectedPet={this.props.selectedPet}
         userPets={this.props.userPets}
+        petTypes={this.props.petTypes}
         onAddButtonPress={this.onAddButtonPress}
         onPressProductItem={this.onPressProductItem}
         
@@ -94,6 +95,7 @@ const mapStateToProps = state => ({
   products: state.Service.products,
   userPets: state.UserAccount.pets,
   selectedPet: state.UserAccount.selectedPet,
+  petTypes: state.UserAccount.petTypes,
   getProductsLoading: state.Service.GetProducts
 });
 

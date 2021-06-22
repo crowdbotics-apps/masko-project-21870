@@ -170,8 +170,17 @@ class ProductViewSet(ModelViewSet):
                                       )
 
         if petType is not None:
+            excludeList = []
+            
+            ## Exclude Cat and Dog
+            tempPetTypes = PetType.objects.filter(  Q(name__icontains='dog') |
+                                                    Q(name__icontains='cat')
+                                                )
+            for types in tempPetTypes:
+                excludeList.append(types.id)
+            ##
+
             if petType == '-1': 
-                excludeList = [1,2]
                 queryset = queryset.exclude( petType_id__in = excludeList )
             else:
                 queryset = queryset.filter( petType_id = petType ) 
@@ -337,7 +346,7 @@ class AddOrderViewSet(CreateAPIView):
                                     timeOption = item['timeOption'],
                                     date = item['scheduleDate'],
                                     time = item['time'] if 'time' in item else '',
-                                    notes = item['notes'],
+                                    notes = item['notes'] if 'notes' in item else '',
                                 )
             totalPrice = service.price*item['quantity']   
 
