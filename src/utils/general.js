@@ -32,3 +32,20 @@ export function shallowEqual(objA , objB ) {
       !shallowEqual(instance.state, nextState)
     );
   }
+
+
+  export function formatNumber(input){
+    if(input){
+      input = parseFloat(input)
+      var rounded = Math.round((input + Number.EPSILON) * 100) / 100;
+      return rounded
+    }else{
+      return 0
+    }
+    
+
+  }
+
+  export function formatCurrency(input){
+        return '$'+formatNumber(input)
+  }

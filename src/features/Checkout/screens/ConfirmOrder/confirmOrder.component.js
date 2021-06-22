@@ -22,6 +22,9 @@ import {
 
 
 import AppConfig from 'src/config/app';
+
+import * as genUtils from 'src/utils/general';
+
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
@@ -192,21 +195,21 @@ class ConfirmOrderComponent extends React.Component {
             <Text style={themedStyle.summary.label} >{translate('OrderRecurringLabel')}</Text>
             )}
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
+                <Text style={themedStyle.summary.labelText} >{ genUtils.formatCurrency( cart.subTotalPrice ) }</Text>
             </View>
             
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.shipping}</Text>
+                <Text style={themedStyle.summary.labelText} >{ genUtils.formatCurrency( cart.shipping ) }</Text>
 
             </View>
           </View>
           <View style={themedStyle.summary.rowContainer}  >
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.taxes}</Text>
+                <Text style={themedStyle.summary.labelText} >{ genUtils.formatCurrency( cart.taxes ) }</Text>
 
             </View>
           </View>
@@ -214,7 +217,7 @@ class ConfirmOrderComponent extends React.Component {
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >${cart.totalPrice}</Text>
+                <Text style={themedStyle.summary.labelTextHead} >{ genUtils.formatCurrency( cart.totalPrice ) }</Text>
 
             </View>
           </View>

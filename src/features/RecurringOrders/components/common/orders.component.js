@@ -14,9 +14,6 @@ import {
   Avatar
 } from 'react-native-ui-kitten';
 
-import {
-  textStyle,
-} from '../../components/common';
 
 const width = Dimensions.get('screen').width
 import { translate } from 'src/utils/translation';
@@ -24,6 +21,8 @@ import { translate } from 'src/utils/translation';
 import SmallPawLogo from 'src/assets/icons/small-paw.svg';
 
 import AppConfig from 'src/config/app';
+
+import * as genUtils from 'src/utils/general';
 
 const moment = require('moment');
 
@@ -91,7 +90,7 @@ class _OrderComponent extends React.Component {
               
           </Button>
             <View style={{alignSelf: 'center',borderWidth: 1, borderRadius: 25, borderColor:"#E9EBED", width: width*0.75, padding: 10, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={themedStyle.textTitleBold}>${item.total_price} (purchased {item.total_purchases} times)</Text>
+                <Text style={themedStyle.textTitleBold}>{ genUtils.formatCurrency(item.total_price) } (purchased {item.total_purchases} times)</Text>
             </View>
          
         </View>

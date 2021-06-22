@@ -22,6 +22,7 @@ const width = Dimensions.get('screen').width
 import { translate } from 'src/utils/translation';
 
 import appConfig from 'src/config/app';
+import * as genUtils from 'src/utils/general';
 
 
 
@@ -124,7 +125,7 @@ class _CartItemsComponent extends React.Component {
               <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
           </View>
           <View style={themedStyle.itemPriceContainer}>
-               <Text style={themedStyle.itemPriceLabel}>${price}</Text>
+               <Text style={themedStyle.itemPriceLabel}>{genUtils.formatCurrency(price)}</Text>
           </View>
     
         </View>);
@@ -203,7 +204,7 @@ class _CartItemsComponent extends React.Component {
               <Text style={themedStyle.itemQtyLabel}>{pet.qty}</Text> */}
           </View>
           <View style={themedStyle.itemPriceContainer}>
-               <Text style={themedStyle.itemPriceLabel}>${price}</Text>
+               <Text style={themedStyle.itemPriceLabel}>{genUtils.formatCurrency(price)}</Text>
           </View>
     
         </View>);

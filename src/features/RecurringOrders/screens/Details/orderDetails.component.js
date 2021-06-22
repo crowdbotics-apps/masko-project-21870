@@ -26,12 +26,12 @@ import AppConfig from 'src/config/app';
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
-import EmptyRecordContainer from 'src/components/EmptyContainer/EmptyRecordContainer';
 import { Spinner } from 'src/components/Spinner';
 import { translate } from 'src/utils/translation';
 import { OrderItems } from '../../components/common';
 import MicroLogo from 'src/assets/images/masko-logo-micro.svg';
-import * as utils from '../../utils/general';
+
+import * as genUtils from 'src/utils/general';
 
 
 const moment = require('moment');
@@ -98,7 +98,7 @@ class OrderDetailsComponent extends React.Component {
   validator = () => {
     const { order } = this.props
 
-    return ( order.subscription.is_cancelled  )
+    return ( order.subscription && order.subscription.is_cancelled  )
   }
 
   onPressCancel = () => {
@@ -179,7 +179,7 @@ class OrderDetailsComponent extends React.Component {
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >${order.total_price}</Text>
+                <Text style={themedStyle.summary.labelTextHead} >{ genUtils.formatCurrency( order.total_price ) }</Text>
 
             </View>
           </View>
@@ -202,7 +202,7 @@ class OrderDetailsComponent extends React.Component {
                 return (<View style={themedStyle.summary.rowContainer}  >
                   <Text style={themedStyle.summary.label} >{date}</Text>
                   <View style={themedStyle.labelContainer} >
-                      <Text style={themedStyle.summary.labelText} >${order.total_price}</Text>
+                      <Text style={themedStyle.summary.labelText} >{genUtils.formatCurrency( order.total_price ) }</Text>
       
                   </View>
                 </View>);
@@ -211,7 +211,7 @@ class OrderDetailsComponent extends React.Component {
           <View style={[themedStyle.summary.rowContainer,{marginTop: 20, marginBottom: 20}]}  >
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >${recurringTotal}</Text>
+                <Text style={themedStyle.summary.labelTextHead} >{ genUtils.formatCurrency( recurringTotal ) }</Text>
 
             </View>
           </View>
