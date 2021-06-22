@@ -45,22 +45,25 @@ import * as _ from 'lodash';
 import { PetComponent } from 'src/components/common';
 
 
-const PET_TYPES = [
+let PET_TYPES = [
   {
     type: 'icon',
     key: 1, 
+    itemKey: 'dog',
     icon: <DogIcon width={'75'}  />, 
     selectedIcon: <DogSelectedIcon width={'75'}  />, 
   },
   {
     type: 'icon',
     key: 2, 
+    itemKey: 'cat',
     icon: <CatIcon width={'75'}  />, 
     selectedIcon: <CatSelectedIcon width={'75'}  />, 
   },
   {
     type: 'text',
     key: -1, 
+    itemKey: 'other',
     value: 'ProductListSearchFilterTypeOther'
   }
 
@@ -107,6 +110,33 @@ class ProductListComponent extends React.Component {
     super(props);
     this.onChangeSearchTextDelayed = _.debounce(this.callGetProducts, 1000);
     this.state.products = this.setProducts();
+    this.initPetTypes();
+  }
+
+  initPetTypes = () => {
+    const { petTypes } = this.props
+    let newArray = []
+    _.forEach(PET_TYPES, (i)=>{
+          item = _.find(petTypes, (j) => { 
+                        return j.name.toLowerCase().includes(i.itemKey)
+
+                        }
+                      )
+          if (item != null ){
+              newArray.push({
+                ...i,
+                key: item.id
+              })
+          }else{
+              newArray.push({
+                ...i
+              })
+          }
+
+    })
+
+    PET_TYPES = newArray
+
   }
 
   setProducts = () => {

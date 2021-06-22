@@ -14,18 +14,11 @@ import {
   Avatar
 } from 'react-native-ui-kitten';
 
-import {
-  textStyle,
-} from '../../components/common';
 
 const width = Dimensions.get('screen').width
-import { translate } from 'src/utils/translation';
 
-import appConfig from 'src/config/app';
+import * as genUtils from 'src/utils/general';
 
-
-
-import TrashIcon from 'src/assets/icons/trash-icon.svg';
 
 class _OrderItemsComponent extends React.Component {
   
@@ -57,7 +50,7 @@ class _OrderItemsComponent extends React.Component {
     <View style={themedStyle.itemContainer}>
       <View style={themedStyle.itemSubContainer}>
            <Text style={[ themedStyle.itemHeading, themedStyle.itemSubContainerHead]} >{item.totalQty}x{name}</Text>
-           <View style={themedStyle.itemSubContainerPrice}><Text style={themedStyle.itemHeading} >${price}</Text></View>
+           <View style={themedStyle.itemSubContainerPrice}><Text style={themedStyle.itemHeading} >{ genUtils.formatCurrency( price )  }</Text></View>
            
       </View>
       <View style={{flexDirection:"row"}} >

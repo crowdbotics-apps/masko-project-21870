@@ -22,6 +22,9 @@ import {
 
 
 import AppConfig from 'src/config/app';
+
+import * as genUtils from 'src/utils/general';
+
 const width = Dimensions.get('screen').width
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../styles'
@@ -148,7 +151,7 @@ class UserCartComponent extends React.Component {
           <View style={[themedStyle.summary.rowContainer]}   >
             <Text style={themedStyle.summary.label} >{translate('OrderSubTotalLabel')}</Text>
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.subTotalPrice}</Text>
+                <Text style={themedStyle.summary.labelText} >${genUtils.formatNumber(cart.subTotalPrice)}</Text>
 
             </View>
             
@@ -157,7 +160,7 @@ class UserCartComponent extends React.Component {
             <Text style={themedStyle.summary.label} >{translate('OrderShippingLabel')}</Text>
             {/* <Text style={themedStyle.summary.label} >${cart.shipping}</Text> */}
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.shipping}</Text>
+                <Text style={themedStyle.summary.labelText} >{genUtils.formatCurrency(cart.shipping)}</Text>
 
             </View>
           </View>
@@ -165,7 +168,7 @@ class UserCartComponent extends React.Component {
             <Text style={themedStyle.summary.label} >{translate('OrderTaxLabel')}</Text>
             {/* <Text style={themedStyle.summary.label}  >${cart.taxes}</Text> */}
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelText} >${cart.taxes}</Text>
+                <Text style={themedStyle.summary.labelText} >{genUtils.formatCurrency(cart.taxes)}</Text>
 
             </View>
           </View>
@@ -174,7 +177,7 @@ class UserCartComponent extends React.Component {
             <Text style={themedStyle.summary.heading} >{translate('OrderTotalLabel')}</Text>
             {/* <Text style={themedStyle.summary.heading}  >${cart.totalPrice}</Text> */}
             <View style={themedStyle.labelContainer} >
-                <Text style={themedStyle.summary.labelTextHead} >${cart.totalPrice}</Text>
+                <Text style={themedStyle.summary.labelTextHead} >{genUtils.formatCurrency(cart.totalPrice)}</Text>
 
             </View>
           </View>

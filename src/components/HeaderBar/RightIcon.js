@@ -1,6 +1,6 @@
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import CartIcon from 'src/assets/icons/cart-icon.svg';
+import CartIcon from 'src/assets/icons/cart-icon2.svg';
 import React from "react";
 import { PetButton } from 'src/components/HeaderBar';
 import { CartModel } from 'src/features/Checkout/models';
@@ -33,7 +33,7 @@ export class _RightIcon extends React.Component {
 
       return (<View style={{flex:1, flexDirection:'row', justifyContent:'flex-end', marginRight: 10}}>
                         <TouchableOpacity onPress={this.onPress}>
-                           <CartIcon width={25} style={{marginTop: 5, marginRight: 5}}   />
+                           <CartIcon width={25} style={{marginTop: 10, marginRight: 8}}   />
                            <Text style={styles.cartQtyLabel}>{quantity}</Text>
                          </TouchableOpacity>
                          <PetButton navigation={navigation} />
@@ -86,8 +86,8 @@ const styles = {
     fontSize: 12,
     fontFamily: "Montserrat",
     position:'absolute',
-    left:8,
-    top: 20,
+    left:10,
+    top: 8,
     fontWeight:'bold',
     color:"white"
   }

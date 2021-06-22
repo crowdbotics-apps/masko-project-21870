@@ -55,6 +55,13 @@ class _UpdateProfileComponent extends React.Component {
     this.setDefaultCardIndex(this.props);
   }
 
+  componentDidUpdate(prevProps,prevStates){
+    if(this.props.formResetAddCard !== prevProps.formResetAddCard 
+      && this.props.formResetAddCard == true){
+        this.clearCardForm()
+      }
+  }
+
   getUnds = ( index ) => {
     return this.props.unds[index]
   }
@@ -116,12 +123,16 @@ class _UpdateProfileComponent extends React.Component {
   };
 
   onCancelCardPress = () => {
-      this.setState({
-            cards: '',
-            number: '',
-            expiry: '',
-            cvv: '',
-        });
+     this.clearCardForm()
+  }
+
+  clearCardForm = () => {
+    this.setState({
+      cards: '',
+      number: '',
+      expiry: '',
+      cvv: '',
+  });
   }
 
   onCancelButtonPress = () => {

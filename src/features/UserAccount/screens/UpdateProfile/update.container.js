@@ -75,6 +75,7 @@ export class _UpdateProfileContainer extends React.Component {
         unds={this.props.unds}
         userPets={this.props.userPets}
         selectedPet={this.props.selectedPet}
+        formResetAddCard={this.props.formResetAddCard}
         
 
       />
@@ -92,7 +93,8 @@ const mapStateToProps = state => ({
   deleteCardLoading: state.UserAccount.loaders.CardDelete,
   updateCardLoading: state.UserAccount.loaders.CardUpdate,
   userPets: state.UserAccount.pets,
-  selectedPet: state.UserAccount.selectedPet
+  selectedPet: state.UserAccount.selectedPet,
+  formResetAddCard: state.UserAccount.formReset.CardCreate
 });
 
 const mapDispatchToProps = dispatch => ({

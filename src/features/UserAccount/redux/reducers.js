@@ -10,6 +10,9 @@ const initialState = {
   breedTypes: [],
   selectedPet: null,
   selectedBreedType: null,
+  formReset:{
+    CardCreate: false
+  },
   errors: {   
           SetPet: null,
           GetPet: null,
@@ -431,6 +434,10 @@ export default UserAccountReducer = (state = initialState, action) => {
     case actions.USER_CARD_CREATE_REQUEST:
               return {
                 ...state,
+                formReset:{
+                  ...state.formReset,
+                  CardCreate: false
+                },
                 errors: {
                   ...state.errors,
                   CardCreate: null
@@ -444,6 +451,10 @@ export default UserAccountReducer = (state = initialState, action) => {
     case actions.USER_CARD_CREATE_SUCCESS:
               return {
                 ...state,
+                formReset:{
+                  ...state.formReset,
+                  CardCreate: true
+                },
                 unds: utils.appendCd(state.unds, action.unds),
                 errors: {
                   ...state.errors,
