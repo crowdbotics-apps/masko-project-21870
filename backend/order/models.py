@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils import timezone
+
 class RecurringOrderManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_recurring=True)
@@ -59,13 +61,9 @@ class Order(models.Model):
     )
     
 
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-    )
+    created_at = models.DateTimeField('Created', editable=False, default=timezone.now )
 
-    last_updated = models.DateTimeField(
-        auto_now=True,
-    )
+    last_updated = models.DateTimeField('Updated')
     is_recurring = models.BooleanField(default=False)
     
     status = models.CharField(
@@ -78,6 +76,12 @@ class Order(models.Model):
 
     def __str__ (self):
         return 'Order #{} - ({})'.format( self.id, self.owner.email )
+
+
+    ### Handle Before Save Of a Order
+    def save(self, *args, **kwargs):
+        self.last_updated = timezone.now()
+        super(Order, self).save(*args, **kwargs)     
 
 
 # Product Model

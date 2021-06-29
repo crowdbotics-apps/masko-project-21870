@@ -35,6 +35,11 @@ export function getRecurringOrders( accessToken, from_date, to_date ) {
     if( to_date != null ){
         path += '&toDate='+encodeURIComponent(to_date)
     }
+    tzone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+    if(tzone!= null){
+        path += "&tzone="+encodeURIComponent(tzone)
+    }
     
 
     return Api(path, null, 'get', accessToken);
@@ -52,6 +57,13 @@ export function getMyOrders( accessToken, from_date, to_date ) {
     if( to_date != null ){
         path += '&toDate='+encodeURIComponent(to_date)
     }
+
+    tzone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+    if(tzone!= null){
+        path += "&tzone="+encodeURIComponent(tzone)
+    }
+    
     
 
     return Api(path, null, 'get', accessToken);
