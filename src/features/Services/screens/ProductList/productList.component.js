@@ -93,6 +93,10 @@ const SORT_RESULTS = [
   {
     key: 'size', 
     value: 'ProductListSearchSortResultSize'
+  },
+  {
+    key: 'weight', 
+    value: 'ProductListSearchSortResultWeight'
   }
 ]
 

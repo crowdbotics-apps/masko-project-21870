@@ -13,6 +13,11 @@ from home.api.v1.paginators import StandardResultsSetPagination, LargeResultsSet
 from django.db.models import Q
 from django.db import transaction 
 from datetime import datetime
+import pytz
+from django.utils import timezone
+
+from masko_project_21870.settings import TIME_ZONE
+
 
 from rest_framework.generics import CreateAPIView
 from payment_stripe.utils import (
@@ -372,8 +377,12 @@ class AddOrderViewSet(CreateAPIView):
             
             # response = super().create(request, *args, **kwargs)   
             if 'items' in request.data:
+                createDate = timezone.now()
                 recurringIteminOrder = False
-                order = Order( owner = request.user, is_recurring = False)
+
+                order = Order(  owner = request.user,
+                                is_recurring = False,
+                                last_updated = createDate )
                 order.save()
 
                 productCollection = []
@@ -479,18 +488,26 @@ class RecurringOrderViewSet(ModelViewSet):
         user = self.request.user
         fromDate = None
         toDate = None
-
+        
         queryset = Order.recurring_objects.filter(owner=user)
 
 
+        pacific_tzinfo = pytz.utc
+
+        if 'tzone' in self.request.GET:
+            pacific_tzinfo = pytz.timezone( self.request.GET['tzone'] )
+
+      
         if 'fromDate' in self.request.GET:
-            inFromDate = '{} 00:00:00'.format(self.request.GET['fromDate'])
-            fromDate = datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S')
+            inFromDate = '{} 00:00:00'.format( self.request.GET['fromDate'] )
+            fromDate = pacific_tzinfo.localize(datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S'))
+            fromDate = fromDate.astimezone(pytz.timezone(TIME_ZONE))
             queryset = queryset.filter(created_at__gte = fromDate)
 
         if 'toDate' in self.request.GET:
             inToDate = '{} 23:59:59'.format(self.request.GET['toDate'])
-            toDate = datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S')
+            toDate = pacific_tzinfo.localize(datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S'))
+            toDate = toDate.astimezone(pytz.timezone(TIME_ZONE))
             queryset = queryset.filter(created_at__lte = toDate)
 
       
@@ -523,6 +540,7 @@ class RecurringOrderViewSet(ModelViewSet):
         return Response({'status': 'error','msg':"Data Missing"},status=400)
 
 
+
 class MyOrderViewSet(ModelViewSet):
     serializer_class = MyOrderSerializer
 
@@ -532,15 +550,24 @@ class MyOrderViewSet(ModelViewSet):
         toDate = None
 
         queryset = Order.normal_objects.filter(owner=user)
+        
+        pacific_tzinfo = pytz.utc
+
+        if 'tzone' in self.request.GET:
+            pacific_tzinfo = pytz.timezone( self.request.GET['tzone'] )
+
       
         if 'fromDate' in self.request.GET:
-            inFromDate = '{} 00:00:00'.format(self.request.GET['fromDate'])
-            fromDate = datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S')
+            
+            inFromDate = '{} 00:00:00'.format( self.request.GET['fromDate'] )
+            fromDate = pacific_tzinfo.localize(datetime.strptime(inFromDate, '%d/%m/%Y %H:%M:%S'))
+            fromDate = fromDate.astimezone(pytz.timezone(TIME_ZONE))
             queryset = queryset.filter(created_at__gte = fromDate)
 
         if 'toDate' in self.request.GET:
             inToDate = '{} 23:59:59'.format(self.request.GET['toDate'])
-            toDate = datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S')
+            toDate = pacific_tzinfo.localize(datetime.strptime(inToDate,  '%d/%m/%Y %H:%M:%S'))
+            toDate = toDate.astimezone(pytz.timezone(TIME_ZONE))
             queryset = queryset.filter(created_at__lte = toDate)
       
         return queryset.order_by('-created_at')

@@ -150,6 +150,7 @@
     "ProductListSearchSortResultBy": "Sort result by",
     "ProductListSearchSortResultPrice": "Price",
     "ProductListSearchSortResultSize": "Size",
+    "ProductListSearchSortResultWeight": "Weight",
     "RecurringOrderGetError": "Unable to get recurring orders.",
     "RecurrOrderListNavTitle":"Recurring Orders",
     "OrderItemsNumberLabel":"Order #",
